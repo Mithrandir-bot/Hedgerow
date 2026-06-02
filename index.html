@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Hedgerow — Run Bold Promotions Your Customers Will Love</title>
-<meta name="description" content="Run a bold promotion tied to a real-world event. If it happens, we fund the payoff for one flat fee. If it doesn't, you keep the buzz. All upside. No risk.">
+<meta name="description" content="Run a bold promotion tied to a real-world event. You offer the deal; if it happens, we pay YOU the payoff for one flat fee so you can cover it. If it doesn't, you keep the buzz. All upside. No risk.">
 <style>
   :root {
     --brand: "Hedgerow";
@@ -287,14 +287,31 @@
     color: white;
   }
 
-  .range-track {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.78rem;
-    color: rgba(255,255,255,0.5);
-    margin-top: 4px;
+  .est-odds {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.18);
+    border-radius: 8px;
+    padding: 14px 16px;
   }
-  .range-track .current { color: var(--accent); font-weight: 700; font-size: 0.85rem; }
+  .est-odds-value {
+    display: block;
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: var(--accent);
+    line-height: 1.1;
+  }
+  .est-odds-caveat {
+    font-size: 0.74rem;
+    color: rgba(255,255,255,0.55);
+    margin-top: 6px;
+    line-height: 1.4;
+  }
+  .field-help {
+    font-size: 0.74rem;
+    color: rgba(255,255,255,0.55);
+    margin-top: 6px;
+    line-height: 1.4;
+  }
 
   input[type="range"] {
     -webkit-appearance: none;
@@ -865,7 +882,7 @@
 <div class="hero">
   <div class="hero-badge">All upside. No risk.</div>
   <h1>Run a bold promotion<br>your customers <em>will love.</em></h1>
-  <p class="hero-lead">If it happens, we fund the payoff — for one flat fee. If it doesn't, you keep the buzz. Pick a fun, local event, set the payoff your customers get, and run a promotion that packs the house.</p>
+  <p class="hero-lead">You run the promo &mdash; "Free wings if the Bucs win." If it happens, we pay YOU the payoff the same day, so you can cover the giveaway at no cost to you. If it doesn't, you keep the buzz. Pick a fun, local event, set how much the promo could cost you, and pack the house &mdash; all for one flat fee.</p>
   <p class="hero-sub">No accounts. No paperwork. Just a simple marketing tool priced in seconds.</p>
   <a href="#calculator" class="hero-cta">See What Your Promo Costs</a>
 
@@ -910,8 +927,8 @@
     </div>
     <div class="step">
       <div class="step-num">2</div>
-      <h3>Set the Payoff</h3>
-      <p>Tell us how much your customers get if it happens — the free wings, the refund, the discount. That is the payoff we fund for you.</p>
+      <h3>Set Your Exposure</h3>
+      <p>Tell us how much the promo could cost you if it happens — the free wings, the refund, the discount. That is the payoff we pay you so you can cover it.</p>
     </div>
     <div class="step">
       <div class="step-num">3</div>
@@ -920,8 +937,8 @@
     </div>
     <div class="step">
       <div class="step-num">4</div>
-      <h3>We Fund the Payoff</h3>
-      <p>Once the event is officially decided, you're paid the same day — by bank transfer (ACH) or USDC. No checks in the mail; your money moves when the result is in.</p>
+      <h3>We Pay You the Payoff</h3>
+      <p>Once the event is officially decided, we pay YOU the same day — by bank transfer (ACH) or USDC — so you can cover the giveaway. No checks in the mail; your money moves when the result is in.</p>
     </div>
   </div>
 </div>
@@ -955,18 +972,17 @@
       </div>
 
       <div class="form-group">
-        <label>The payoff your customers get if it happens ($)</label>
-        <input type="number" id="exposure" placeholder="e.g., 5000" min="250" step="100">
+        <label>Estimated odds this happens</label>
+        <div class="est-odds" id="estOddsBox">
+          <span class="est-odds-value" id="estOddsValue">--</span>
+          <p class="est-odds-caveat">Estimated &mdash; your final price uses live market data when you set up your promo.</p>
+        </div>
       </div>
 
       <div class="form-group">
-        <label>How likely is it?</label>
-        <input type="range" id="probability" min="5" max="95" value="40" oninput="updateProbLabel()">
-        <div class="range-track">
-          <span>Long shot (5%)</span>
-          <span class="current" id="probLabel">40%</span>
-          <span>Very likely (95%)</span>
-        </div>
+        <label>How much could this promo cost you if it happens? ($)</label>
+        <input type="number" id="exposure" placeholder="e.g., 5000" min="250" step="100">
+        <p class="field-help">The value of the giveaway &times; how many redemptions you expect. Minimum $250.</p>
       </div>
 
       <button class="calc-btn" onclick="calculate()">See My Flat Fee</button>
@@ -984,9 +1000,9 @@
           <div class="outcome-note">One upfront fee</div>
         </div>
         <div class="outcome-card receive">
-          <div class="outcome-label">If it happens, we fund</div>
+          <div class="outcome-label">If it happens, we pay you</div>
           <div class="outcome-amount" id="rReceiveAmount">--</div>
-          <div class="outcome-note">The full payoff for your customers</div>
+          <div class="outcome-note">Paid to your business, same day</div>
         </div>
       </div>
 
@@ -1028,11 +1044,11 @@
           <span id="coTrigger">--</span>
         </div>
         <div class="order-row">
-          <span class="order-label">Payoff we fund</span>
+          <span class="order-label">If it happens, we pay you</span>
           <span id="coCoverage">--</span>
         </div>
         <div class="order-row">
-          <span class="order-label">How likely</span>
+          <span class="order-label">Estimated odds</span>
           <span id="coProb">--</span>
         </div>
         <div class="order-row total">
@@ -1086,14 +1102,14 @@
       <button class="modal-close" onclick="closeCheckout()" style="position:absolute;top:16px;right:16px;">&times;</button>
       <div class="confirm-check">&#10003;</div>
       <div class="confirm-title">Your promotion is live</div>
-      <div class="confirm-sub">You're all set. If it happens, we fund the payoff and pay you the same day the event is officially decided — by your selected method.</div>
+      <div class="confirm-sub">You're all set. If it happens, we pay YOU the payoff the same day the event is officially decided — by your selected method — so you can cover the giveaway at no cost to you.</div>
       <div class="confirm-detail">
         <div class="order-row">
           <span class="order-label">Event</span>
           <span id="cfTrigger">--</span>
         </div>
         <div class="order-row">
-          <span class="order-label">Payoff we fund</span>
+          <span class="order-label">If it happens, we pay you</span>
           <span id="cfCoverage">--</span>
         </div>
         <div class="order-row">
@@ -1125,43 +1141,43 @@
     <div class="vertical-card">
       <div class="vertical-icon sports">S</div>
       <h3>Sports Bars and Restaurants</h3>
-      <p>Run game-day promotions that pack the house. If the team wins and you owe free wings, we fund the payoff.</p>
-      <div class="vertical-example"><strong>Example:</strong> "Free wings if the Buccaneers win" — $640 flat fee, we fund the $4,000 payoff</div>
+      <p>Run game-day promotions that pack the house. If the team wins and you owe free wings, we pay you the payoff to cover it.</p>
+      <div class="vertical-example"><strong>Example:</strong> "Free wings if the Buccaneers win" — $640 flat fee, we pay you the $4,000 payoff</div>
     </div>
 
     <div class="vertical-card">
       <div class="vertical-icon weather">W</div>
       <h3>Outdoor Events and Venues</h3>
-      <p>Promise guests a rain-day refund for your festival, market, or grand opening. If it rains, we fund it.</p>
-      <div class="vertical-example"><strong>Example:</strong> "Rain on event day? 50% back." — $380 flat fee, we fund $2,500</div>
+      <p>Promise guests a rain-day refund for your festival, market, or grand opening. If it rains, we pay you to cover it.</p>
+      <div class="vertical-example"><strong>Example:</strong> "Rain on event day? 50% back." — $380 flat fee, we pay you $2,500</div>
     </div>
 
     <div class="vertical-card">
       <div class="vertical-icon sports">D</div>
       <h3>Car Dealerships</h3>
-      <p>Big, bold conditional promotions that drive lot traffic. We fund the payoff if it happens.</p>
-      <div class="vertical-example"><strong>Example:</strong> "$5K off any truck if the Bucs make the playoffs" — $3,200 flat fee, we fund $25K</div>
+      <p>Big, bold conditional promotions that drive lot traffic. We pay you the payoff if it happens.</p>
+      <div class="vertical-example"><strong>Example:</strong> "$5K off any truck if the Bucs make the playoffs" — $3,200 flat fee, we pay you $25K</div>
     </div>
 
     <div class="vertical-card">
       <div class="vertical-icon weather">T</div>
       <h3>Tourism and Hospitality</h3>
-      <p>Offer guests a weather promise. A rained-out weekend? Partial refund, funded by Hedgerow.</p>
-      <div class="vertical-example"><strong>Example:</strong> "3+ rainy days? 25% back." — $210 flat fee, we fund $1,200</div>
+      <p>Offer guests a weather promise. A rained-out weekend? Partial refund — Hedgerow pays you to cover it.</p>
+      <div class="vertical-example"><strong>Example:</strong> "3+ rainy days? 25% back." — $210 flat fee, we pay you $1,200</div>
     </div>
 
     <div class="vertical-card">
       <div class="vertical-icon weather">H</div>
       <h3>Ice Cream and Seasonal Shops</h3>
-      <p>Turn a record-hot weekend into a customer-favorite deal. If it hits, we fund the giveaway.</p>
-      <div class="vertical-example"><strong>Example:</strong> "Free scoop if it hits 90&deg;+ this weekend" — $180 flat fee, we fund $1,500</div>
+      <p>Turn a record-hot weekend into a customer-favorite deal. If it hits, we pay you to cover the giveaway.</p>
+      <div class="vertical-example"><strong>Example:</strong> "Free scoop if it hits 90&deg;+ this weekend" — $180 flat fee, we pay you $1,500</div>
     </div>
 
     <div class="vertical-card">
       <div class="vertical-icon sports">G</div>
       <h3>Local Retail and Pop-Ups</h3>
       <p>Tie a fun discount to your team's big game. Win or lose, you keep the buzz.</p>
-      <div class="vertical-example"><strong>Example:</strong> "Gators win by 10+? 20% off everything." — $900 flat fee, we fund $5,000 in discounts</div>
+      <div class="vertical-example"><strong>Example:</strong> "Gators win by 10+? 20% off everything." — $900 flat fee, we pay you $5,000 to cover the discounts</div>
     </div>
 
   </div>
@@ -1173,7 +1189,7 @@
     <div class="trust-item">
       <div class="trust-icon shield">&#9745;</div>
       <h4>Based in Florida</h4>
-      <p>A simple marketing tool for local businesses. You run the promotion; we fund the payoff.</p>
+      <p>A simple marketing tool for local businesses. You run the promotion; if it happens, we pay you the payoff.</p>
     </div>
     <div class="trust-item">
       <div class="trust-icon lock">&#9878;</div>
@@ -1183,7 +1199,7 @@
     <div class="trust-item">
       <div class="trust-icon clock">&#9200;</div>
       <h4>Same-Day Payoff</h4>
-      <p>Once the event is officially decided, you're paid the same day — by bank transfer (ACH) or USDC.</p>
+      <p>Once the event is officially decided, we pay you the same day — by bank transfer (ACH) or USDC.</p>
     </div>
   </div>
 </div>
@@ -1195,15 +1211,15 @@
   <div class="faq-list">
     <div class="faq-item">
       <div class="faq-q" onclick="toggleFaq(this)">What exactly is Hedgerow?</div>
-      <div class="faq-a">Hedgerow is a simple marketing tool for small businesses. You run a fun promotion tied to a local event — your team winning, rain on your event day, a hot weekend. If it happens, we fund the payoff your customers get. If it doesn't, you keep the buzz from the promotion. You pay one flat fee upfront, and that's it.</div>
+      <div class="faq-a">Hedgerow is a simple marketing tool for small businesses. You run a fun promotion tied to a local event — your team winning, rain on your event day, a hot weekend. You offer the deal to your customers; if the event happens, Hedgerow pays YOU the payoff the same day so you can cover the giveaway at no cost to you. If it doesn't, you keep the buzz from the promotion. You pay one flat fee upfront, and that's it. (We pay your business, not your customers directly.)</div>
     </div>
     <div class="faq-item">
       <div class="faq-q" onclick="toggleFaq(this)">How is the flat fee calculated?</div>
-      <div class="faq-a">Your flat fee depends on the payoff amount you choose and how likely the event is. More likely events cost a bit more, since the payoff is more likely to happen. The calculator on this page gives you an instant, transparent estimate, and your final flat fee is confirmed at checkout. There's nothing else to pay.</div>
+      <div class="faq-a">Your flat fee depends on how much the promo could cost you (your exposure) and the estimated odds of the event. You don't set the odds — those come from the event you pick, estimated from real-world data. More likely events cost a bit more, since the payoff is more likely to happen. The calculator on this page gives you an instant, transparent estimate, and your final flat fee uses live market data when you set up your promo. There's nothing else to pay.</div>
     </div>
     <div class="faq-item">
       <div class="faq-q" onclick="toggleFaq(this)">How fast do I get paid?</div>
-      <div class="faq-a">Once the event is officially decided, you're paid the same day — by bank transfer (ACH) or USDC. No paper checks, no multi-day waits. You pick your preferred method when you set up your promotion.</div>
+      <div class="faq-a">Once the event is officially decided, we pay YOU — your business — the same day, by bank transfer (ACH) or USDC. No paper checks, no multi-day waits. You use that to cover the giveaway you offered your customers. You pick your preferred method when you set up your promotion.</div>
     </div>
     <div class="faq-item">
       <div class="faq-q" onclick="toggleFaq(this)">What events can I build a promotion around?</div>
@@ -1236,7 +1252,7 @@
 <!-- FOOTER -->
 <footer>
   <p><span id="brand-footer">Hedgerow</span> &copy; 2026. Based in the State of Florida. &nbsp;|&nbsp; <a href="#">Terms</a> &nbsp;|&nbsp; <a href="#">Privacy</a></p>
-  <p style="margin-top:8px;">Hedgerow is a marketing tool for businesses. Promotions are funded and paid out by Hedgerow, Inc.</p>
+  <p style="margin-top:8px;">Hedgerow is a marketing tool for businesses. If the event happens, Hedgerow, Inc. pays the business the payoff — not the customers directly.</p>
 </footer>
 
 <script>
@@ -1244,30 +1260,40 @@
 const BRAND_NAME = "Hedgerow";
 
 // === STATE ===
+// lastCalc.prob is the ESTIMATED probability assigned by the event lookup (0-1).
+// lastCalc.exposure is what the promo could cost the business if it happens.
+// lastCalc.premium is the flat fee. lastCalc.trigger is the event label.
 let lastCalc = { trigger: '', exposure: 0, prob: 0, premium: 0 };
 let selectedPayment = 'card';
+let estProb = 0; // estimated probability (0-1) for the currently selected event
 
 // === PRESET DATA ===
+// Each curated event maps to an ESTIMATED probability (placeholder lookup table).
+// The business never sets the odds — the odds come from the event they pick.
 const PRESETS = {
   sports: [
-    { label: "Team wins this weekend", trigger: "The Buccaneers win this weekend",   exposure: 4000, prob: 45 },
-    { label: "Team wins by 10+",       trigger: "The Heat win by 10+ this weekend",  exposure: 3000, prob: 30 },
-    { label: "Team makes the playoffs", trigger: "The Lightning make the playoffs",  exposure: 10000, prob: 35 },
+    { label: "Team wins this weekend",  trigger: "The Buccaneers win this weekend",  exposure: 4000,  estProb: 0.45 },
+    { label: "Wins by 10+ / blowout",   trigger: "The Heat win by 10+ this weekend", exposure: 3000,  estProb: 0.22 },
+    { label: "Makes the playoffs",      trigger: "The Lightning make the playoffs",  exposure: 10000, estProb: 0.30 },
+    { label: "Longshot player prop",    trigger: "A longshot player prop hits",      exposure: 2000,  estProb: 0.12 },
   ],
   weather: [
-    { label: "Rain on your event day", trigger: "It rains on your event day",          exposure: 3000, prob: 35 },
-    { label: "Hits 90&deg;+ this weekend", trigger: "It hits 90°+ this weekend",   exposure: 1500, prob: 40 },
-    { label: "Storm cancels outdoor day", trigger: "A storm cancels your outdoor day", exposure: 5000, prob: 20 },
+    { label: "Rain on your event day",     trigger: "It rains on your event day",          exposure: 3000, estProb: 0.30 },
+    { label: "Hits 90&deg;+ this weekend", trigger: "It hits 90°+ this weekend",           exposure: 1500, estProb: 0.40 },
+    { label: "Storm cancels outdoor day",  trigger: "A storm cancels your outdoor day",    exposure: 5000, estProb: 0.10 },
   ],
   seasonal: [
-    { label: "Record-hot weekend",  trigger: "A record-hot weekend",        exposure: 2000, prob: 25 },
-    { label: "Big game-day crowd",  trigger: "A big game-day crowd shows up", exposure: 4000, prob: 50 },
+    { label: "Record-hot weekend",  trigger: "A record-hot weekend",         exposure: 2000, estProb: 0.15 },
+    { label: "Big game-day crowd",  trigger: "A big game-day crowd shows up", exposure: 4000, estProb: 0.50 },
   ],
   custom: [
-    { label: "Team wins by 10+",    trigger: "The Gators win by 10+ this weekend", exposure: 3000, prob: 30 },
-    { label: "It rains Saturday",   trigger: "It rains on Saturday",               exposure: 2500, prob: 35 },
+    { label: "Team wins by 10+",    trigger: "The Gators win by 10+ this weekend", exposure: 3000, estProb: 0.22 },
+    { label: "It rains Saturday",   trigger: "It rains on Saturday",               exposure: 2500, estProb: 0.30 },
   ]
 };
+
+// Sensible default estimated probability when no exact event match is found.
+const DEFAULT_EST_PROB = 0.30;
 
 function onCategoryChange() {
   renderChips(document.getElementById('eventCategory').value);
@@ -1285,14 +1311,16 @@ function applyPreset(cat, idx) {
   const p = PRESETS[cat][idx];
   document.getElementById('triggerDesc').value = p.trigger;
   document.getElementById('exposure').value = p.exposure;
-  document.getElementById('probability').value = p.prob;
-  updateProbLabel();
+  // The system assigns the estimated probability from the event — the user does not.
+  setEstProb(p.estProb);
   document.querySelectorAll('.preset-chip').forEach((c, i) => c.classList.toggle('active', i === idx));
   calculate();
 }
 
-function updateProbLabel() {
-  document.getElementById('probLabel').textContent = document.getElementById('probability').value + '%';
+// Assigns and displays the read-only estimated probability for the chosen event.
+function setEstProb(p) {
+  estProb = (typeof p === 'number' && p > 0) ? p : DEFAULT_EST_PROB;
+  document.getElementById('estOddsValue').textContent = '~' + Math.round(estProb * 100) + '%';
 }
 
 function fmt(n) {
@@ -1301,11 +1329,14 @@ function fmt(n) {
 
 function calculate() {
   const exposure = parseFloat(document.getElementById('exposure').value);
-  const prob = parseFloat(document.getElementById('probability').value) / 100;
   const trigger = document.getElementById('triggerDesc').value.trim() || 'your event';
 
+  // Odds come from the event the user picked, never from the user.
+  const prob = (estProb > 0) ? estProb : DEFAULT_EST_PROB;
+  if (estProb <= 0) setEstProb(DEFAULT_EST_PROB);
+
   if (!exposure || exposure < 250) {
-    alert('Please enter your payoff amount ($250 minimum).');
+    alert('Please enter how much this promo could cost you ($250 minimum).');
     return;
   }
 
@@ -1318,7 +1349,7 @@ function calculate() {
   const ev = prob * exposure;
   const premium = Math.round((ev * (1 + margin)) / 10) * 10;
 
-  // Store for checkout
+  // Store for checkout (prob is the estimated probability for the event)
   lastCalc = { trigger, exposure, prob, premium };
 
   // Populate result panel
@@ -1328,13 +1359,13 @@ function calculate() {
   document.getElementById('rReceiveAmount').textContent = fmt(exposure);
 
   document.getElementById('rTriggered').textContent =
-    `We fund the full ${fmt(exposure)} payoff for your customers. Once the event is officially decided, you're paid the same day by bank transfer (ACH) or USDC. Your only cost is the ${fmt(premium)} flat fee.`;
+    `If it happens, we pay YOU ${fmt(exposure)} the same day the event is officially decided — so you can cover the giveaway you offered your customers at no cost to you. Your only cost is the ${fmt(premium)} flat fee.`;
 
   document.getElementById('rNotTriggered').textContent =
     `You keep the buzz and the foot traffic your promotion drove. Your only cost is the ${fmt(premium)} flat fee.`;
 
   document.getElementById('rSummaryLine').textContent =
-    `Your cost is one flat fee (${fmt(premium)}). If it happens, we fund the ${fmt(exposure)} payoff. All upside either way.`;
+    `Your flat fee: ${fmt(premium)}. If it happens, we pay YOU ${fmt(exposure)} the same day (after the event is officially decided) — so your giveaway costs you nothing. If it doesn't happen, you keep the buzz and foot traffic; your only cost is the ${fmt(premium)} fee.`;
 
   document.getElementById('calcResult').classList.add('visible');
 }
@@ -1347,7 +1378,7 @@ function openCheckout() {
   const triggerDisplay = lastCalc.trigger.length > 35 ? lastCalc.trigger.substring(0, 35) + '...' : lastCalc.trigger;
   document.getElementById('coTrigger').textContent = triggerDisplay;
   document.getElementById('coCoverage').textContent = fmt(lastCalc.exposure);
-  document.getElementById('coProb').textContent = Math.round(lastCalc.prob * 100) + '%';
+  document.getElementById('coProb').textContent = '~' + Math.round(lastCalc.prob * 100) + '%';
   document.getElementById('coPremium').textContent = fmt(lastCalc.premium);
 
   // Reset to step 1
@@ -1415,6 +1446,7 @@ function submitEmail() {
 
 // Init
 renderChips('sports');
+setEstProb(DEFAULT_EST_PROB);
 
 /* ─── Ask Hedgerow Chatbot ─── */
 (function() {
@@ -1424,22 +1456,22 @@ renderChips('sports');
     {
       chip: 'What is ' + BRAND + '?',
       patterns: ['what is', 'what do you', 'what does hedgerow', 'tell me about'],
-      answer: BRAND + ' is a simple marketing tool for small businesses. You run a fun promotion tied to a local event — your team winning this weekend, rain on your event day, a hot weekend. If it happens, we fund the payoff your customers get. If it doesn\'t, you keep the buzz. You pay one flat fee upfront, and that\'s it.'
+      answer: BRAND + ' is a simple marketing tool for small businesses. You run a fun promotion tied to a local event — your team winning this weekend, rain on your event day, a hot weekend. You offer the deal to your customers; if the event happens, we pay YOU the payoff the same day so you can cover the giveaway at no cost to you. If it doesn\'t, you keep the buzz. You pay one flat fee upfront, and that\'s it. (We pay your business, not your customers directly.)'
     },
     {
       chip: 'How does a promotion work?',
       patterns: ['how does it work', 'how it works', 'how do promotions', 'how does a promo', 'explain'],
-      answer: 'Pick a fun local event, set the payoff your customers get if it happens, and we show you one flat fee. Run the promotion to pack the house. If it happens, we fund the payoff. If it doesn\'t, you simply keep the buzz the promotion created. All upside, no risk.'
+      answer: 'You run the promo — for example, "Free wings if the Bucs win." Pick a fun local event, tell us how much the promo could cost you if it happens, and we show you one flat fee. Run the promotion to pack the house. If it happens, we pay YOU the payoff the same day so you can cover the giveaway at no cost to you. If it doesn\'t, you simply keep the buzz. All upside, no risk. (We pay your business, not your customers directly.)'
     },
     {
       chip: 'What does it cost?',
       patterns: ['cost', 'price', 'fee', 'how much', 'pricing', 'flat fee'],
-      answer: 'You pay one flat fee upfront — nothing else. The fee depends on the payoff amount you choose and how likely the event is. Use the pricing tool on this page to get an instant, transparent estimate, and your final flat fee is confirmed at checkout.'
+      answer: 'You pay one flat fee upfront — nothing else. The fee depends on how much the promo could cost you (your exposure) and the estimated odds of the event. You don\'t set the odds — those come from the event you pick. Use the pricing tool on this page to get an instant, transparent estimate; your final flat fee uses live market data when you set up your promo.'
     },
     {
       chip: 'How do I get paid?',
       patterns: ['get paid', 'payoff', 'payout', 'payment', 'ach', 'usdc', 'settle', 'when do i get'],
-      answer: 'Once the event is officially decided, you\'re paid the same day — by bank transfer (ACH) or USDC. No paper checks, no multi-day waits. You pick your preferred method when you set up your promotion.'
+      answer: 'Once the event is officially decided, we pay YOU — your business — the same day, by bank transfer (ACH) or USDC. No paper checks, no multi-day waits. You use that to cover the giveaway you offered your customers. You pick your preferred method when you set up your promotion.'
     },
     {
       chip: 'What events can I use?',
@@ -1449,7 +1481,7 @@ renderChips('sports');
     {
       chip: 'Do I take on any risk?',
       patterns: ['risk', 'what if it happens', 'do i owe', 'on the hook', 'downside'],
-      answer: 'No. If the event happens, we fund the full payoff your customers get — you never owe more than the one flat fee you paid upfront. If it doesn\'t happen, you simply keep the buzz from the promotion. All upside. No risk.'
+      answer: 'No. If the event happens, we pay YOU the full payoff so you can cover the deal you offered your customers — you never owe more than the one flat fee you paid upfront. If it doesn\'t happen, you simply keep the buzz from the promotion. All upside. No risk. (We pay your business, not your customers directly.)'
     },
     {
       chip: 'How do I sign up?',
