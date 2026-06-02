@@ -540,7 +540,7 @@
   }
 
   /* Get Coverage CTA */
-  .get-coverage-btn {
+  .run-promo-btn {
     width: 100%;
     padding: 14px;
     background: white;
@@ -553,7 +553,7 @@
     transition: all 0.2s;
     margin-bottom: 10px;
   }
-  .get-coverage-btn:hover { background: #f1f5f9; transform: translateY(-1px); }
+  .run-promo-btn:hover { background: #f1f5f9; transform: translateY(-1px); }
 
   .result-disclaimer {
     font-size: 0.72rem;
@@ -1060,6 +1060,10 @@
   .vertical-icon.sports { background: #dbeafe; color: var(--primary); }
   .vertical-icon.weather { background: #d1fae5; color: var(--accent-dark); }
   .vertical-icon.econ { background: #fef3c7; color: #d97706; }
+  .vertical-icon.dealership { background: #ede9fe; color: #7c3aed; }
+  .vertical-icon.retail { background: #ffe4e6; color: #e11d48; }
+  .vertical-icon.fuel { background: #fef3c7; color: #d97706; }
+  .vertical-icon svg { width: 24px; height: 24px; }
   .vertical-card h3 { font-size: 1.05rem; margin-bottom: 6px; }
   .vertical-card p { font-size: 0.88rem; color: var(--text-muted); margin-bottom: 12px; }
   .vertical-example {
@@ -1389,10 +1393,12 @@
     font-weight: 700;
   }
   @media (max-width: 700px) {
-    .sticky-cta { display: block; }
-    /* leave room above chat button / sticky bar */
-    .hw-chat-btn { bottom: 76px !important; }
-    body { padding-bottom: 56px; }
+    .sticky-cta { display: block; min-height: 52px; }
+    /* Keep the chat button and panel clear ABOVE the sticky CTA bar (~52px tall)
+       so they never overlap or cover it on short screens. */
+    .hw-chat-btn { bottom: 84px !important; right: 16px !important; }
+    .hw-panel { bottom: 152px !important; }
+    body { padding-bottom: 60px; }
   }
 
   /* RESPONSIVE */
@@ -1663,7 +1669,7 @@
         <span class="settle-source-text" id="rSettleSourceText">--</span>
       </div>
 
-      <button class="get-coverage-btn" id="rResultCta" onclick="openCheckout()">Run This Promotion &rarr;</button>
+      <button class="run-promo-btn" id="rResultCta" onclick="openCheckout()">Run This Promotion &rarr;</button>
 
       <!-- Fuel lead-capture: fuel can't be bound, so capture a quote request. -->
       <div class="lead-capture" id="rFuelLead" style="display:none;">
@@ -1753,7 +1759,7 @@
         </div>
         <div class="order-row">
           <span class="order-label">If it happens, we pay you</span>
-          <span id="coCoverage">--</span>
+          <span id="coPayoff">--</span>
         </div>
         <div class="order-row">
           <span class="order-label">Estimated odds</span>
@@ -1765,7 +1771,7 @@
         </div>
         <div class="order-row total">
           <span>Flat fee due today</span>
-          <span id="coPremium">--</span>
+          <span id="coFee">--</span>
         </div>
       </div>
 
@@ -1794,7 +1800,7 @@
           <div class="payment-radio"></div>
           <div class="payment-info">
             <div class="payment-name">Stablecoin</div>
-            <div class="payment-desc">Pay in USDC, USDP, or USDG on Ethereum, Base, Solana, or Polygon</div>
+            <div class="payment-desc">Pay in USDC, USDP, or USDG on Ethereum, Base, Solana, or Polygon (requires a digital wallet)</div>
           </div>
           <div class="payment-badge fast">Instant</div>
         </label>
@@ -1828,7 +1834,7 @@
         </div>
         <div class="order-row">
           <span class="order-label">Flat fee paid</span>
-          <span id="cfPremium">--</span>
+          <span id="cfFee">--</span>
         </div>
         <div class="order-row">
           <span class="order-label">Payment</span>
@@ -1836,7 +1842,7 @@
         </div>
         <div class="order-row">
           <span class="order-label">Reference</span>
-          <span id="cfPolicy">--</span>
+          <span id="cfRef">--</span>
         </div>
       </div>
       <div class="proto-banner">
@@ -1867,7 +1873,9 @@
     </div>
 
     <div class="vertical-card">
-      <div class="vertical-icon sports">D</div>
+      <div class="vertical-icon dealership" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l1.5-4.5A2 2 0 0 1 8.4 7h7.2a2 2 0 0 1 1.9 1.5L19 13"/><path d="M3 13h18v4a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1v-1H6v1a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/><circle cx="7.5" cy="15.5" r="1"/><circle cx="16.5" cy="15.5" r="1"/></svg>
+      </div>
       <h3>Car Dealerships</h3>
       <p>Big, bold conditional promotions that drive lot traffic. We pay you the payoff if it happens.</p>
       <div class="vertical-example"><strong>Example:</strong> "$5K off any truck if the Bucs make the playoffs" — $3,200 flat fee, we pay you $25K</div>
@@ -1888,14 +1896,18 @@
     </div>
 
     <div class="vertical-card">
-      <div class="vertical-icon sports">G</div>
+      <div class="vertical-icon retail" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+      </div>
       <h3>Local Retail and Pop-Ups</h3>
       <p>Tie a fun discount to your team's big game. Win or lose, you keep the buzz.</p>
       <div class="vertical-example"><strong>Example:</strong> "Win by 10+? 20% off everything." — $900 flat fee, we pay you $5,000 to cover the discounts</div>
     </div>
 
     <div class="vertical-card">
-      <div class="vertical-icon econ">F</div>
+      <div class="vertical-icon fuel" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22V5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v17"/><path d="M3 22h12"/><path d="M7 9h4"/><path d="M14 9h2.5a1.5 1.5 0 0 1 1.5 1.5V16a2 2 0 0 0 2 2 2 2 0 0 0 2-2V8.5L18.5 5"/></svg>
+      </div>
       <h3>Gas Stations, Auto and Fleet</h3>
       <p>Turn a price swing into a customer-favorite deal. Tie a fuel rebate to the published gas price; if it hits, we pay you the payoff to cover it.</p>
       <div class="vertical-example"><strong>Example:</strong> "Gas tops $4? 10c/gal fuel rebate weekend." — $1,050 flat fee, we pay you $3,000</div>
@@ -2010,7 +2022,7 @@
 <!-- CTA -->
 <div class="cta-section" id="cta">
   <h2>Ready to run your next promotion?</h2>
-  <p>Join the waitlist. First 50 businesses get their first promotion free.</p>
+  <p>Founding-business early access. Join the waitlist and get your first promotion free.</p>
   <div class="cta-lead-form">
     <input type="email" id="ctaEmail" placeholder="your@business.com" autocomplete="email">
     <div class="cta-lead-row">
@@ -2091,8 +2103,8 @@ captureRef();
 // lastCalc.prob is the probability used to price (0-1) — ONLY set once it has
 // been resolved from a real source (live market or real climatology/fuel series).
 // lastCalc.exposure is what the promo could cost the business if it happens.
-// lastCalc.premium is the flat fee. lastCalc.trigger is the event label.
-let lastCalc = { trigger: '', exposure: 0, prob: 0, premium: 0 };
+// lastCalc.fee is the flat fee. lastCalc.trigger is the event label.
+let lastCalc = { trigger: '', exposure: 0, prob: 0, fee: 0 };
 let selectedPayment = 'card';
 
 // === PRESET DATA ===
@@ -2217,10 +2229,32 @@ function onCategoryChange() {
   renderChips(cat);
   applyCategoryInputs(cat);
   currentSource = SOURCE_OFFICIAL;
+  // Clear the now-hidden category-specific inputs so stale values from a prior
+  // category never leak into trackDemand / pricing.
+  clearHiddenCategoryInputs(cat);
   // Category just changed — clear any resolved odds and show the prompt.
   resetOdds(cat);
   document.getElementById('calcResult').classList.remove('visible');
-  lastCalc = { trigger: '', exposure: 0, prob: 0, premium: 0 };
+  lastCalc = { trigger: '', exposure: 0, prob: 0, fee: 0 };
+}
+
+// Clears inputs that belong to categories OTHER than the active one, so values
+// hidden by applyCategoryInputs() can't carry over into the next price/track.
+function clearHiddenCategoryInputs(cat) {
+  const mode = categoryMode(cat);
+  const setVal = function(id, v) { const el = document.getElementById(id); if (el) el.value = v; };
+  if (mode !== 'weather') {
+    setVal('weatherCity', '');
+    setVal('weatherThreshold', '');
+    const wp = document.getElementById('weatherPeril'); if (wp) wp.selectedIndex = 0;
+  }
+  if (mode !== 'fuel') {
+    setVal('fuelThreshold', '');
+    setVal('fuelCity', '');
+  }
+  if (mode !== 'matchup') {
+    setVal('matchupInput', '');
+  }
 }
 
 function renderChips(cat) {
@@ -2332,24 +2366,24 @@ function marginForProb(prob) {
 function renderQuote(trigger, exposure, prob) {
   const margin = marginForProb(prob);
   const ev = prob * exposure;
-  const premium = Math.round((ev * (1 + margin)) / 10) * 10;
+  const fee = Math.round((ev * (1 + margin)) / 10) * 10;
 
   // Store for checkout. .prob is only ever set here, with a resolved number.
-  lastCalc = { trigger, exposure, prob, premium, source: currentSource, category: lastCalc.category };
+  lastCalc = { trigger, exposure, prob, fee, source: currentSource, category: lastCalc.category };
 
   const triggerDisplay = trigger.length > 40 ? trigger.substring(0, 40) + '...' : trigger;
   document.getElementById('rTriggerName').textContent = '"' + triggerDisplay + '"';
-  document.getElementById('rPayAmount').textContent = fmt(premium);
+  document.getElementById('rPayAmount').textContent = fmt(fee);
   document.getElementById('rReceiveAmount').textContent = fmt(exposure);
 
   document.getElementById('rTriggered').textContent =
-    `If it happens, we pay YOU ${fmt(exposure)} the same day the event is officially decided — so you can cover the giveaway you offered your customers at no cost to you. Your only cost is the ${fmt(premium)} flat fee.`;
+    `If it happens, we pay YOU ${fmt(exposure)} the same day the event is officially decided — so you can cover the giveaway you offered your customers at no cost to you. Your only cost is the ${fmt(fee)} flat fee.`;
 
   document.getElementById('rNotTriggered').textContent =
-    `You keep the buzz and the foot traffic your promotion drove. Your only cost is the ${fmt(premium)} flat fee.`;
+    `You keep the buzz and the foot traffic your promotion drove. Your only cost is the ${fmt(fee)} flat fee.`;
 
   document.getElementById('rSummaryLine').textContent =
-    `Your flat fee: ${fmt(premium)}. If it happens, we pay YOU ${fmt(exposure)} the same day (after the event is officially decided) — so your giveaway costs you nothing. If it doesn't happen, you keep the buzz and foot traffic; your only cost is the ${fmt(premium)} fee.`;
+    `Your flat fee: ${fmt(fee)}. If it happens, we pay YOU ${fmt(exposure)} the same day (after the event is officially decided) — so your giveaway costs you nothing. If it doesn't happen, you keep the buzz and foot traffic; your only cost is the ${fmt(fee)} fee.`;
 
   // Surface the verified settlement source — the neutral, automatic judge.
   document.getElementById('rSettleSourceText').textContent = settledByLabel(currentSource);
@@ -2401,7 +2435,7 @@ async function maybeSuggestWeatherThreshold() {
     if (!resp.ok) return;
     const data = await resp.json();
     if (data && data.ok && typeof data.suggested_threshold === 'number') {
-      field.value = data.suggested_threshold;
+      field.value = String(data.suggested_threshold);
       const unit = (data.unit || '').toString().trim();
       if (help && unit) help.textContent = 'Suggested level: ' + data.suggested_threshold + ' ' + unit + ' (edit if you like).';
     }
@@ -2499,6 +2533,19 @@ function configureResultCta(category) {
   }
 }
 
+// Scrolls the priced result panel into view so the user sees the fee.
+function scrollToResult() {
+  const el = document.getElementById('calcResult');
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+// Scrolls the odds / message area into view for non-priced outcomes
+// (can't-price, lead-capture, out-of-window) so every result is visible.
+function scrollToOdds() {
+  const el = document.getElementById('estOddsBox');
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
 async function calculate() {
   const exposure = parseFloat(document.getElementById('exposure').value);
   const category = document.getElementById('eventCategory').value;
@@ -2512,6 +2559,7 @@ async function calculate() {
   if (!exposure || exposure < 250) {
     flagField('exposure');
     showNoOdds('Enter how much this promo could cost you — minimum $250.');
+    scrollToOdds();
     return;
   }
   clearFieldFlag('exposure');
@@ -2527,6 +2575,7 @@ async function calculate() {
       if (!matchup) {
         flagField('matchupInput');
         showNoOdds('Enter the specific matchup or event so we can price real odds.');
+        scrollToOdds();
         return;
       }
       clearFieldFlag('matchupInput');
@@ -2538,7 +2587,8 @@ async function calculate() {
         showResolvedOdds(resolved.prob, resolved.sourceName, 'live');
         configureResultCta(category);
         renderQuote(eventLabel, exposure, resolved.prob);
-        trackDemand(category, eventLabel, exposure, resolved.prob, lastCalc.premium, resolved.oddsSource);
+        trackDemand(category, eventLabel, exposure, resolved.prob, lastCalc.fee, resolved.oddsSource);
+        scrollToResult();
       } else {
         // No live market for that matchup. Show a clear, visible message, no
         // number, no fee — and a lead capture so it isn't a dead end.
@@ -2547,6 +2597,7 @@ async function calculate() {
         showNoOdds(msg);
         showNoMarketLead(msg);
         trackDemand(category, eventLabel, exposure, null, null, 'unresolved');
+        scrollToOdds();
       }
       return;
     }
@@ -2555,15 +2606,28 @@ async function calculate() {
       const city = (document.getElementById('weatherCity').value || '').trim();
       const peril = document.getElementById('weatherPeril').value;
       const date = document.getElementById('eventDate').value;
-      const threshold = (document.getElementById('weatherThreshold').value || '').trim();
       currentSource = SOURCE_NWS;
       // The event date is required for weather pricing — surface it, don't go silent.
       if (!date) {
         showNoOdds('Choose an event date.');
+        scrollToOdds();
         return;
       }
-      if (!city || !peril || !threshold) {
-        showNoOdds('Enter your city, peril, and threshold so we can price real weather odds.');
+      if (!city || !peril) {
+        showNoOdds('Enter your city and peril so we can price real weather odds.');
+        scrollToOdds();
+        return;
+      }
+      // Single-click pricing: if the threshold is empty, fetch + populate a
+      // sensible suggestion now, then continue to price in this same click.
+      let threshold = (document.getElementById('weatherThreshold').value || '').trim();
+      if (!threshold) {
+        await maybeSuggestWeatherThreshold();
+        threshold = (document.getElementById('weatherThreshold').value || '').trim();
+      }
+      if (!threshold) {
+        showNoOdds('Enter a threshold so we can price real weather odds.');
+        scrollToOdds();
         return;
       }
       const eventLabel = typedLabel || (peril.charAt(0).toUpperCase() + peril.slice(1) + ' over ' + threshold + ' in ' + city + ' on ' + date);
@@ -2576,15 +2640,18 @@ async function calculate() {
         showResolvedOdds(resolved.prob, resolved.sourceName, resolved.estimate ? 'estimate' : 'live');
         configureResultCta(category);
         renderQuote(eventLabel, exposure, resolved.prob);
-        trackDemand(category, eventLabel, exposure, resolved.prob, lastCalc.premium, resolved.estimate ? 'estimate' : 'live');
+        trackDemand(category, eventLabel, exposure, resolved.prob, lastCalc.fee, resolved.estimate ? 'estimate' : 'live');
+        scrollToResult();
       } else if (resolved.status === 'window') {
         // Date outside the priceable window — show the server's note verbatim.
         showNoOdds(resolved.note || 'That date is outside the range we can price. Weather events must be about 2 weeks to 4 months out.');
         trackDemand(category, eventLabel, exposure, null, null, 'unresolved');
+        scrollToOdds();
       } else {
         // Unpriceable — unknown city / no history.
         showNoOdds(resolved.note || 'Enter a U.S. city we can pull weather history for.');
         trackDemand(category, eventLabel, exposure, null, null, 'unresolved');
+        scrollToOdds();
       }
       return;
     }
@@ -2597,10 +2664,12 @@ async function calculate() {
     // The event date is required for fuel pricing — surface it, don't go silent.
     if (!fDate) {
       showNoOdds('Choose an event date.');
+      scrollToOdds();
       return;
     }
     if (!fThreshold) {
       showNoOdds('Enter a gas price threshold ($/gal) so we can price real odds.');
+      scrollToOdds();
       return;
     }
     const fuelLabel = typedLabel || ('Local gas tops $' + fThreshold + '/gal');
@@ -2612,17 +2681,22 @@ async function calculate() {
       showResolvedOdds(resolvedFuel.prob, resolvedFuel.sourceName, resolvedFuel.estimate ? 'estimate' : 'live');
       configureResultCta(category);
       renderQuote(fuelLabel, exposure, resolvedFuel.prob);
-      trackDemand(category, fuelLabel, exposure, resolvedFuel.prob, lastCalc.premium, resolvedFuel.estimate ? 'estimate' : 'live');
+      trackDemand(category, fuelLabel, exposure, resolvedFuel.prob, lastCalc.fee, resolvedFuel.estimate ? 'estimate' : 'live');
+      // Fuel is a lead-capture outcome (no bind) — surface the result panel area.
+      scrollToResult();
     } else if (resolvedFuel.status === 'window') {
       showNoOdds(resolvedFuel.note || 'That date is outside the range we can price. Fuel events must be about 3 to 180 days out.');
       trackDemand(category, fuelLabel, exposure, null, null, 'unresolved');
+      scrollToOdds();
     } else {
       showNoOdds(resolvedFuel.note || "We couldn't pull a published fuel price series for that yet.");
       trackDemand(category, fuelLabel, exposure, null, null, 'unresolved');
+      scrollToOdds();
     }
   } catch (err) {
     // Any network/parse error — never fabricate. Show the neutral prompt.
     showNoOdds("We couldn't reach our live odds source just now — please try again in a moment, and we'll confirm your exact odds when you set up your promo.");
+    scrollToOdds();
   } finally {
     if (btn) { btn.disabled = false; btn.textContent = btnLabel; }
     setOddsPricing(false);
@@ -2710,16 +2784,16 @@ async function submitFuelLead() {
 // === CHECKOUT ===
 
 function openCheckout() {
-  if (!lastCalc.premium) return;
+  if (!lastCalc.fee) return;
 
   const triggerDisplay = lastCalc.trigger.length > 35 ? lastCalc.trigger.substring(0, 35) + '...' : lastCalc.trigger;
   document.getElementById('coTrigger').textContent = triggerDisplay;
-  document.getElementById('coCoverage').textContent = fmt(lastCalc.exposure);
+  document.getElementById('coPayoff').textContent = fmt(lastCalc.exposure);
   // .prob is only ever set from a resolved real source; show it plainly.
   document.getElementById('coProb').textContent =
     (lastCalc.prob > 0) ? (Math.round(lastCalc.prob * 100) + '%') : '—';
   document.getElementById('coSource').textContent = lastCalc.source || SOURCE_OFFICIAL;
-  document.getElementById('coPremium').textContent = fmt(lastCalc.premium);
+  document.getElementById('coFee').textContent = fmt(lastCalc.fee);
 
   // Reset to step 1
   document.getElementById('checkoutStep1').style.display = 'block';
@@ -2759,9 +2833,9 @@ function submitCheckout() {
   const triggerDisplay = lastCalc.trigger.length > 35 ? lastCalc.trigger.substring(0, 35) + '...' : lastCalc.trigger;
   document.getElementById('cfTrigger').textContent = triggerDisplay;
   document.getElementById('cfCoverage').textContent = fmt(lastCalc.exposure);
-  document.getElementById('cfPremium').textContent = fmt(lastCalc.premium);
+  document.getElementById('cfFee').textContent = fmt(lastCalc.fee);
   document.getElementById('cfPayment').textContent = PAYMENT_LABELS[selectedPayment];
-  document.getElementById('cfPolicy').textContent = 'HRW-' + Date.now().toString(36).toUpperCase();
+  document.getElementById('cfRef').textContent = 'HRW-' + Date.now().toString(36).toUpperCase();
 
   document.getElementById('checkoutStep2').className = 'checkout-confirm visible';
 }
@@ -2810,7 +2884,7 @@ async function submitEmail() {
   const city = (document.getElementById('ctaCity').value || '').trim() || null;
 
   // Pull promo context from the calculator if the visitor used it; else blank/null.
-  const used = lastCalc && lastCalc.premium > 0;
+  const used = lastCalc && lastCalc.fee > 0;
   const payload = {
     email: email,
     business_type: businessType,
@@ -2818,7 +2892,7 @@ async function submitEmail() {
     event_interest: used ? lastCalc.trigger : null,
     category: used ? (lastCalc.category || document.getElementById('eventCategory').value) : null,
     exposure: used ? lastCalc.exposure : null,
-    fee_shown: used ? lastCalc.premium : null,
+    fee_shown: used ? lastCalc.fee : null,
     source: 'landing',
     ref: getStoredRef()
   };
@@ -3018,13 +3092,33 @@ function renderDesignedPromo(promo) {
   out.innerHTML = html;
 }
 
-// Prefills the calculator from the designed promo and scrolls to it.
+// Sets the single event date and mirrors it into the hidden weather/fuel dates.
+function setEventDate(value) {
+  const el = document.getElementById('eventDate');
+  if (!el) return;
+  el.value = value;
+  // The mirror runs on 'change'; setting .value programmatically won't fire it,
+  // so dispatch one so weatherDate/fuelDate and the threshold-suggest listener sync.
+  el.dispatchEvent(new Event('change'));
+}
+
+// Infers a weather peril from free-text trigger copy.
+function perilFromText(text) {
+  const t = (text || '').toLowerCase();
+  if (/snow|sleet|blizzard|flurr/.test(t)) return 'snow';
+  if (/heat|hot|\b9\d\b|\b1\d\d\b|degree|°|temperature|warm/.test(t)) return 'heat';
+  return 'rain';
+}
+
+// Prefills the calculator from the designed promo, populates the right inputs,
+// sets a sensible in-window date for weather/fuel, scrolls to the calculator,
+// then prices it so the user sees a populated form AND a result (not a blank top).
 function useDesignedPromo() {
   if (!lastDesignedPromo) return;
   const promo = lastDesignedPromo;
 
   const trigger = promo.trigger || promo.event || '';
-  const exposureRaw = promo.coverage || promo.amount || promo.exposure;
+  const exposureRaw = promo.suggested_exposure_usd || promo.coverage || promo.amount || promo.exposure;
 
   if (trigger) {
     document.getElementById('triggerDesc').value = trigger;
@@ -3042,24 +3136,54 @@ function useDesignedPromo() {
     document.getElementById('exposure').value = exposureNum;
   }
 
-  // Route the designed event to the right category + specifics, then leave the
-  // odds gated — the user finishes any missing specifics and clicks calculate.
-  const src = sourceForEvent(trigger);
-  const sel = document.getElementById('eventCategory');
-  let cat = 'custom';
-  if (src === SOURCE_NWS) cat = 'weather';
-  else if (src === SOURCE_FUEL) cat = 'fuel';
-  else if (src === SOURCE_GAME) cat = 'sports';
-  else if (src === SOURCE_STANDINGS) cat = 'milestone';
-  sel.value = cat;
-  onCategoryChange();
-  // Prefill the matchup text for matchup-mode categories.
-  if (categoryMode(cat) === 'matchup' && trigger) {
+  // (a) Prefer the AI's own category; fall back to inferring from the trigger.
+  let cat = (promo.category || '').toString().toLowerCase();
+  const validCats = ['sports', 'weather', 'fuel', 'milestone', 'seasonal', 'custom'];
+  if (validCats.indexOf(cat) === -1) {
+    const src = sourceForEvent(trigger);
+    if (src === SOURCE_NWS) cat = 'weather';
+    else if (src === SOURCE_FUEL) cat = 'fuel';
+    else if (src === SOURCE_GAME) cat = 'sports';
+    else if (src === SOURCE_STANDINGS) cat = 'milestone';
+    else cat = 'custom';
+  }
+  document.getElementById('eventCategory').value = cat;
+  onCategoryChange(); // clears hidden inputs + shows the right specifics
+
+  const mode = categoryMode(cat);
+
+  // (b) Populate the inputs the active mode actually prices from.
+  if (mode === 'matchup') {
     const m = document.getElementById('matchupInput');
-    if (m) m.value = trigger;
+    if (m && trigger) m.value = trigger;
+  } else if (mode === 'weather') {
+    // City from the designer form, else nothing (user can fill it).
+    const designCity = (document.getElementById('dpCity') && document.getElementById('dpCity').value || '').trim();
+    const wc = document.getElementById('weatherCity');
+    if (wc && designCity) wc.value = designCity;
+    const wp = document.getElementById('weatherPeril');
+    if (wp) wp.value = perilFromText(trigger);
+    // Threshold left blank — calculate() auto-suggests it in one click.
+  } else if (mode === 'fuel') {
+    // Pull a $ threshold out of the trigger text if present (e.g. "$4.00/gal").
+    const m = (trigger.match(/\$?\s*(\d+(?:\.\d+)?)\s*\/?\s*gal/i) || trigger.match(/\$\s*(\d+(?:\.\d+)?)/));
+    const ft = document.getElementById('fuelThreshold');
+    if (ft && m && m[1]) ft.value = parseFloat(m[1]).toFixed(2);
   }
 
+  // (c) Weather/fuel need an in-window date — default to today+30 days if unset.
+  if ((mode === 'weather' || mode === 'fuel') && !document.getElementById('eventDate').value) {
+    const d = new Date();
+    d.setDate(d.getDate() + 30);
+    setEventDate(d.toISOString().slice(0, 10));
+  }
+
+  // (d) Scroll to the calculator (not the top of the page).
   document.getElementById('calculator').scrollIntoView({ behavior: 'smooth' });
+
+  // (e) Price it so a result (or a clear message) shows; calculate() scrolls to
+  // #calcResult on success or to the odds area otherwise.
+  calculate();
 }
 
 // === EVENT DATE — single field for ALL categories ===
@@ -3147,28 +3271,6 @@ resetOdds('sports');
   update();
 })();
 
-// === WAITLIST COUNTER — REAL count from /api/health only ===
-// No fabricated numbers. With a low real count we use honest founding-phase
-// framing instead of a fake "join N businesses" or queue position.
-(async function loadWaitlistCount() {
-  try {
-    const resp = await fetch('/api/health');
-    if (!resp.ok) return;
-    const data = await resp.json();
-    const n = (data && typeof data.waitlist === 'number') ? data.waitlist : null;
-    if (n === null) return;
-    const cta = document.querySelector('.cta-section p');
-    if (n >= 25) {
-      // Genuine social proof once the list is meaningfully large.
-      if (cta) cta.textContent = 'Join ' + n.toLocaleString() + '+ businesses on the waitlist. First 50 get their first promotion free.';
-    } else {
-      // Founding-phase framing — honest, no fake numbers.
-      if (cta) cta.textContent = 'Be a founding business. Join the waitlist for early-access pricing — first 50 get their first promotion free.';
-    }
-  } catch (err) {
-    // Never break the page on a failed counter fetch.
-  }
-})();
 
 /* ─── Ask Hedgerow Chatbot ─── */
 (function() {
@@ -3296,8 +3398,10 @@ resetOdds('sports');
     .hw-input-row button:hover { background: var(--primary-dark); }
 
     @media (max-width: 480px) {
-      .hw-panel { width: calc(100vw - 24px); right: 12px; bottom: 84px; max-height: 70vh; }
-      .hw-chat-btn { bottom: 16px; right: 16px; }
+      /* Keep clear of the sticky CTA bar; positions match the main stylesheet's
+         !important rules. Panel sits above the chat button, button above the bar. */
+      .hw-panel { width: calc(100vw - 24px); right: 12px; bottom: 152px !important; max-height: 62vh; }
+      .hw-chat-btn { bottom: 84px !important; right: 16px !important; }
     }
   `;
   document.head.appendChild(style);
@@ -3374,7 +3478,7 @@ resetOdds('sports');
 
 <script>
 (function(){
-  window.submitCheckout=async function(){try{var amt=(typeof lastCalc!=='undefined'&&lastCalc&&lastCalc.premium)?Math.round(lastCalc.premium*100):0;if(!amt){alert('Please get your fee first.');return;}var label='Hedgerow promo'+((typeof lastCalc!=='undefined'&&lastCalc&&lastCalc.trigger)?(' — '+lastCalc.trigger):'');var btn=document.querySelector('.checkout-submit');if(btn){btn.disabled=true;btn.textContent='Redirecting to Stripe…';}var pm=(typeof selectedPayment!=='undefined'&&selectedPayment)?selectedPayment:'card';var r=await fetch('/api/checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({amount_cents:amt,label:label,method:pm})});var d=await r.json();if(d.ok&&d.url){window.location=d.url;return;}alert('Checkout error: '+(d.error||'unknown'));if(btn){btn.disabled=false;btn.textContent='Confirm';}}catch(e){alert('Network error.');}};
+  window.submitCheckout=async function(){try{var amt=(typeof lastCalc!=='undefined'&&lastCalc&&lastCalc.fee)?Math.round(lastCalc.fee*100):0;if(!amt){alert('Please get your fee first.');return;}var label='Hedgerow promo'+((typeof lastCalc!=='undefined'&&lastCalc&&lastCalc.trigger)?(' — '+lastCalc.trigger):'');var btn=document.querySelector('.checkout-submit');if(btn){btn.disabled=true;btn.textContent='Redirecting to Stripe…';}var pm=(typeof selectedPayment!=='undefined'&&selectedPayment)?selectedPayment:'card';var r=await fetch('/api/checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({amount_cents:amt,label:label,method:pm})});var d=await r.json();if(d.ok&&d.url){window.location=d.url;return;}alert('Checkout error: '+(d.error||'unknown'));if(btn){btn.disabled=false;btn.textContent='Confirm';}}catch(e){alert('Network error.');}};
   window.hedgerowChat=async function(m){try{var r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:m})});var d=await r.json();return d.reply||'';}catch(e){return '';}};
   try{var q=new URLSearchParams(location.search);if(q.get('paid')==='1')setTimeout(function(){alert('Payment received (test mode). Your promotion is set.');},300);}catch(e){}
 })();
