@@ -548,6 +548,150 @@
     text-align: center;
   }
 
+  /* === AI PROMO DESIGNER === */
+  .design-promo-link {
+    width: 100%;
+    margin-top: 12px;
+    padding: 12px;
+    background: transparent;
+    color: white;
+    border: 1px solid rgba(255,255,255,0.35);
+    border-radius: 8px;
+    font-size: 0.92rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+  }
+  .design-promo-link:hover {
+    border-color: var(--accent);
+    background: rgba(16,185,129,0.12);
+  }
+
+  .dp-wrap {
+    max-width: 1060px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    align-items: start;
+  }
+  .dp-form {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px;
+  }
+  .dp-form .form-group label { color: var(--text); }
+  .dp-form .form-group input {
+    background: #f8fafc;
+    border: 1px solid var(--border);
+    color: var(--text);
+  }
+  .dp-form .form-group input::placeholder { color: var(--text-muted); }
+  .dp-form .form-group input:focus {
+    outline: none;
+    border-color: var(--primary);
+  }
+  .dp-form .field-help { color: var(--text-muted); }
+  .dp-submit { margin-top: 4px; margin-bottom: 12px; }
+
+  .dp-output { min-height: 1px; }
+  .dp-loading {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 40px 28px;
+    text-align: center;
+    color: var(--text-muted);
+  }
+  .dp-spinner {
+    width: 28px; height: 28px;
+    border: 3px solid var(--primary-light);
+    border-top-color: var(--primary);
+    border-radius: 50%;
+    margin: 0 auto 14px;
+    animation: dpSpin 0.8s linear infinite;
+  }
+  @keyframes dpSpin { to { transform: rotate(360deg); } }
+
+  .dp-error {
+    background: #fef3c7;
+    border: 1px solid #fcd34d;
+    border-radius: var(--radius);
+    padding: 20px 24px;
+    color: #92400e;
+    font-size: 0.92rem;
+    line-height: 1.5;
+  }
+
+  .dp-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px;
+    animation: fadeIn 0.3s ease;
+  }
+  .dp-card .dp-headline {
+    font-size: 1.3rem;
+    font-weight: 800;
+    line-height: 1.25;
+    margin-bottom: 18px;
+    color: var(--text);
+  }
+  .dp-row { margin-bottom: 16px; }
+  .dp-row:last-of-type { margin-bottom: 0; }
+  .dp-row .dp-label {
+    font-size: 0.74rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+  }
+  .dp-row .dp-value {
+    font-size: 0.95rem;
+    color: var(--text);
+    line-height: 1.5;
+  }
+  .dp-amount {
+    display: inline-block;
+    background: var(--primary-light);
+    color: var(--primary-dark);
+    font-weight: 800;
+    font-size: 1.05rem;
+    padding: 4px 12px;
+    border-radius: 8px;
+  }
+  .dp-pitch {
+    background: #f1f5f9;
+    border-left: 3px solid var(--accent);
+    border-radius: 6px;
+    padding: 12px 14px;
+    font-size: 0.92rem;
+    color: var(--text);
+    line-height: 1.55;
+    font-style: italic;
+  }
+  .dp-use-btn {
+    width: 100%;
+    margin-top: 22px;
+    padding: 14px;
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.02rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .dp-use-btn:hover { background: var(--accent-dark); }
+
+  @media (max-width: 700px) {
+    .dp-wrap { grid-template-columns: 1fr; }
+  }
+
   /* === CHECKOUT MODAL === */
   .modal-overlay {
     display: none;
@@ -1114,6 +1258,10 @@
       </div>
 
       <button class="calc-btn" onclick="calculate()">See My Flat Fee</button>
+
+      <button type="button" class="design-promo-link" onclick="document.getElementById('designPromo').scrollIntoView({behavior:'smooth'});document.getElementById('dpBusinessType').focus();">
+        Not sure what promo to run? Let our AI design one.
+      </button>
     </div>
 
     <div class="calc-result" id="calcResult">
@@ -1159,6 +1307,64 @@
 
       <button class="get-coverage-btn" onclick="openCheckout()">Run This Promotion &rarr;</button>
       <div class="result-disclaimer">Illustrative estimate. Your final flat fee is confirmed at checkout.</div>
+    </div>
+  </div>
+</div>
+
+<!-- AI PROMO DESIGNER -->
+<div class="section" id="designPromo">
+  <h2 class="section-title">Not sure what promo to run?</h2>
+  <p class="section-sub">Tell us a little about your business and our AI will design a promotion built for it.</p>
+
+  <div class="dp-wrap">
+    <div class="dp-form" id="dpForm">
+      <div class="form-group">
+        <label for="dpBusinessType">Business type</label>
+        <input type="text" list="dpBusinessTypes" id="dpBusinessType" placeholder="e.g., Sports bar">
+        <datalist id="dpBusinessTypes">
+          <option value="Sports bar"></option>
+          <option value="Restaurant"></option>
+          <option value="Brewery / taproom"></option>
+          <option value="Furniture or retail store"></option>
+          <option value="Car dealership"></option>
+          <option value="Jewelry store"></option>
+          <option value="Outdoor venue / events"></option>
+          <option value="Gas station / fleet"></option>
+          <option value="Ice cream / seasonal shop"></option>
+        </datalist>
+      </div>
+
+      <div class="form-group">
+        <label for="dpCustomers">Who are your customers?</label>
+        <input type="text" id="dpCustomers" placeholder="e.g., Local families and game-day crowds">
+      </div>
+
+      <div class="form-group">
+        <label for="dpProducts">What do you sell? (products / services)</label>
+        <input type="text" id="dpProducts" placeholder="e.g., Wings, burgers, draft beer">
+      </div>
+
+      <div class="form-group">
+        <label for="dpRisks">What hurts your business? (slow periods, risks)</label>
+        <input type="text" id="dpRisks" placeholder="e.g., Slow weeknights, rainy weekends">
+      </div>
+
+      <div class="form-group">
+        <label for="dpCity">City</label>
+        <input type="text" id="dpCity" placeholder="e.g., Tampa">
+      </div>
+
+      <div class="form-group">
+        <label for="dpGoal">Goal (optional)</label>
+        <input type="text" id="dpGoal" placeholder="e.g., Fill the bar on Tuesdays">
+      </div>
+
+      <button type="button" class="calc-btn dp-submit" id="dpSubmit" onclick="designPromo()">Design my promo</button>
+      <p class="field-help" style="text-align:center;">No accounts, no paperwork. We use your answers to suggest one promotion.</p>
+    </div>
+
+    <div class="dp-output" id="dpOutput">
+      <!-- loading / result / error rendered here -->
     </div>
   </div>
 </div>
@@ -1424,6 +1630,43 @@
 // === BRAND CONSTANT ===
 const BRAND_NAME = "Hedgerow";
 
+// === AFFILIATE REF CAPTURE ===
+// On load, capture a ?ref= URL param and persist it ~180 days in localStorage.
+// Stored ref is attached to lead and demand-tracking submissions.
+const REF_STORAGE_KEY = 'hedgerow_ref';
+const REF_TTL_MS = 180 * 24 * 60 * 60 * 1000; // ~180 days
+
+function captureRef() {
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const ref = (params.get('ref') || '').trim();
+    if (ref) {
+      localStorage.setItem(REF_STORAGE_KEY, JSON.stringify({ ref: ref, ts: Date.now() }));
+    }
+  } catch (err) {
+    // localStorage may be unavailable (private mode) — ignore.
+  }
+}
+
+// Returns the stored affiliate ref if present and not expired, else null.
+function getStoredRef() {
+  try {
+    const raw = localStorage.getItem(REF_STORAGE_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    if (!parsed || !parsed.ref) return null;
+    if (typeof parsed.ts === 'number' && (Date.now() - parsed.ts) > REF_TTL_MS) {
+      localStorage.removeItem(REF_STORAGE_KEY);
+      return null;
+    }
+    return parsed.ref;
+  } catch (err) {
+    return null;
+  }
+}
+
+captureRef();
+
 // === STATE ===
 // lastCalc.prob is the ESTIMATED probability assigned by the event lookup (0-1).
 // lastCalc.exposure is what the promo could cost the business if it happens.
@@ -1626,7 +1869,8 @@ function trackDemand(category, event, exposure, prob, fee, oddsSource) {
         exposure: exposure,
         prob: prob,
         fee: fee,
-        odds_source: oddsSource
+        odds_source: oddsSource,
+        ref: getStoredRef()
       }),
       keepalive: true
     }).catch(function() { /* ignore network errors */ });
@@ -1798,7 +2042,8 @@ async function submitEmail() {
     category: used ? (lastCalc.category || document.getElementById('eventCategory').value) : null,
     exposure: used ? lastCalc.exposure : null,
     fee_shown: used ? lastCalc.premium : null,
-    source: 'landing'
+    source: 'landing',
+    ref: getStoredRef()
   };
 
   try {
@@ -1812,6 +2057,139 @@ async function submitEmail() {
     emailEl.value = '';
   } catch (err) {
     alert('Something went wrong. Please try again.');
+  }
+}
+
+// === AI PROMO DESIGNER ===
+
+// Escapes user/AI text before inserting into HTML.
+function dpEscape(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+// Holds the most recently designed promo so "Use this promo" can prefill.
+let lastDesignedPromo = null;
+
+function dpReadField(id) {
+  const el = document.getElementById(id);
+  return el ? (el.value || '').trim() : '';
+}
+
+async function designPromo() {
+  const out = document.getElementById('dpOutput');
+  const btn = document.getElementById('dpSubmit');
+
+  const payload = {
+    business_type: dpReadField('dpBusinessType'),
+    customers: dpReadField('dpCustomers'),
+    products: dpReadField('dpProducts'),
+    risks: dpReadField('dpRisks'),
+    city: dpReadField('dpCity'),
+    goal: dpReadField('dpGoal') || null
+  };
+
+  if (!payload.business_type) {
+    out.innerHTML = '<div class="dp-error">Please tell us your business type so we can design a promotion that fits.</div>';
+    return;
+  }
+
+  out.innerHTML = '<div class="dp-loading"><div class="dp-spinner"></div>Designing a promotion for your business...</div>';
+  if (btn) { btn.disabled = true; }
+
+  try {
+    const resp = await fetch('/api/design-promo', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    if (!resp.ok) throw new Error('Bad response');
+    const data = await resp.json();
+    const promo = data && data.promo ? data.promo : null;
+    if (!promo) throw new Error('No promo returned');
+    renderDesignedPromo(promo);
+  } catch (err) {
+    out.innerHTML = '<div class="dp-error">We could not design a promo just now. Please try again in a moment, or use the pricing tool above to build one yourself.</div>';
+  } finally {
+    if (btn) { btn.disabled = false; }
+  }
+}
+
+// Renders the AI-designed promo object. Expected fields (all optional except
+// headline): headline, trigger/event, oracle/settled_by, coverage/amount,
+// why/fit, pitch/customer_pitch.
+function renderDesignedPromo(promo) {
+  lastDesignedPromo = promo;
+  const out = document.getElementById('dpOutput');
+
+  const headline = promo.headline || 'Your suggested promotion';
+  const trigger = promo.trigger || promo.event || '';
+  const oracle = promo.oracle || promo.settled_by || promo.source || '';
+  const amount = promo.coverage || promo.amount || promo.exposure || '';
+  const why = promo.why || promo.fit || promo.why_it_fits || '';
+  const pitch = promo.pitch || promo.customer_pitch || '';
+
+  let amountText = '';
+  if (typeof amount === 'number' && isFinite(amount)) {
+    amountText = fmt(amount);
+  } else if (amount) {
+    amountText = String(amount);
+  }
+
+  let html = '<div class="dp-card">';
+  html += '<div class="dp-headline">' + dpEscape(headline) + '</div>';
+  if (trigger) {
+    html += '<div class="dp-row"><div class="dp-label">The event</div><div class="dp-value">' + dpEscape(trigger) + '</div></div>';
+  }
+  if (oracle) {
+    html += '<div class="dp-row"><div class="dp-label">Who settles it</div><div class="dp-value">' + dpEscape(oracle) + '</div></div>';
+  }
+  if (amountText) {
+    html += '<div class="dp-row"><div class="dp-label">Suggested coverage amount</div><div class="dp-value"><span class="dp-amount">' + dpEscape(amountText) + '</span></div></div>';
+  }
+  if (why) {
+    html += '<div class="dp-row"><div class="dp-label">Why it fits</div><div class="dp-value">' + dpEscape(why) + '</div></div>';
+  }
+  if (pitch) {
+    html += '<div class="dp-row"><div class="dp-label">The customer pitch</div><div class="dp-pitch">' + dpEscape(pitch) + '</div></div>';
+  }
+  html += '<button type="button" class="dp-use-btn" onclick="useDesignedPromo()">Use this promo</button>';
+  html += '</div>';
+
+  out.innerHTML = html;
+}
+
+// Prefills the calculator from the designed promo and scrolls to it.
+function useDesignedPromo() {
+  if (!lastDesignedPromo) return;
+  const promo = lastDesignedPromo;
+
+  const trigger = promo.trigger || promo.event || '';
+  const exposureRaw = promo.coverage || promo.amount || promo.exposure;
+
+  if (trigger) {
+    document.getElementById('triggerDesc').value = trigger;
+  }
+
+  // Parse a numeric exposure if present (accepts number or "$5,000" style text).
+  let exposureNum = null;
+  if (typeof exposureRaw === 'number' && isFinite(exposureRaw)) {
+    exposureNum = exposureRaw;
+  } else if (typeof exposureRaw === 'string') {
+    const cleaned = parseFloat(exposureRaw.replace(/[^0-9.]/g, ''));
+    if (isFinite(cleaned) && cleaned > 0) exposureNum = cleaned;
+  }
+  if (exposureNum && exposureNum >= 250) {
+    document.getElementById('exposure').value = exposureNum;
+  }
+
+  document.getElementById('calculator').scrollIntoView({ behavior: 'smooth' });
+  // Recompute the quote with the prefilled values once scrolled into view.
+  if (exposureNum && exposureNum >= 250) {
+    calculate();
   }
 }
 
