@@ -1382,6 +1382,14 @@
         </div>
       </div>
 
+      <!-- Single event date for ALL categories — the date the event resolves.
+           Weather/fuel pricing is keyed off this date. -->
+      <div class="form-group">
+        <label for="eventDate">Event date</label>
+        <input type="date" id="eventDate">
+        <p class="field-help">The date your event resolves. Weather/fuel events must be 2 weeks to ~4 months out.</p>
+      </div>
+
       <div class="form-group">
         <label>Your event (optional — edit or write your own)</label>
         <input type="text" id="triggerDesc" placeholder='e.g., "The Buccaneers win this weekend"'>
@@ -1398,17 +1406,15 @@
       <!-- Weather specifics — required for weather/seasonal. City + peril + date
            let us pull real climatology for your odds. -->
       <div class="form-group" id="weatherGroup" style="display:none;">
-        <label>Where &amp; when?</label>
-        <div class="calc-inline-row">
-          <input type="text" id="weatherCity" placeholder="City (e.g., Tampa)">
-          <input type="date" id="weatherDate" aria-label="Event date">
-        </div>
+        <label>Where?</label>
+        <input type="text" id="weatherCity" placeholder="City (e.g., Tampa)">
+        <input type="hidden" id="weatherDate" aria-label="Event date">
         <select id="weatherPeril" style="margin-top:10px;">
           <option value="rain">Rain</option>
           <option value="snow">Snow</option>
           <option value="heat">Heat</option>
         </select>
-        <p class="field-help">We pull real weather history for your city and date to price the odds.</p>
+        <p class="field-help">We pull real weather history for your city and the event date above to price the odds.</p>
       </div>
 
       <!-- Weather threshold — prefilled from a sensible suggestion, editable. -->
@@ -1422,10 +1428,8 @@
       <div class="form-group" id="fuelGroup" style="display:none;">
         <label>Gas price threshold ($/gal)</label>
         <input type="number" id="fuelThreshold" step="0.01" placeholder="e.g., 4.00">
-        <div class="calc-inline-row" style="margin-top:10px;">
-          <input type="text" id="fuelCity" placeholder="City / region (optional)">
-          <input type="date" id="fuelDate" aria-label="Date">
-        </div>
+        <input type="text" id="fuelCity" placeholder="City / region (optional)" style="margin-top:10px;">
+        <input type="hidden" id="fuelDate" aria-label="Date">
         <p class="field-help">We price these odds off the published fuel price series.</p>
       </div>
 
@@ -1843,7 +1847,7 @@
 
 <!-- FOOTER -->
 <footer>
-  <p><span id="brand-footer">Hedgerow</span> &copy; 2026. Based in the State of Florida. &nbsp;|&nbsp; <a href="#partners">Become a partner</a> &nbsp;|&nbsp; <a href="#">Terms</a> &nbsp;|&nbsp; <a href="#">Privacy</a></p>
+  <p><span id="brand-footer">Hedgerow</span> &copy; 2026. Based in the USA. &nbsp;|&nbsp; <a href="#partners">Become a partner</a> &nbsp;|&nbsp; <a href="#">Terms</a> &nbsp;|&nbsp; <a href="#">Privacy</a></p>
   <p style="margin-top:8px;">Hedgerow is a marketing tool for businesses. If the event happens, Hedgerow, Inc. pays the business the payoff — not the customers directly.</p>
 </footer>
 
@@ -2188,7 +2192,7 @@ function trackDemand(category, event, exposure, prob, fee, oddsSource) {
 async function maybeSuggestWeatherThreshold() {
   const city = (document.getElementById('weatherCity').value || '').trim();
   const peril = document.getElementById('weatherPeril').value;
-  const date = document.getElementById('weatherDate').value;
+  const date = document.getElementById('eventDate').value;
   const field = document.getElementById('weatherThreshold');
   const help = document.getElementById('weatherThresholdHelp');
   if (!city || !peril) return;
@@ -2225,23 +2229,38 @@ async function resolveMatchup(matchupText, exposure) {
   return null;
 }
 
-// Resolves real odds for weather/fuel via /api/odds. Returns
-// { prob, sourceName, estimate } when a real series/climatology priced it, or
-// null when there is no real basis (404, or a bare "flat estimate (no
-// climatology for city)" fallback that is NOT a real source). We never display
-// a number that isn't backed by a real source.
+// Resolves real odds for weather/fuel via /api/odds. Always returns a status
+// object so the caller can ALWAYS give the user visible feedback:
+//   { status: 'priced',  prob, sourceName, estimate }  — a real source priced it
+//   { status: 'window',  note }                         — 422 too_soon/too_far/bad_date/date_required (show note verbatim)
+//   { status: 'unpriceable', note }                     — 404 or generic flat fallback (no real history); show note or default
+// We never display a number that isn't backed by a real source.
 async function resolveOdds(params) {
   const resp = await fetch('/api/odds?' + params);
-  if (resp.status === 404) return null;
+  // 422 — date is outside the priceable window (too_soon/too_far/bad_date/date_required).
+  if (resp.status === 422) {
+    let note = '';
+    try { const d = await resp.json(); note = (d && d.note) ? String(d.note) : ''; } catch (e) {}
+    return { status: 'window', note: note };
+  }
+  // 404 — unpriceable (e.g. unknown city / no series).
+  if (resp.status === 404) {
+    let note = '';
+    try { const d = await resp.json(); note = (d && d.note) ? String(d.note) : ''; } catch (e) {}
+    return { status: 'unpriceable', note: note };
+  }
   const data = await resp.json();
   if (data && data.ok === true && typeof data.prob === 'number') {
     const sourceName = (data.source || '').toString();
     // The server returns 200 with a generic flat fallback when it has no real
-    // history for the city — treat that as unresolved (no number shown).
-    if (/no climatology|flat estimate/i.test(sourceName)) return null;
-    return { prob: data.prob, sourceName: sourceName, estimate: data.estimate === true };
+    // history for the city — treat that as unpriceable (no number shown).
+    if (/no climatology|flat estimate/i.test(sourceName)) {
+      return { status: 'unpriceable', note: '' };
+    }
+    return { status: 'priced', prob: data.prob, sourceName: sourceName, estimate: data.estimate === true };
   }
-  return null;
+  // ok:false at 200, or any other shape — surface a note if present.
+  return { status: 'unpriceable', note: (data && data.note) ? String(data.note) : '' };
 }
 
 async function calculate() {
@@ -2270,13 +2289,18 @@ async function calculate() {
       }
       const eventLabel = typedLabel || matchup;
       currentSource = sourceForEvent(eventLabel + ' ' + matchup);
+      const eventDate = document.getElementById('eventDate').value;
       const resolved = await resolveMatchup(matchup, exposure);
       if (resolved) {
         showResolvedOdds(resolved.prob, resolved.sourceName, 'live');
         renderQuote(eventLabel, exposure, resolved.prob);
         trackDemand(category, eventLabel, exposure, resolved.prob, lastCalc.premium, resolved.oddsSource);
       } else {
-        showNoOdds("We couldn't find a live market for that matchup yet — we'll confirm your exact odds when you set up your promo.");
+        // THE MIAMI HEAT CASE — no live market. Always show a clear, visible
+        // message, no number, no fee. Track it as unresolved.
+        let msg = "We can't price this yet — there's no live market for that matchup. The team may not have a scheduled game in range (or it's too far out). Try a matchup with an upcoming game.";
+        if (eventDate) msg += ' for ' + eventDate;
+        showNoOdds(msg);
         trackDemand(category, eventLabel, exposure, null, null, 'unresolved');
       }
       return;
@@ -2285,26 +2309,35 @@ async function calculate() {
     if (mode === 'weather') {
       const city = (document.getElementById('weatherCity').value || '').trim();
       const peril = document.getElementById('weatherPeril').value;
-      const date = document.getElementById('weatherDate').value;
+      const date = document.getElementById('eventDate').value;
       const threshold = (document.getElementById('weatherThreshold').value || '').trim();
-      if (!city || !peril || !date || !threshold) {
-        alert('Please enter your city, date, peril, and threshold so we can price real weather odds.');
-        resetOdds(category);
+      currentSource = SOURCE_NWS;
+      // The event date is required for weather pricing — surface it, don't go silent.
+      if (!date) {
+        showNoOdds('Choose an event date.');
         return;
       }
-      currentSource = SOURCE_NWS;
+      if (!city || !peril || !threshold) {
+        showNoOdds('Enter your city, peril, and threshold so we can price real weather odds.');
+        return;
+      }
       const eventLabel = typedLabel || (peril.charAt(0).toUpperCase() + peril.slice(1) + ' over ' + threshold + ' in ' + city + ' on ' + date);
       const params = 'category=weather&peril=' + encodeURIComponent(peril) +
         '&threshold=' + encodeURIComponent(threshold) +
         '&city=' + encodeURIComponent(city) +
         '&date=' + encodeURIComponent(date);
       const resolved = await resolveOdds(params);
-      if (resolved) {
+      if (resolved.status === 'priced') {
         showResolvedOdds(resolved.prob, resolved.sourceName, resolved.estimate ? 'estimate' : 'live');
         renderQuote(eventLabel, exposure, resolved.prob);
         trackDemand(category, eventLabel, exposure, resolved.prob, lastCalc.premium, resolved.estimate ? 'estimate' : 'live');
+      } else if (resolved.status === 'window') {
+        // Date outside the priceable window — show the server's note verbatim.
+        showNoOdds(resolved.note || 'That date is outside the range we can price. Weather events must be about 2 weeks to 4 months out.');
+        trackDemand(category, eventLabel, exposure, null, null, 'unresolved');
       } else {
-        showNoOdds('Enter a U.S. city we can pull weather history for to see your odds.');
+        // Unpriceable — unknown city / no history.
+        showNoOdds(resolved.note || 'Enter a U.S. city we can pull weather history for.');
         trackDemand(category, eventLabel, exposure, null, null, 'unresolved');
       }
       return;
@@ -2313,24 +2346,31 @@ async function calculate() {
     // mode === 'fuel'
     const fThreshold = (document.getElementById('fuelThreshold').value || '').trim();
     const fCity = (document.getElementById('fuelCity').value || '').trim();
-    const fDate = document.getElementById('fuelDate').value;
-    if (!fThreshold) {
-      alert('Please enter a gas price threshold ($/gal) so we can price real odds.');
-      resetOdds(category);
+    const fDate = document.getElementById('eventDate').value;
+    currentSource = SOURCE_FUEL;
+    // The event date is required for fuel pricing — surface it, don't go silent.
+    if (!fDate) {
+      showNoOdds('Choose an event date.');
       return;
     }
-    currentSource = SOURCE_FUEL;
+    if (!fThreshold) {
+      showNoOdds('Enter a gas price threshold ($/gal) so we can price real odds.');
+      return;
+    }
     const fuelLabel = typedLabel || ('Local gas tops $' + fThreshold + '/gal');
-    let params = 'category=fuel&threshold=' + encodeURIComponent(fThreshold);
-    if (fDate) params += '&date=' + encodeURIComponent(fDate);
+    let params = 'category=fuel&threshold=' + encodeURIComponent(fThreshold) +
+      '&date=' + encodeURIComponent(fDate);
     if (fCity) params += '&city=' + encodeURIComponent(fCity);
     const resolvedFuel = await resolveOdds(params);
-    if (resolvedFuel) {
+    if (resolvedFuel.status === 'priced') {
       showResolvedOdds(resolvedFuel.prob, resolvedFuel.sourceName, resolvedFuel.estimate ? 'estimate' : 'live');
       renderQuote(fuelLabel, exposure, resolvedFuel.prob);
       trackDemand(category, fuelLabel, exposure, resolvedFuel.prob, lastCalc.premium, resolvedFuel.estimate ? 'estimate' : 'live');
+    } else if (resolvedFuel.status === 'window') {
+      showNoOdds(resolvedFuel.note || 'That date is outside the range we can price. Fuel events must be about 3 to 180 days out.');
+      trackDemand(category, fuelLabel, exposure, null, null, 'unresolved');
     } else {
-      showNoOdds("We couldn't pull a published fuel price series for that yet — we'll confirm your exact odds when you set up your promo.");
+      showNoOdds(resolvedFuel.note || "We couldn't pull a published fuel price series for that yet.");
       trackDemand(category, fuelLabel, exposure, null, null, 'unresolved');
     }
   } catch (err) {
@@ -2651,6 +2691,25 @@ function useDesignedPromo() {
   document.getElementById('calculator').scrollIntoView({ behavior: 'smooth' });
 }
 
+// === EVENT DATE — single field for ALL categories ===
+// Minimum is tomorrow; the value mirrors into the hidden weatherDate/fuelDate
+// inputs so any logic keyed off those ids keeps working.
+(function initEventDate() {
+  const el = document.getElementById('eventDate');
+  if (!el) return;
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  const iso = tomorrow.toISOString().slice(0, 10);
+  el.setAttribute('min', iso);
+  const mirror = function() {
+    const v = el.value;
+    const wd = document.getElementById('weatherDate'); if (wd) wd.value = v;
+    const fd = document.getElementById('fuelDate'); if (fd) fd.value = v;
+  };
+  el.addEventListener('change', mirror);
+  mirror();
+})();
+
 // Init — render the sports presets, show its inputs, and show the neutral
 // odds prompt. No probability is displayed until a real source resolves.
 renderChips('sports');
@@ -2658,7 +2717,7 @@ applyCategoryInputs('sports');
 resetOdds('sports');
 
 // Best-effort threshold prefill once city + peril (+ date) are filled in.
-['weatherCity', 'weatherPeril', 'weatherDate'].forEach(function(id) {
+['weatherCity', 'weatherPeril', 'eventDate'].forEach(function(id) {
   const el = document.getElementById(id);
   if (el) el.addEventListener('change', maybeSuggestWeatherThreshold);
 });
