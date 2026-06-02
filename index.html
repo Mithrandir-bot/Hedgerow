@@ -692,6 +692,140 @@
     .dp-wrap { grid-template-columns: 1fr; }
   }
 
+  /* === PARTNERS / AFFILIATE === */
+  .partners-section {
+    background: var(--card);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .partners-wrap {
+    max-width: 1060px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    align-items: start;
+  }
+  .partners-pitch h2 {
+    font-size: 2rem;
+    font-weight: 800;
+    margin-bottom: 12px;
+  }
+  .partners-pitch p.partners-lead {
+    font-size: 1.05rem;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+    line-height: 1.6;
+  }
+  .partners-points { list-style: none; }
+  .partners-points li {
+    position: relative;
+    padding-left: 26px;
+    margin-bottom: 12px;
+    font-size: 0.95rem;
+    color: var(--text);
+  }
+  .partners-points li::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 7px;
+    width: 14px; height: 8px;
+    border-left: 2px solid var(--accent);
+    border-bottom: 2px solid var(--accent);
+    transform: rotate(-45deg);
+  }
+  .partners-form {
+    background: #f8fafc;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px;
+  }
+  .partners-form .form-group label { color: var(--text); }
+  .partners-form .form-group input,
+  .partners-form .form-group select {
+    background: white;
+    border: 1px solid var(--border);
+    color: var(--text);
+  }
+  .partners-form .form-group input::placeholder { color: var(--text-muted); }
+  .partners-form .form-group input:focus,
+  .partners-form .form-group select:focus {
+    outline: none;
+    border-color: var(--primary);
+  }
+  .partners-submit {
+    width: 100%;
+    padding: 14px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.05rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 4px;
+  }
+  .partners-submit:hover { background: var(--primary-dark); }
+  .partners-submit:disabled { opacity: 0.7; cursor: progress; }
+  .partners-result { margin-top: 18px; }
+  .partners-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 22px;
+    animation: fadeIn 0.3s ease;
+  }
+  .partners-card .pc-title {
+    font-size: 1.05rem;
+    font-weight: 800;
+    margin-bottom: 14px;
+    color: var(--text);
+  }
+  .pc-row { margin-bottom: 14px; }
+  .pc-row:last-child { margin-bottom: 0; }
+  .pc-label {
+    font-size: 0.74rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+  }
+  .pc-reflink {
+    display: block;
+    background: var(--primary-light);
+    color: var(--primary-dark);
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    word-break: break-all;
+    text-decoration: none;
+  }
+  .pc-model {
+    display: inline-block;
+    background: rgba(16,185,129,0.12);
+    color: var(--accent-dark);
+    font-weight: 800;
+    font-size: 1rem;
+    padding: 6px 14px;
+    border-radius: 8px;
+  }
+  .partners-error {
+    margin-top: 18px;
+    background: #fef3c7;
+    border: 1px solid #fcd34d;
+    border-radius: var(--radius);
+    padding: 16px 20px;
+    color: #92400e;
+    font-size: 0.92rem;
+    line-height: 1.5;
+  }
+  @media (max-width: 700px) {
+    .partners-wrap { grid-template-columns: 1fr; }
+  }
+
   /* === CHECKOUT MODAL === */
   .modal-overlay {
     display: none;
@@ -1138,6 +1272,7 @@
     <a href="#how">How It Works</a>
     <a href="#calculator">Pricing</a>
     <a href="#use-cases">Use Cases</a>
+    <a href="#partners">Become a partner</a>
     <a href="#faq">FAQ</a>
     <a href="#cta" class="nav-cta">Get Early Access</a>
   </div>
@@ -1592,6 +1727,41 @@
   </div>
 </div>
 
+<!-- PARTNERS / AFFILIATE -->
+<div class="section partners-section" id="partners">
+  <div class="partners-wrap">
+    <div class="partners-pitch">
+      <h2>Become a partner</h2>
+      <p class="partners-lead">Partners earn by sending small businesses to Hedgerow. Refer a shop, a bar, or a dealership &mdash; when they start running promotions, you get paid.</p>
+      <ul class="partners-points">
+        <li>Share your unique referral link with the businesses you know.</li>
+        <li>Marketing agencies and resellers earn recurring commission on fees.</li>
+        <li>Referrers and creators earn a flat reward per business they bring on.</li>
+      </ul>
+    </div>
+
+    <div class="partners-form">
+      <div class="form-group">
+        <label for="afName">Name</label>
+        <input type="text" id="afName" placeholder="Your name or company">
+      </div>
+      <div class="form-group">
+        <label for="afEmail">Email</label>
+        <input type="email" id="afEmail" placeholder="you@business.com" autocomplete="email">
+      </div>
+      <div class="form-group">
+        <label for="afType">Partner type</label>
+        <select id="afType">
+          <option value="reseller">Marketing agency / reseller</option>
+          <option value="referrer">Referrer / creator</option>
+        </select>
+      </div>
+      <button type="button" class="partners-submit" id="afSubmit" onclick="submitAffiliate()">Get my referral link</button>
+      <div class="partners-result" id="afResult"></div>
+    </div>
+  </div>
+</div>
+
 <!-- CTA -->
 <div class="cta-section" id="cta">
   <h2>Ready to run your next promotion?</h2>
@@ -1622,7 +1792,7 @@
 
 <!-- FOOTER -->
 <footer>
-  <p><span id="brand-footer">Hedgerow</span> &copy; 2026. Based in the State of Florida. &nbsp;|&nbsp; <a href="#">Terms</a> &nbsp;|&nbsp; <a href="#">Privacy</a></p>
+  <p><span id="brand-footer">Hedgerow</span> &copy; 2026. Based in the State of Florida. &nbsp;|&nbsp; <a href="#partners">Become a partner</a> &nbsp;|&nbsp; <a href="#">Terms</a> &nbsp;|&nbsp; <a href="#">Privacy</a></p>
   <p style="margin-top:8px;">Hedgerow is a marketing tool for businesses. If the event happens, Hedgerow, Inc. pays the business the payoff — not the customers directly.</p>
 </footer>
 
@@ -2060,6 +2230,64 @@ async function submitEmail() {
   }
 }
 
+// === AFFILIATE / PARTNER SIGNUP ===
+async function submitAffiliate() {
+  const out = document.getElementById('afResult');
+  const btn = document.getElementById('afSubmit');
+
+  const name = (document.getElementById('afName').value || '').trim();
+  const email = (document.getElementById('afEmail').value || '').trim();
+  const type = document.getElementById('afType').value;
+
+  if (!name) {
+    out.innerHTML = '<div class="partners-error">Please enter your name.</div>';
+    return;
+  }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    out.innerHTML = '<div class="partners-error">Please enter a valid email address.</div>';
+    return;
+  }
+
+  out.innerHTML = '';
+  if (btn) { btn.disabled = true; }
+
+  try {
+    const resp = await fetch('/api/affiliate/signup', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name: name, email: email, type: type })
+    });
+    if (!resp.ok) throw new Error('Bad response');
+    const data = await resp.json();
+
+    const refLink = data && data.ref_link ? data.ref_link : '';
+    let modelText = '';
+    if (data && data.model === 'recurring_pct' && typeof data.rate === 'number') {
+      modelText = (data.rate * 100) + '% recurring of fees';
+    } else if (data && typeof data.rate === 'number') {
+      modelText = fmt(data.rate) + ' per activated merchant';
+    } else {
+      modelText = 'Details sent to your email';
+    }
+
+    let html = '<div class="partners-card">';
+    html += '<div class="pc-title">You\'re in. Welcome aboard.</div>';
+    if (refLink) {
+      html += '<div class="pc-row"><div class="pc-label">Your referral link</div>' +
+        '<a class="pc-reflink" href="' + dpEscape(refLink) + '" target="_blank" rel="noopener">' + dpEscape(refLink) + '</a></div>';
+    }
+    html += '<div class="pc-row"><div class="pc-label">Your commission</div>' +
+      '<span class="pc-model">' + dpEscape(modelText) + '</span></div>';
+    html += '</div>';
+
+    out.innerHTML = html;
+  } catch (err) {
+    out.innerHTML = '<div class="partners-error">We could not sign you up just now. Please try again in a moment.</div>';
+  } finally {
+    if (btn) { btn.disabled = false; }
+  }
+}
+
 // === AI PROMO DESIGNER ===
 
 // Escapes user/AI text before inserting into HTML.
@@ -2148,7 +2376,7 @@ function renderDesignedPromo(promo) {
     html += '<div class="dp-row"><div class="dp-label">Who settles it</div><div class="dp-value">' + dpEscape(oracle) + '</div></div>';
   }
   if (amountText) {
-    html += '<div class="dp-row"><div class="dp-label">Suggested coverage amount</div><div class="dp-value"><span class="dp-amount">' + dpEscape(amountText) + '</span></div></div>';
+    html += '<div class="dp-row"><div class="dp-label">Suggested payout amount</div><div class="dp-value"><span class="dp-amount">' + dpEscape(amountText) + '</span></div></div>';
   }
   if (why) {
     html += '<div class="dp-row"><div class="dp-label">Why it fits</div><div class="dp-value">' + dpEscape(why) + '</div></div>';
