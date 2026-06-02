@@ -637,8 +637,8 @@
       <div class="label">Automated settlement</div>
     </div>
     <div class="proof-stat">
-      <div class="num">24hr</div>
-      <div class="label">Payout after trigger</div>
+      <div class="num">Same day</div>
+      <div class="label">Payout via USD or USDC</div>
     </div>
   </div>
 </div>
@@ -665,8 +665,8 @@
     </div>
     <div class="step">
       <div class="step-num">4</div>
-      <h3>Automatic Settlement</h3>
-      <p>If the event triggers, we pay you within 24 hours via ACH. If it does not trigger, your only cost was the premium.</p>
+      <h3>Get Paid, Fast</h3>
+      <p>If the event triggers, choose your payout: USD via bank transfer (ACH) or USDC stablecoin for same-day settlement. No checks in the mail — your money moves when you need it.</p>
     </div>
   </div>
 </div>
@@ -752,7 +752,8 @@
       <div class="result-cta">
         <button onclick="document.getElementById('cta').scrollIntoView({behavior:'smooth'})">Get This Coverage</button>
       </div>
-      <p style="font-size:0.72rem;color:rgba(255,255,255,0.4);margin-top:12px;text-align:center;">Illustrative only. Actual premiums depend on real-time market data at time of purchase.</p>
+      <p style="font-size:0.82rem;color:rgba(255,255,255,0.55);margin-top:14px;text-align:center;">Payout: USD (bank/ACH) or USDC stablecoin — your choice, same-day.</p>
+      <p style="font-size:0.72rem;color:rgba(255,255,255,0.4);margin-top:8px;text-align:center;">Illustrative only. Actual premiums depend on real-time market data at time of purchase.</p>
     </div>
   </div>
 </div>
@@ -823,8 +824,8 @@
     </div>
     <div class="trust-item">
       <div class="trust-icon clock">&#9200;</div>
-      <h4>24-Hour Payouts</h4>
-      <p>If your trigger event fires, funds hit your bank account within one business day.</p>
+      <h4>Same-Day Payouts</h4>
+      <p>Get paid your way — USD (bank/ACH) or USDC stablecoin. USDC settles same-hour; no waiting days for a check.</p>
     </div>
   </div>
 </div>
@@ -844,7 +845,7 @@
     </div>
     <div class="faq-item">
       <div class="faq-q" onclick="toggleFaq(this)">How fast do I get paid?</div>
-      <div class="faq-a">Within 24 hours of the event resolving. For sports outcomes, this is typically same-day. For weather events, the next morning. Funds are sent via ACH to your business bank account on file.</div>
+      <div class="faq-a">Choose your payout method: USDC stablecoin settles same-hour, and USD via ACH arrives same business day. No paper checks, no multi-day waits. You pick your preferred method when you set up coverage.</div>
     </div>
     <div class="faq-item">
       <div class="faq-q" onclick="toggleFaq(this)">What events can I cover?</div>
@@ -962,7 +963,7 @@ function calculate() {
   document.getElementById('rPremium').textContent = '$' + premium.toLocaleString();
 
   document.getElementById('rWin').textContent =
-    `We pay you $${exposure.toLocaleString()} within 24 hours. Your net cost is the $${premium.toLocaleString()} premium. Your customers or operations are fully covered.`;
+    `We pay you $${exposure.toLocaleString()} same-day via USD (ACH) or USDC — your choice. Your net cost is the $${premium.toLocaleString()} premium. Your customers or operations are fully covered.`;
 
   document.getElementById('rNoTrigger').textContent =
     `Your only cost is the $${premium.toLocaleString()} premium. If this backed a promotion, you kept all the extra business it drove.`;
