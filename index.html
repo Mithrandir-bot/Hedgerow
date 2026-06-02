@@ -300,6 +300,19 @@
     color: var(--accent);
     line-height: 1.1;
   }
+  .est-odds-value.is-prompt {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: rgba(255,255,255,0.55);
+  }
+  .calc-inline-row {
+    display: flex;
+    gap: 10px;
+  }
+  .calc-inline-row > * { flex: 1; min-width: 0; }
+  @media (max-width: 480px) {
+    .calc-inline-row { flex-direction: column; }
+  }
   .est-odds-caveat {
     font-size: 0.74rem;
     color: rgba(255,255,255,0.55);
@@ -1374,16 +1387,54 @@
         <input type="text" id="triggerDesc" placeholder='e.g., "The Buccaneers win this weekend"'>
       </div>
 
-      <div class="form-group">
-        <label>Estimated odds this happens</label>
-        <div class="est-odds" id="estOddsBox">
-          <span class="est-odds-value" id="estOddsValue">--<span class="live-odds-badge" id="liveOddsBadge">Live odds</span></span>
-          <p class="est-odds-caveat" id="estOddsCaveat">Estimated &mdash; your final price uses live market data when you set up your promo.</p>
-        </div>
+      <!-- Matchup / event specifics — required for sports, milestone, custom.
+           Odds are priced from a real market keyed off this exact text. -->
+      <div class="form-group" id="matchupGroup" style="display:none;">
+        <label id="matchupLabel">Which team &amp; game?</label>
+        <input type="text" id="matchupInput" placeholder="Buccaneers vs Falcons, Sunday">
+        <p class="field-help">We look up live odds for this exact matchup before pricing.</p>
       </div>
 
-      <div class="form-group" id="rejectGroup" style="display:none;">
-        <div class="reject-msg" id="rejectMsg"></div>
+      <!-- Weather specifics — required for weather/seasonal. City + peril + date
+           let us pull real climatology for your odds. -->
+      <div class="form-group" id="weatherGroup" style="display:none;">
+        <label>Where &amp; when?</label>
+        <div class="calc-inline-row">
+          <input type="text" id="weatherCity" placeholder="City (e.g., Tampa)">
+          <input type="date" id="weatherDate" aria-label="Event date">
+        </div>
+        <select id="weatherPeril" style="margin-top:10px;">
+          <option value="rain">Rain</option>
+          <option value="snow">Snow</option>
+          <option value="heat">Heat</option>
+        </select>
+        <p class="field-help">We pull real weather history for your city and date to price the odds.</p>
+      </div>
+
+      <!-- Weather threshold — prefilled from a sensible suggestion, editable. -->
+      <div class="form-group" id="weatherThresholdGroup" style="display:none;">
+        <label id="weatherThresholdLabel">Threshold</label>
+        <input type="number" id="weatherThreshold" step="0.1" placeholder="e.g., 5">
+        <p class="field-help" id="weatherThresholdHelp">The level that triggers your promo (prefilled from typical conditions — edit if you like).</p>
+      </div>
+
+      <!-- Fuel specifics — price threshold, optional city/region + date. -->
+      <div class="form-group" id="fuelGroup" style="display:none;">
+        <label>Gas price threshold ($/gal)</label>
+        <input type="number" id="fuelThreshold" step="0.01" placeholder="e.g., 4.00">
+        <div class="calc-inline-row" style="margin-top:10px;">
+          <input type="text" id="fuelCity" placeholder="City / region (optional)">
+          <input type="date" id="fuelDate" aria-label="Date">
+        </div>
+        <p class="field-help">We price these odds off the published fuel price series.</p>
+      </div>
+
+      <div class="form-group">
+        <label>Odds this happens</label>
+        <div class="est-odds" id="estOddsBox">
+          <span class="est-odds-value" id="estOddsValue">&mdash; enter your matchup &mdash;<span class="live-odds-badge" id="liveOddsBadge">Live odds</span></span>
+          <p class="est-odds-caveat" id="estOddsCaveat">Enter the specifics above, then we price your odds from a live source.</p>
+        </div>
       </div>
 
       <div class="form-group">
@@ -1838,16 +1889,18 @@ function getStoredRef() {
 captureRef();
 
 // === STATE ===
-// lastCalc.prob is the ESTIMATED probability assigned by the event lookup (0-1).
+// lastCalc.prob is the probability used to price (0-1) — ONLY set once it has
+// been resolved from a real source (live market or real climatology/fuel series).
 // lastCalc.exposure is what the promo could cost the business if it happens.
 // lastCalc.premium is the flat fee. lastCalc.trigger is the event label.
 let lastCalc = { trigger: '', exposure: 0, prob: 0, premium: 0 };
 let selectedPayment = 'card';
-let estProb = 0; // estimated probability (0-1) for the currently selected event
 
 // === PRESET DATA ===
-// Each curated event maps to an ESTIMATED probability (placeholder lookup table).
-// The business never sets the odds — the odds come from the event they pick.
+// Presets prefill the event TEXT, exposure, and settlement source ONLY.
+// They never supply a displayed probability — every shown number must come
+// from /api/resolve or /api/odds at calculate() time. The business never sets
+// the odds, and we never bake one in.
 // Settlement-source labels: the independent, official "source of truth"
 // that decides each outcome. Surfaced to reassure businesses a neutral,
 // automatic judge — never us — decides the result.
@@ -1862,52 +1915,73 @@ function settledByLabel(source) {
   return "Settled by " + (source || SOURCE_OFFICIAL);
 }
 
+// Presets carry text + exposure + settlement source. NO probability.
 const PRESETS = {
   // Local sports — prominent. Great for bars, restaurants, breweries.
   sports: [
-    { label: "Your team wins this weekend", trigger: "Your team wins this weekend",      exposure: 4000,  estProb: 0.45, source: SOURCE_GAME },
-    { label: "Win by 10+",                  trigger: "Your team wins by 10+ this weekend", exposure: 3000, estProb: 0.22, source: SOURCE_GAME },
-    { label: "Team makes the playoffs",     trigger: "Your team makes the playoffs",      exposure: 10000, estProb: 0.30, source: SOURCE_GAME },
-    { label: "Longshot player prop",        trigger: "A longshot player prop hits",       exposure: 2000,  estProb: 0.12, source: SOURCE_GAME },
+    { label: "Your team wins this weekend", trigger: "Your team wins this weekend",      exposure: 4000,  source: SOURCE_GAME },
+    { label: "Win by 10+",                  trigger: "Your team wins by 10+ this weekend", exposure: 3000, source: SOURCE_GAME },
+    { label: "Team makes the playoffs",     trigger: "Your team makes the playoffs",      exposure: 10000, source: SOURCE_GAME },
+    { label: "Longshot player prop",        trigger: "A longshot player prop hits",       exposure: 2000,  source: SOURCE_GAME },
   ],
-  // Weather — existing options preserved.
+  // Weather — prefill exposure + a peril hint via the trigger text.
   weather: [
-    { label: "Rain on your event day",     trigger: "It rains on your event day",          exposure: 3000, estProb: 0.30, source: SOURCE_NWS },
-    { label: "Hits 90&deg;+ this weekend", trigger: "It hits 90°+ this weekend",           exposure: 1500, estProb: 0.40, source: SOURCE_NWS },
-    { label: "Storm cancels outdoor day",  trigger: "A storm cancels your outdoor day",    exposure: 5000, estProb: 0.10, source: SOURCE_NWS },
+    { label: "Rain on your event day",     trigger: "It rains on your event day",          exposure: 3000, source: SOURCE_NWS, peril: 'rain' },
+    { label: "Hits 90&deg;+ this weekend", trigger: "It hits 90°+ this weekend",           exposure: 1500, source: SOURCE_NWS, peril: 'heat' },
+    { label: "Storm cancels outdoor day",  trigger: "A storm cancels your outdoor day",    exposure: 5000, source: SOURCE_NWS, peril: 'rain' },
   ],
   // Fuel / gas price — gas stations, auto shops, delivery/fleet operators.
   fuel: [
-    { label: "Gas tops $4 → fuel rebate",   trigger: "Local gas tops $4.00/gal this month",   exposure: 3000, estProb: 0.35, source: SOURCE_FUEL },
-    { label: "Gas drops below $3 → bonus",  trigger: "Local gas drops below $3.00/gal this month", exposure: 2500, estProb: 0.25, source: SOURCE_FUEL },
-    { label: "Gas tops $5 → big rebate",    trigger: "Local gas tops $5.00/gal this month",   exposure: 5000, estProb: 0.12, source: SOURCE_FUEL },
+    { label: "Gas tops $4 → fuel rebate",   trigger: "Local gas tops $4.00/gal this month",   exposure: 3000, source: SOURCE_FUEL, threshold: 4.00 },
+    { label: "Gas drops below $3 → bonus",  trigger: "Local gas drops below $3.00/gal this month", exposure: 2500, source: SOURCE_FUEL, threshold: 3.00 },
+    { label: "Gas tops $5 → big rebate",    trigger: "Local gas tops $5.00/gal this month",   exposure: 5000, source: SOURCE_FUEL, threshold: 5.00 },
   ],
   // Season milestone — sports retail, hotels. Settles on official standings.
   milestone: [
-    { label: "Team makes the playoffs",  trigger: "Your team makes the playoffs",     exposure: 10000, estProb: 0.30, source: SOURCE_STANDINGS },
-    { label: "Team wins the division",   trigger: "Your team wins the division",      exposure: 8000,  estProb: 0.20, source: SOURCE_STANDINGS },
-    { label: "Team clinches a top seed", trigger: "Your team clinches a top seed",    exposure: 12000, estProb: 0.15, source: SOURCE_STANDINGS },
+    { label: "Team makes the playoffs",  trigger: "Your team makes the playoffs",     exposure: 10000, source: SOURCE_STANDINGS },
+    { label: "Team wins the division",   trigger: "Your team wins the division",      exposure: 8000,  source: SOURCE_STANDINGS },
+    { label: "Team clinches a top seed", trigger: "Your team clinches a top seed",    exposure: 12000, source: SOURCE_STANDINGS },
   ],
   seasonal: [
-    { label: "Record-hot weekend",  trigger: "A record-hot weekend",         exposure: 2000, estProb: 0.15, source: SOURCE_NWS },
-    { label: "Big game-day crowd",  trigger: "A big game-day crowd shows up", exposure: 4000, estProb: 0.50, source: SOURCE_OFFICIAL },
+    { label: "Record-hot weekend",  trigger: "A record-hot weekend",         exposure: 2000, source: SOURCE_NWS, peril: 'heat' },
+    { label: "Big game-day crowd",  trigger: "A big game-day crowd shows up", exposure: 4000, source: SOURCE_OFFICIAL },
   ],
   custom: [
-    { label: "Team wins by 10+",    trigger: "Your team wins by 10+ this weekend", exposure: 3000, estProb: 0.22, source: SOURCE_GAME },
-    { label: "It rains Saturday",   trigger: "It rains on Saturday",               exposure: 2500, estProb: 0.30, source: SOURCE_NWS },
-    { label: "Gas tops $4/gal",     trigger: "Local gas tops $4.00/gal this month", exposure: 3000, estProb: 0.35, source: SOURCE_FUEL },
+    { label: "Team wins by 10+",    trigger: "Your team wins by 10+ this weekend", exposure: 3000, source: SOURCE_GAME },
+    { label: "It rains Saturday",   trigger: "It rains on Saturday",               exposure: 2500, source: SOURCE_NWS, peril: 'rain' },
+    { label: "Gas tops $4/gal",     trigger: "Local gas tops $4.00/gal this month", exposure: 3000, source: SOURCE_FUEL, threshold: 4.00 },
   ]
 };
-
-// Sensible default estimated probability when no exact event match is found.
-const DEFAULT_EST_PROB = 0.30;
 
 // Tracks the settlement source for the currently selected/typed event.
 let currentSource = SOURCE_OFFICIAL;
 
+// Which inputs each category drives its real odds from.
+//  'matchup' => free-text matchup resolved via /api/resolve
+//  'weather' => city + peril + date + threshold via /api/odds
+//  'fuel'    => price threshold (+optional city/date) via /api/odds
+const CATEGORY_MODE = {
+  sports: 'matchup',
+  milestone: 'matchup',
+  custom: 'matchup',
+  weather: 'weather',
+  seasonal: 'weather',
+  fuel: 'fuel'
+};
+
+function categoryMode(cat) {
+  return CATEGORY_MODE[cat] || 'matchup';
+}
+
+// Prompt shown in the odds box before specifics resolve, per category.
+function oddsPromptFor(cat) {
+  const mode = categoryMode(cat);
+  if (mode === 'weather') return '— enter your city & date —';
+  if (mode === 'fuel') return '— enter your price threshold —';
+  return '— enter your matchup —';
+}
+
 // Infers a settlement source from free-text when no preset is chosen.
-// Weather-flavored language => National Weather Service; team/game/playoff
-// language => official game result; otherwise a generic official source.
 function sourceForEvent(text) {
   const t = (text || '').toLowerCase();
   if (/gas|fuel|gallon|\/gal|diesel|pump|gasoline|oil price/.test(t)) {
@@ -1925,8 +1999,29 @@ function sourceForEvent(text) {
   return SOURCE_OFFICIAL;
 }
 
+// Shows only the input groups relevant to the chosen category.
+function applyCategoryInputs(cat) {
+  const mode = categoryMode(cat);
+  const show = (id, on) => { const el = document.getElementById(id); if (el) el.style.display = on ? 'block' : 'none'; };
+  show('matchupGroup', mode === 'matchup');
+  show('weatherGroup', mode === 'weather');
+  show('weatherThresholdGroup', mode === 'weather');
+  show('fuelGroup', mode === 'fuel');
+  if (mode === 'matchup') {
+    const lbl = document.getElementById('matchupLabel');
+    if (lbl) lbl.textContent = (cat === 'milestone') ? 'Which team & season milestone?' : 'Which team & game?';
+  }
+}
+
 function onCategoryChange() {
-  renderChips(document.getElementById('eventCategory').value);
+  const cat = document.getElementById('eventCategory').value;
+  renderChips(cat);
+  applyCategoryInputs(cat);
+  currentSource = SOURCE_OFFICIAL;
+  // Category just changed — clear any resolved odds and show the prompt.
+  resetOdds(cat);
+  document.getElementById('calcResult').classList.remove('visible');
+  lastCalc = { trigger: '', exposure: 0, prob: 0, premium: 0 };
 }
 
 function renderChips(cat) {
@@ -1941,16 +2036,26 @@ function applyPreset(cat, idx) {
   const p = PRESETS[cat][idx];
   document.getElementById('triggerDesc').value = p.trigger;
   document.getElementById('exposure').value = p.exposure;
-  // The system assigns the estimated probability from the event — the user does not.
-  setEstProb(p.estProb);
-  // Each curated event carries its verified settlement source.
+  // Preset prefills TEXT, exposure and source only — never a displayed number.
   currentSource = p.source || sourceForEvent(p.trigger);
+  // Prefill the per-category specifics from the preset where available.
+  const mode = categoryMode(cat);
+  if (mode === 'matchup') {
+    const m = document.getElementById('matchupInput');
+    if (m && !m.value.trim()) m.value = '';
+  } else if (mode === 'weather') {
+    if (p.peril) { const pe = document.getElementById('weatherPeril'); if (pe) pe.value = p.peril; }
+  } else if (mode === 'fuel') {
+    if (typeof p.threshold === 'number') { const ft = document.getElementById('fuelThreshold'); if (ft) ft.value = p.threshold.toFixed(2); }
+  }
   document.querySelectorAll('.preset-chip').forEach((c, i) => c.classList.toggle('active', i === idx));
-  calculate();
+  // Odds remain gated — do NOT auto-calculate or show a number until specifics
+  // are present and a real source resolves.
+  resetOdds(cat);
+  document.getElementById('calcResult').classList.remove('visible');
 }
 
-// Assigns and displays the read-only estimated probability for the chosen event.
-// Updates only the leading value text, preserving the Live odds badge node.
+// Writes the leading value text, preserving the Live odds badge node.
 function writeOddsValue(text) {
   const valueEl = document.getElementById('estOddsValue');
   const badge = document.getElementById('liveOddsBadge');
@@ -1958,26 +2063,55 @@ function writeOddsValue(text) {
   valueEl.appendChild(badge); // re-attach after textContent reset
 }
 
-// Toggles the Live odds badge and the accompanying caveat copy.
-function setOddsMode(isLive, livePct) {
+// Resets the odds box to the neutral prompt for the category — NO number,
+// NO live badge, and hides the result panel's pricing.
+function resetOdds(cat) {
+  const valueEl = document.getElementById('estOddsValue');
   const badge = document.getElementById('liveOddsBadge');
   const caveat = document.getElementById('estOddsCaveat');
   const box = document.getElementById('estOddsBox');
-  if (isLive) {
-    badge.textContent = 'Live odds ' + livePct + '%';
+  badge.style.display = 'none';
+  box.classList.remove('is-live');
+  valueEl.classList.add('is-prompt');
+  writeOddsValue(oddsPromptFor(cat || document.getElementById('eventCategory').value));
+  caveat.textContent = 'Enter the specifics above, then we price your odds from a live source.';
+}
+
+// Displays a resolved probability. mode: 'live' | 'estimate'.
+// label is the source name; estimate odds are clearly flagged as such.
+function showResolvedOdds(prob, sourceName, mode) {
+  const valueEl = document.getElementById('estOddsValue');
+  const badge = document.getElementById('liveOddsBadge');
+  const caveat = document.getElementById('estOddsCaveat');
+  const box = document.getElementById('estOddsBox');
+  const pct = Math.round(prob * 100);
+  valueEl.classList.remove('is-prompt');
+  writeOddsValue(pct + '%');
+  if (mode === 'live') {
+    badge.textContent = 'Live odds ' + pct + '%';
     badge.style.display = 'inline-block';
     box.classList.add('is-live');
-    caveat.textContent = 'Live market odds — your final flat fee uses live market data when you set up your promo.';
+    caveat.textContent = 'Live odds ' + pct + '%' + (sourceName ? ' · ' + sourceName : '') + '. Confirmed at setup.';
   } else {
     badge.style.display = 'none';
     box.classList.remove('is-live');
-    caveat.textContent = 'Estimated — your final price uses live market data when you set up your promo.';
+    caveat.textContent = 'Estimate ' + pct + '%' + (sourceName ? ' · ' + sourceName : '') + ' · confirmed at setup.';
   }
 }
 
-function setEstProb(p) {
-  estProb = (typeof p === 'number' && p > 0) ? p : DEFAULT_EST_PROB;
-  writeOddsValue('~' + Math.round(estProb * 100) + '%');
+// Shows a neutral, no-number message when no real source could price the event.
+function showNoOdds(message) {
+  const valueEl = document.getElementById('estOddsValue');
+  const badge = document.getElementById('liveOddsBadge');
+  const caveat = document.getElementById('estOddsCaveat');
+  const box = document.getElementById('estOddsBox');
+  badge.style.display = 'none';
+  box.classList.remove('is-live');
+  valueEl.classList.add('is-prompt');
+  writeOddsValue('—');
+  caveat.textContent = message;
+  // No real odds => no fee. Keep the result panel hidden.
+  document.getElementById('calcResult').classList.remove('visible');
 }
 
 function fmt(n) {
@@ -1993,14 +2127,14 @@ function marginForProb(prob) {
 }
 
 // Computes the flat fee, stores lastCalc, and renders the result panel.
-// prob is the probability actually used — live (from the resolver) or curated.
+// prob MUST be a real, resolved probability (live market or real series).
 function renderQuote(trigger, exposure, prob) {
   const margin = marginForProb(prob);
   const ev = prob * exposure;
   const premium = Math.round((ev * (1 + margin)) / 10) * 10;
 
-  // Store for checkout (prob is the probability actually used — live or curated)
-  lastCalc = { trigger, exposure, prob, premium, source: currentSource };
+  // Store for checkout. .prob is only ever set here, with a resolved number.
+  lastCalc = { trigger, exposure, prob, premium, source: currentSource, category: lastCalc.category };
 
   const triggerDisplay = trigger.length > 40 ? trigger.substring(0, 40) + '...' : trigger;
   document.getElementById('rTriggerName').textContent = '"' + triggerDisplay + '"';
@@ -2008,13 +2142,13 @@ function renderQuote(trigger, exposure, prob) {
   document.getElementById('rReceiveAmount').textContent = fmt(exposure);
 
   document.getElementById('rTriggered').textContent =
-    `If ${trigger} happens, we pay you ${fmt(exposure)} the same day (after it's officially confirmed) — so your promotion costs you nothing.`;
+    `If it happens, we pay YOU ${fmt(exposure)} the same day the event is officially decided — so you can cover the giveaway you offered your customers at no cost to you. Your only cost is the ${fmt(premium)} flat fee.`;
 
   document.getElementById('rNotTriggered').textContent =
-    `If it doesn't happen, you keep the upside of running the promotion at no extra cost — your only cost is the ${fmt(premium)} flat fee.`;
+    `You keep the buzz and the foot traffic your promotion drove. Your only cost is the ${fmt(premium)} flat fee.`;
 
   document.getElementById('rSummaryLine').textContent =
-    `Your max cost is the ${fmt(premium)} flat fee. If ${trigger} happens, you receive ${fmt(exposure)}. Either way you know your number up front.`;
+    `Your flat fee: ${fmt(premium)}. If it happens, we pay YOU ${fmt(exposure)} the same day (after the event is officially decided) — so your giveaway costs you nothing. If it doesn't happen, you keep the buzz and foot traffic; your only cost is the ${fmt(premium)} fee.`;
 
   // Surface the verified settlement source — the neutral, automatic judge.
   document.getElementById('rSettleSourceText').textContent = settledByLabel(currentSource);
@@ -2049,78 +2183,159 @@ function trackDemand(category, event, exposure, prob, fee, oddsSource) {
   }
 }
 
-function showReject(reason) {
-  const group = document.getElementById('rejectGroup');
-  document.getElementById('rejectMsg').textContent =
-    'Hedgerow focuses on local, tangible events — try your local team or the weather.';
-  group.style.display = 'block';
-  document.getElementById('calcResult').classList.remove('visible');
+// Best-effort: prefill a sensible weather threshold from the suggest endpoint.
+// Only fills when the field is empty so a user-entered value is never clobbered.
+async function maybeSuggestWeatherThreshold() {
+  const city = (document.getElementById('weatherCity').value || '').trim();
+  const peril = document.getElementById('weatherPeril').value;
+  const date = document.getElementById('weatherDate').value;
+  const field = document.getElementById('weatherThreshold');
+  const help = document.getElementById('weatherThresholdHelp');
+  if (!city || !peril) return;
+  if (field.value.trim()) return; // respect a value the user already typed
+  try {
+    const qs = 'city=' + encodeURIComponent(city) + '&peril=' + encodeURIComponent(peril) +
+      '&target_prob=0.15' + (date ? '&date=' + encodeURIComponent(date) : '');
+    const resp = await fetch('/api/threshold-suggest?' + qs);
+    if (!resp.ok) return;
+    const data = await resp.json();
+    if (data && data.ok && typeof data.suggested_threshold === 'number') {
+      field.value = data.suggested_threshold;
+      const unit = (data.unit || '').toString().trim();
+      if (help && unit) help.textContent = 'Suggested level: ' + data.suggested_threshold + ' ' + unit + ' (edit if you like).';
+    }
+  } catch (err) {
+    // best-effort only — never block pricing on a failed suggestion
+  }
 }
 
-function clearReject() {
-  document.getElementById('rejectGroup').style.display = 'none';
+// Resolves real odds for the matchup categories via /api/resolve. Returns
+// { prob, sourceName, oddsSource } on success, or null when no market matched.
+async function resolveMatchup(matchupText, exposure) {
+  const resp = await fetch('/api/resolve?q=' + encodeURIComponent(matchupText) + '&exposure=' + exposure);
+  const data = await resp.json();
+  if (data && data.found === true && typeof data.implied_prob === 'number' && data.implied_prob > 0) {
+    const sourceName = (data.source || 'live market').toString();
+    const lc = sourceName.toLowerCase();
+    let oddsSource = 'live';
+    if (lc.indexOf('polymarket') !== -1) oddsSource = 'Polymarket';
+    else if (lc.indexOf('kalshi') !== -1) oddsSource = 'Kalshi';
+    return { prob: data.implied_prob, sourceName: sourceName, oddsSource: oddsSource };
+  }
+  return null;
+}
+
+// Resolves real odds for weather/fuel via /api/odds. Returns
+// { prob, sourceName, estimate } when a real series/climatology priced it, or
+// null when there is no real basis (404, or a bare "flat estimate (no
+// climatology for city)" fallback that is NOT a real source). We never display
+// a number that isn't backed by a real source.
+async function resolveOdds(params) {
+  const resp = await fetch('/api/odds?' + params);
+  if (resp.status === 404) return null;
+  const data = await resp.json();
+  if (data && data.ok === true && typeof data.prob === 'number') {
+    const sourceName = (data.source || '').toString();
+    // The server returns 200 with a generic flat fallback when it has no real
+    // history for the city — treat that as unresolved (no number shown).
+    if (/no climatology|flat estimate/i.test(sourceName)) return null;
+    return { prob: data.prob, sourceName: sourceName, estimate: data.estimate === true };
+  }
+  return null;
 }
 
 async function calculate() {
   const exposure = parseFloat(document.getElementById('exposure').value);
-  const eventLabel = document.getElementById('triggerDesc').value.trim() || 'your event';
   const category = document.getElementById('eventCategory').value;
-
-  // Determine the verified settlement source for this event (preset or typed).
-  currentSource = sourceForEvent(eventLabel);
+  const mode = categoryMode(category);
+  const typedLabel = document.getElementById('triggerDesc').value.trim();
+  lastCalc.category = category;
 
   if (!exposure || exposure < 250) {
     alert('Please enter how much this promo could cost you ($250 minimum).');
     return;
   }
 
-  // Curated estimate is always available as a graceful fallback.
-  const curatedProb = (estProb > 0) ? estProb : DEFAULT_EST_PROB;
-  if (estProb <= 0) setEstProb(DEFAULT_EST_PROB);
-
-  clearReject();
-
   const btn = document.querySelector('.calc-btn');
   const btnLabel = btn ? btn.textContent : '';
   if (btn) { btn.disabled = true; btn.textContent = 'Pricing...'; }
 
   try {
-    const resp = await fetch('/api/resolve?q=' + encodeURIComponent(eventLabel) + '&exposure=' + exposure);
-    const data = await resp.json();
-
-    if (data && data.action === 'reject') {
-      // Macro / irrelevant event — do not quote.
-      showReject(data.reason);
+    if (mode === 'matchup') {
+      const matchup = (document.getElementById('matchupInput').value || '').trim();
+      if (!matchup) {
+        alert('Please enter the specific matchup or event so we can price real odds.');
+        resetOdds(category);
+        return;
+      }
+      const eventLabel = typedLabel || matchup;
+      currentSource = sourceForEvent(eventLabel + ' ' + matchup);
+      const resolved = await resolveMatchup(matchup, exposure);
+      if (resolved) {
+        showResolvedOdds(resolved.prob, resolved.sourceName, 'live');
+        renderQuote(eventLabel, exposure, resolved.prob);
+        trackDemand(category, eventLabel, exposure, resolved.prob, lastCalc.premium, resolved.oddsSource);
+      } else {
+        showNoOdds("We couldn't find a live market for that matchup yet — we'll confirm your exact odds when you set up your promo.");
+        trackDemand(category, eventLabel, exposure, null, null, 'unresolved');
+      }
       return;
     }
 
-    if (data && data.found === true && typeof data.implied_prob === 'number' && data.implied_prob > 0) {
-      // Live, liquid market matched — use its implied probability.
-      const liveProb = data.implied_prob;
-      setOddsMode(true, Math.round(liveProb * 100));
-      writeOddsValue('~' + Math.round(liveProb * 100) + '%');
-      renderQuote(eventLabel, exposure, liveProb);
-      lastCalc.category = category;
-      // Derive odds source from the resolver response when available.
-      const src = (data.source || data.odds_source || '').toString().toLowerCase();
-      let oddsSource = 'live';
-      if (src.indexOf('polymarket') !== -1) oddsSource = 'Polymarket';
-      else if (src.indexOf('nws') !== -1 || src.indexOf('weather') !== -1) oddsSource = 'NWS';
-      trackDemand(category, eventLabel, exposure, liveProb, lastCalc.premium, oddsSource);
+    if (mode === 'weather') {
+      const city = (document.getElementById('weatherCity').value || '').trim();
+      const peril = document.getElementById('weatherPeril').value;
+      const date = document.getElementById('weatherDate').value;
+      const threshold = (document.getElementById('weatherThreshold').value || '').trim();
+      if (!city || !peril || !date || !threshold) {
+        alert('Please enter your city, date, peril, and threshold so we can price real weather odds.');
+        resetOdds(category);
+        return;
+      }
+      currentSource = SOURCE_NWS;
+      const eventLabel = typedLabel || (peril.charAt(0).toUpperCase() + peril.slice(1) + ' over ' + threshold + ' in ' + city + ' on ' + date);
+      const params = 'category=weather&peril=' + encodeURIComponent(peril) +
+        '&threshold=' + encodeURIComponent(threshold) +
+        '&city=' + encodeURIComponent(city) +
+        '&date=' + encodeURIComponent(date);
+      const resolved = await resolveOdds(params);
+      if (resolved) {
+        showResolvedOdds(resolved.prob, resolved.sourceName, resolved.estimate ? 'estimate' : 'live');
+        renderQuote(eventLabel, exposure, resolved.prob);
+        trackDemand(category, eventLabel, exposure, resolved.prob, lastCalc.premium, resolved.estimate ? 'estimate' : 'live');
+      } else {
+        showNoOdds('Enter a U.S. city we can pull weather history for to see your odds.');
+        trackDemand(category, eventLabel, exposure, null, null, 'unresolved');
+      }
       return;
     }
 
-    // found:false / manual / unexpected shape — fall back to curated estimate.
-    setOddsMode(false);
-    renderQuote(eventLabel, exposure, curatedProb);
-    lastCalc.category = category;
-    trackDemand(category, eventLabel, exposure, curatedProb, lastCalc.premium, 'estimate');
+    // mode === 'fuel'
+    const fThreshold = (document.getElementById('fuelThreshold').value || '').trim();
+    const fCity = (document.getElementById('fuelCity').value || '').trim();
+    const fDate = document.getElementById('fuelDate').value;
+    if (!fThreshold) {
+      alert('Please enter a gas price threshold ($/gal) so we can price real odds.');
+      resetOdds(category);
+      return;
+    }
+    currentSource = SOURCE_FUEL;
+    const fuelLabel = typedLabel || ('Local gas tops $' + fThreshold + '/gal');
+    let params = 'category=fuel&threshold=' + encodeURIComponent(fThreshold);
+    if (fDate) params += '&date=' + encodeURIComponent(fDate);
+    if (fCity) params += '&city=' + encodeURIComponent(fCity);
+    const resolvedFuel = await resolveOdds(params);
+    if (resolvedFuel) {
+      showResolvedOdds(resolvedFuel.prob, resolvedFuel.sourceName, resolvedFuel.estimate ? 'estimate' : 'live');
+      renderQuote(fuelLabel, exposure, resolvedFuel.prob);
+      trackDemand(category, fuelLabel, exposure, resolvedFuel.prob, lastCalc.premium, resolvedFuel.estimate ? 'estimate' : 'live');
+    } else {
+      showNoOdds("We couldn't pull a published fuel price series for that yet — we'll confirm your exact odds when you set up your promo.");
+      trackDemand(category, fuelLabel, exposure, null, null, 'unresolved');
+    }
   } catch (err) {
-    // Any network/parse error — silently fall back to the curated estimate.
-    setOddsMode(false);
-    renderQuote(eventLabel, exposure, curatedProb);
-    lastCalc.category = category;
-    trackDemand(category, eventLabel, exposure, curatedProb, lastCalc.premium, 'estimate');
+    // Any network/parse error — never fabricate. Show the neutral prompt.
+    showNoOdds("We couldn't reach our live odds source just now — please try again in a moment, and we'll confirm your exact odds when you set up your promo.");
   } finally {
     if (btn) { btn.disabled = false; btn.textContent = btnLabel; }
   }
@@ -2134,7 +2349,9 @@ function openCheckout() {
   const triggerDisplay = lastCalc.trigger.length > 35 ? lastCalc.trigger.substring(0, 35) + '...' : lastCalc.trigger;
   document.getElementById('coTrigger').textContent = triggerDisplay;
   document.getElementById('coCoverage').textContent = fmt(lastCalc.exposure);
-  document.getElementById('coProb').textContent = '~' + Math.round(lastCalc.prob * 100) + '%';
+  // .prob is only ever set from a resolved real source; show it plainly.
+  document.getElementById('coProb').textContent =
+    (lastCalc.prob > 0) ? (Math.round(lastCalc.prob * 100) + '%') : '—';
   document.getElementById('coSource').textContent = lastCalc.source || SOURCE_OFFICIAL;
   document.getElementById('coPremium').textContent = fmt(lastCalc.premium);
 
@@ -2414,16 +2631,37 @@ function useDesignedPromo() {
     document.getElementById('exposure').value = exposureNum;
   }
 
-  document.getElementById('calculator').scrollIntoView({ behavior: 'smooth' });
-  // Recompute the quote with the prefilled values once scrolled into view.
-  if (exposureNum && exposureNum >= 250) {
-    calculate();
+  // Route the designed event to the right category + specifics, then leave the
+  // odds gated — the user finishes any missing specifics and clicks calculate.
+  const src = sourceForEvent(trigger);
+  const sel = document.getElementById('eventCategory');
+  let cat = 'custom';
+  if (src === SOURCE_NWS) cat = 'weather';
+  else if (src === SOURCE_FUEL) cat = 'fuel';
+  else if (src === SOURCE_GAME) cat = 'sports';
+  else if (src === SOURCE_STANDINGS) cat = 'milestone';
+  sel.value = cat;
+  onCategoryChange();
+  // Prefill the matchup text for matchup-mode categories.
+  if (categoryMode(cat) === 'matchup' && trigger) {
+    const m = document.getElementById('matchupInput');
+    if (m) m.value = trigger;
   }
+
+  document.getElementById('calculator').scrollIntoView({ behavior: 'smooth' });
 }
 
-// Init
+// Init — render the sports presets, show its inputs, and show the neutral
+// odds prompt. No probability is displayed until a real source resolves.
 renderChips('sports');
-setEstProb(DEFAULT_EST_PROB);
+applyCategoryInputs('sports');
+resetOdds('sports');
+
+// Best-effort threshold prefill once city + peril (+ date) are filled in.
+['weatherCity', 'weatherPeril', 'weatherDate'].forEach(function(id) {
+  const el = document.getElementById(id);
+  if (el) el.addEventListener('change', maybeSuggestWeatherThreshold);
+});
 
 // Optional live trust signal: pull a current reading from the National
 // Weather Service oracle. Best-effort only — hidden entirely on any error.
@@ -2645,5 +2883,12 @@ setEstProb(DEFAULT_EST_PROB);
 })();
 </script>
 
+<script>
+(function(){
+  window.submitCheckout=async function(){try{var amt=(typeof lastCalc!=='undefined'&&lastCalc&&lastCalc.premium)?Math.round(lastCalc.premium*100):0;if(!amt){alert('Please get your fee first.');return;}var label='Hedgerow promo'+((typeof lastCalc!=='undefined'&&lastCalc&&lastCalc.trigger)?(' — '+lastCalc.trigger):'');var btn=document.querySelector('.checkout-submit');if(btn){btn.disabled=true;btn.textContent='Redirecting to Stripe…';}var r=await fetch('/api/checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({amount_cents:amt,label:label})});var d=await r.json();if(d.ok&&d.url){window.location=d.url;return;}alert('Checkout error: '+(d.error||'unknown'));if(btn){btn.disabled=false;btn.textContent='Confirm';}}catch(e){alert('Network error.');}};
+  window.hedgerowChat=async function(m){try{var r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:m})});var d=await r.json();return d.reply||'';}catch(e){return '';}};
+  try{var q=new URLSearchParams(location.search);if(q.get('paid')==='1')setTimeout(function(){alert('Payment received (test mode). Your promotion is set.');},300);}catch(e){}
+})();
+</script>
 </body>
 </html>
