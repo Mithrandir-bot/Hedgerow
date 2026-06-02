@@ -2008,13 +2008,13 @@ function renderQuote(trigger, exposure, prob) {
   document.getElementById('rReceiveAmount').textContent = fmt(exposure);
 
   document.getElementById('rTriggered').textContent =
-    `If it happens, we pay YOU ${fmt(exposure)} the same day the event is officially decided — so you can cover the giveaway you offered your customers at no cost to you. Your only cost is the ${fmt(premium)} flat fee.`;
+    `If ${trigger} happens, we pay you ${fmt(exposure)} the same day (after it's officially confirmed) — so your promotion costs you nothing.`;
 
   document.getElementById('rNotTriggered').textContent =
-    `You keep the buzz and the foot traffic your promotion drove. Your only cost is the ${fmt(premium)} flat fee.`;
+    `If it doesn't happen, you keep the upside of running the promotion at no extra cost — your only cost is the ${fmt(premium)} flat fee.`;
 
   document.getElementById('rSummaryLine').textContent =
-    `Your flat fee: ${fmt(premium)}. If it happens, we pay YOU ${fmt(exposure)} the same day (after the event is officially decided) — so your giveaway costs you nothing. If it doesn't happen, you keep the buzz and foot traffic; your only cost is the ${fmt(premium)} fee.`;
+    `Your max cost is the ${fmt(premium)} flat fee. If ${trigger} happens, you receive ${fmt(exposure)}. Either way you know your number up front.`;
 
   // Surface the verified settlement source — the neutral, automatic judge.
   document.getElementById('rSettleSourceText').textContent = settledByLabel(currentSource);
