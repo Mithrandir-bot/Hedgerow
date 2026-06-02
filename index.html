@@ -502,6 +502,30 @@
     line-height: 1.5;
   }
 
+  /* Verified settlement source line */
+  .settle-source {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(16,185,129,0.1);
+    border: 1px solid rgba(16,185,129,0.25);
+    border-radius: 8px;
+    padding: 12px 14px;
+    margin-bottom: 16px;
+  }
+  .settle-source-icon {
+    color: var(--accent);
+    font-size: 1.1rem;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+  .settle-source-text {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: rgba(255,255,255,0.85);
+    line-height: 1.4;
+  }
+
   /* Get Coverage CTA */
   .get-coverage-btn {
     width: 100%;
@@ -755,6 +779,24 @@
     color: var(--text);
   }
   .vertical-example strong { font-size: 0.82rem; }
+
+  .live-weather-line {
+    max-width: 1100px;
+    margin: 24px auto 0;
+    text-align: center;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--accent-dark);
+  }
+  .live-weather-line::before {
+    content: '';
+    display: inline-block;
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--accent);
+    margin-right: 8px;
+    vertical-align: middle;
+  }
 
   /* TRUST */
   .trust-section {
@@ -1063,6 +1105,12 @@
         <p id="rSummaryLine">--</p>
       </div>
 
+      <!-- Verified settlement source — the neutral, automatic judge -->
+      <div class="settle-source" id="rSettleSource">
+        <span class="settle-source-icon" aria-hidden="true">&#9878;</span>
+        <span class="settle-source-text" id="rSettleSourceText">--</span>
+      </div>
+
       <button class="get-coverage-btn" onclick="openCheckout()">Run This Promotion &rarr;</button>
       <div class="result-disclaimer">Illustrative estimate. Your final flat fee is confirmed at checkout.</div>
     </div>
@@ -1090,6 +1138,10 @@
         <div class="order-row">
           <span class="order-label">Estimated odds</span>
           <span id="coProb">--</span>
+        </div>
+        <div class="order-row">
+          <span class="order-label">Settled by</span>
+          <span id="coSource">--</span>
         </div>
         <div class="order-row total">
           <span>Flat fee due today</span>
@@ -1221,6 +1273,7 @@
     </div>
 
   </div>
+  <p class="live-weather-line" id="liveWeatherLine" style="display:none;"></p>
 </div>
 
 <!-- TRUST -->
@@ -1256,6 +1309,10 @@
     <div class="faq-item">
       <div class="faq-q" onclick="toggleFaq(this)">How is the flat fee calculated?</div>
       <div class="faq-a">Your flat fee depends on how much the promo could cost you (your exposure) and the estimated odds of the event. You don't set the odds — those come from the event you pick, estimated from real-world data. More likely events cost a bit more, since the payoff is more likely to happen. The calculator on this page gives you an instant, transparent estimate, and your final flat fee uses live market data when you set up your promo. There's nothing else to pay.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">How do you know if it happened?</div>
+      <div class="faq-a">Every promotion settles on an independent, official source — the National Weather Service for weather, official league results for sports. The moment the event is officially decided, your payout is automatic. No disputes, no judgment calls.</div>
     </div>
     <div class="faq-item">
       <div class="faq-q" onclick="toggleFaq(this)">How fast do I get paid?</div>
@@ -1310,30 +1367,59 @@ let estProb = 0; // estimated probability (0-1) for the currently selected event
 // === PRESET DATA ===
 // Each curated event maps to an ESTIMATED probability (placeholder lookup table).
 // The business never sets the odds — the odds come from the event they pick.
+// Settlement-source labels: the independent, official "source of truth"
+// that decides each outcome. Surfaced to reassure businesses a neutral,
+// automatic judge — never us — decides the result.
+const SOURCE_NWS = "the National Weather Service";
+const SOURCE_GAME = "the official game result";
+const SOURCE_OFFICIAL = "an official, public source";
+
+// Composes the full "Settled by <source>" label from a bare source name.
+function settledByLabel(source) {
+  return "Settled by " + (source || SOURCE_OFFICIAL);
+}
+
 const PRESETS = {
   sports: [
-    { label: "Team wins this weekend",  trigger: "The Buccaneers win this weekend",  exposure: 4000,  estProb: 0.45 },
-    { label: "Wins by 10+ / blowout",   trigger: "The Heat win by 10+ this weekend", exposure: 3000,  estProb: 0.22 },
-    { label: "Makes the playoffs",      trigger: "The Lightning make the playoffs",  exposure: 10000, estProb: 0.30 },
-    { label: "Longshot player prop",    trigger: "A longshot player prop hits",      exposure: 2000,  estProb: 0.12 },
+    { label: "Team wins this weekend",  trigger: "The Buccaneers win this weekend",  exposure: 4000,  estProb: 0.45, source: SOURCE_GAME },
+    { label: "Wins by 10+ / blowout",   trigger: "The Heat win by 10+ this weekend", exposure: 3000,  estProb: 0.22, source: SOURCE_GAME },
+    { label: "Makes the playoffs",      trigger: "The Lightning make the playoffs",  exposure: 10000, estProb: 0.30, source: SOURCE_GAME },
+    { label: "Longshot player prop",    trigger: "A longshot player prop hits",      exposure: 2000,  estProb: 0.12, source: SOURCE_GAME },
   ],
   weather: [
-    { label: "Rain on your event day",     trigger: "It rains on your event day",          exposure: 3000, estProb: 0.30 },
-    { label: "Hits 90&deg;+ this weekend", trigger: "It hits 90°+ this weekend",           exposure: 1500, estProb: 0.40 },
-    { label: "Storm cancels outdoor day",  trigger: "A storm cancels your outdoor day",    exposure: 5000, estProb: 0.10 },
+    { label: "Rain on your event day",     trigger: "It rains on your event day",          exposure: 3000, estProb: 0.30, source: SOURCE_NWS },
+    { label: "Hits 90&deg;+ this weekend", trigger: "It hits 90°+ this weekend",           exposure: 1500, estProb: 0.40, source: SOURCE_NWS },
+    { label: "Storm cancels outdoor day",  trigger: "A storm cancels your outdoor day",    exposure: 5000, estProb: 0.10, source: SOURCE_NWS },
   ],
   seasonal: [
-    { label: "Record-hot weekend",  trigger: "A record-hot weekend",         exposure: 2000, estProb: 0.15 },
-    { label: "Big game-day crowd",  trigger: "A big game-day crowd shows up", exposure: 4000, estProb: 0.50 },
+    { label: "Record-hot weekend",  trigger: "A record-hot weekend",         exposure: 2000, estProb: 0.15, source: SOURCE_NWS },
+    { label: "Big game-day crowd",  trigger: "A big game-day crowd shows up", exposure: 4000, estProb: 0.50, source: SOURCE_OFFICIAL },
   ],
   custom: [
-    { label: "Team wins by 10+",    trigger: "The Gators win by 10+ this weekend", exposure: 3000, estProb: 0.22 },
-    { label: "It rains Saturday",   trigger: "It rains on Saturday",               exposure: 2500, estProb: 0.30 },
+    { label: "Team wins by 10+",    trigger: "The Gators win by 10+ this weekend", exposure: 3000, estProb: 0.22, source: SOURCE_GAME },
+    { label: "It rains Saturday",   trigger: "It rains on Saturday",               exposure: 2500, estProb: 0.30, source: SOURCE_NWS },
   ]
 };
 
 // Sensible default estimated probability when no exact event match is found.
 const DEFAULT_EST_PROB = 0.30;
+
+// Tracks the settlement source for the currently selected/typed event.
+let currentSource = SOURCE_OFFICIAL;
+
+// Infers a settlement source from free-text when no preset is chosen.
+// Weather-flavored language => National Weather Service; team/game/playoff
+// language => official game result; otherwise a generic official source.
+function sourceForEvent(text) {
+  const t = (text || '').toLowerCase();
+  if (/rain|storm|snow|90|degree|°|heat|hot|weather|temperature|wind|hurricane/.test(t)) {
+    return SOURCE_NWS;
+  }
+  if (/win|wins|won|game|playoff|score|beat|by 10|team|match/.test(t)) {
+    return SOURCE_GAME;
+  }
+  return SOURCE_OFFICIAL;
+}
 
 function onCategoryChange() {
   renderChips(document.getElementById('eventCategory').value);
@@ -1353,6 +1439,8 @@ function applyPreset(cat, idx) {
   document.getElementById('exposure').value = p.exposure;
   // The system assigns the estimated probability from the event — the user does not.
   setEstProb(p.estProb);
+  // Each curated event carries its verified settlement source.
+  currentSource = p.source || sourceForEvent(p.trigger);
   document.querySelectorAll('.preset-chip').forEach((c, i) => c.classList.toggle('active', i === idx));
   calculate();
 }
@@ -1408,7 +1496,7 @@ function renderQuote(trigger, exposure, prob) {
   const premium = Math.round((ev * (1 + margin)) / 10) * 10;
 
   // Store for checkout (prob is the probability actually used — live or curated)
-  lastCalc = { trigger, exposure, prob, premium };
+  lastCalc = { trigger, exposure, prob, premium, source: currentSource };
 
   const triggerDisplay = trigger.length > 40 ? trigger.substring(0, 40) + '...' : trigger;
   document.getElementById('rTriggerName').textContent = '"' + triggerDisplay + '"';
@@ -1423,6 +1511,9 @@ function renderQuote(trigger, exposure, prob) {
 
   document.getElementById('rSummaryLine').textContent =
     `Your flat fee: ${fmt(premium)}. If it happens, we pay YOU ${fmt(exposure)} the same day (after the event is officially decided) — so your giveaway costs you nothing. If it doesn't happen, you keep the buzz and foot traffic; your only cost is the ${fmt(premium)} fee.`;
+
+  // Surface the verified settlement source — the neutral, automatic judge.
+  document.getElementById('rSettleSourceText').textContent = settledByLabel(currentSource);
 
   document.getElementById('calcResult').classList.add('visible');
 }
@@ -1442,6 +1533,9 @@ function clearReject() {
 async function calculate() {
   const exposure = parseFloat(document.getElementById('exposure').value);
   const eventLabel = document.getElementById('triggerDesc').value.trim() || 'your event';
+
+  // Determine the verified settlement source for this event (preset or typed).
+  currentSource = sourceForEvent(eventLabel);
 
   if (!exposure || exposure < 250) {
     alert('Please enter how much this promo could cost you ($250 minimum).');
@@ -1498,6 +1592,7 @@ function openCheckout() {
   document.getElementById('coTrigger').textContent = triggerDisplay;
   document.getElementById('coCoverage').textContent = fmt(lastCalc.exposure);
   document.getElementById('coProb').textContent = '~' + Math.round(lastCalc.prob * 100) + '%';
+  document.getElementById('coSource').textContent = lastCalc.source || SOURCE_OFFICIAL;
   document.getElementById('coPremium').textContent = fmt(lastCalc.premium);
 
   // Reset to step 1
@@ -1566,6 +1661,24 @@ function submitEmail() {
 // Init
 renderChips('sports');
 setEstProb(DEFAULT_EST_PROB);
+
+// Optional live trust signal: pull a current reading from the National
+// Weather Service oracle. Best-effort only — hidden entirely on any error.
+(async function loadLiveWeather() {
+  try {
+    const resp = await fetch('/api/oracle?type=weather&city=Tampa');
+    if (!resp.ok) return;
+    const data = await resp.json();
+    const temp = (data && (data.temp_f ?? data.temperature ?? (data.data && data.data.temp_f)));
+    if (typeof temp !== 'number' || !isFinite(temp)) return;
+    const line = document.getElementById('liveWeatherLine');
+    if (!line) return;
+    line.textContent = 'Live from the National Weather Service — Tampa is currently ' + Math.round(temp) + '°F.';
+    line.style.display = 'block';
+  } catch (err) {
+    // Silently ignore — never break the page on a failed live signal.
+  }
+})();
 
 /* ─── Ask Hedgerow Chatbot ─── */
 (function() {
