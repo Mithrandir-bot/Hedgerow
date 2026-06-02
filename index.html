@@ -909,6 +909,49 @@
   }
   .cta-form button:hover { background: #f1f5f9; }
 
+  /* Lead-capture form (email + business type + city) */
+  .cta-lead-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 440px;
+    margin: 0 auto;
+  }
+  .cta-lead-form input,
+  .cta-lead-form select {
+    width: 100%;
+    padding: 14px 16px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-radius: 8px;
+    background: rgba(255,255,255,0.15);
+    color: white;
+    font-size: 1rem;
+  }
+  .cta-lead-form input::placeholder { color: rgba(255,255,255,0.6); }
+  .cta-lead-form select { cursor: pointer; }
+  .cta-lead-form select option { color: var(--text); background: white; }
+  .cta-lead-row {
+    display: flex;
+    gap: 10px;
+  }
+  .cta-lead-row select,
+  .cta-lead-row input { flex: 1; }
+  .cta-lead-form button {
+    padding: 14px 24px;
+    background: white;
+    color: var(--primary);
+    border: none;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .cta-lead-form button:hover { background: #f1f5f9; }
+  @media (max-width: 480px) {
+    .cta-lead-row { flex-direction: column; }
+  }
+
   /* FOOTER */
   footer {
     background: var(--text);
@@ -1347,8 +1390,23 @@
 <div class="cta-section" id="cta">
   <h2>Ready to run your next promotion?</h2>
   <p>Join the waitlist. First 50 businesses get their first promotion free.</p>
-  <div class="cta-form">
-    <input type="email" id="ctaEmail" placeholder="your@business.com">
+  <div class="cta-lead-form">
+    <input type="email" id="ctaEmail" placeholder="your@business.com" autocomplete="email">
+    <div class="cta-lead-row">
+      <select id="ctaBusinessType" aria-label="Business type">
+        <option value="">Business type</option>
+        <option value="sports_bar">Sports bar</option>
+        <option value="restaurant">Restaurant</option>
+        <option value="brewery">Brewery / taproom</option>
+        <option value="furniture_retail">Furniture or retail store</option>
+        <option value="car_dealership">Car dealership</option>
+        <option value="jewelry">Jewelry store</option>
+        <option value="outdoor_venue">Outdoor venue / events</option>
+        <option value="gas_fleet">Gas station / fleet</option>
+        <option value="other">Other</option>
+      </select>
+      <input type="text" id="ctaCity" placeholder="City" autocomplete="address-level2">
+    </div>
     <button onclick="submitEmail()">Join Waitlist</button>
   </div>
   <p id="ctaConfirm" style="margin-top:16px;font-size:0.9rem;display:none;color:rgba(255,255,255,0.9);">
@@ -1551,6 +1609,32 @@ function renderQuote(trigger, exposure, prob) {
   document.getElementById('calcResult').classList.add('visible');
 }
 
+// Fire-and-forget anonymous demand tracking. Records what events businesses
+// price and at what scale, to learn real demand. Never blocks or breaks the
+// calculator if it fails.
+function trackDemand(category, event, exposure, prob, fee, oddsSource) {
+  try {
+    const cityEl = document.getElementById('ctaCity');
+    const city = (cityEl && cityEl.value ? cityEl.value.trim() : '') || '';
+    fetch('/api/track', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        category: category,
+        event: event,
+        city: city,
+        exposure: exposure,
+        prob: prob,
+        fee: fee,
+        odds_source: oddsSource
+      }),
+      keepalive: true
+    }).catch(function() { /* ignore network errors */ });
+  } catch (err) {
+    // never block or break the calculator
+  }
+}
+
 function showReject(reason) {
   const group = document.getElementById('rejectGroup');
   document.getElementById('rejectMsg').textContent =
@@ -1566,6 +1650,7 @@ function clearReject() {
 async function calculate() {
   const exposure = parseFloat(document.getElementById('exposure').value);
   const eventLabel = document.getElementById('triggerDesc').value.trim() || 'your event';
+  const category = document.getElementById('eventCategory').value;
 
   // Determine the verified settlement source for this event (preset or typed).
   currentSource = sourceForEvent(eventLabel);
@@ -1601,16 +1686,27 @@ async function calculate() {
       setOddsMode(true, Math.round(liveProb * 100));
       writeOddsValue('~' + Math.round(liveProb * 100) + '%');
       renderQuote(eventLabel, exposure, liveProb);
+      lastCalc.category = category;
+      // Derive odds source from the resolver response when available.
+      const src = (data.source || data.odds_source || '').toString().toLowerCase();
+      let oddsSource = 'live';
+      if (src.indexOf('polymarket') !== -1) oddsSource = 'Polymarket';
+      else if (src.indexOf('nws') !== -1 || src.indexOf('weather') !== -1) oddsSource = 'NWS';
+      trackDemand(category, eventLabel, exposure, liveProb, lastCalc.premium, oddsSource);
       return;
     }
 
     // found:false / manual / unexpected shape — fall back to curated estimate.
     setOddsMode(false);
     renderQuote(eventLabel, exposure, curatedProb);
+    lastCalc.category = category;
+    trackDemand(category, eventLabel, exposure, curatedProb, lastCalc.premium, 'estimate');
   } catch (err) {
     // Any network/parse error — silently fall back to the curated estimate.
     setOddsMode(false);
     renderQuote(eventLabel, exposure, curatedProb);
+    lastCalc.category = category;
+    trackDemand(category, eventLabel, exposure, curatedProb, lastCalc.premium, 'estimate');
   } finally {
     if (btn) { btn.disabled = false; btn.textContent = btnLabel; }
   }
@@ -1680,15 +1776,43 @@ function toggleFaq(el) {
   el.parentElement.classList.toggle('open');
 }
 
-function submitEmail() {
-  const email = document.getElementById('ctaEmail').value;
-  if (!email || !email.includes('@')) {
+async function submitEmail() {
+  const emailEl = document.getElementById('ctaEmail');
+  const email = (emailEl.value || '').trim();
+  // Lightweight email validation.
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     alert('Please enter a valid email address.');
     return;
   }
-  document.getElementById('ctaConfirm').style.display = 'block';
-  document.getElementById('ctaEmail').value = '';
-  console.log('Waitlist signup:', email);
+
+  const businessType = (document.getElementById('ctaBusinessType').value || '') || null;
+  const city = (document.getElementById('ctaCity').value || '').trim() || null;
+
+  // Pull promo context from the calculator if the visitor used it; else blank/null.
+  const used = lastCalc && lastCalc.premium > 0;
+  const payload = {
+    email: email,
+    business_type: businessType,
+    city: city,
+    event_interest: used ? lastCalc.trigger : null,
+    category: used ? (lastCalc.category || document.getElementById('eventCategory').value) : null,
+    exposure: used ? lastCalc.exposure : null,
+    fee_shown: used ? lastCalc.premium : null,
+    source: 'landing'
+  };
+
+  try {
+    const resp = await fetch('/api/lead', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    if (!resp.ok) throw new Error('Bad response');
+    document.getElementById('ctaConfirm').style.display = 'block';
+    emailEl.value = '';
+  } catch (err) {
+    alert('Something went wrong. Please try again.');
+  }
 }
 
 // Init
