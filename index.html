@@ -19,6 +19,7 @@
     --text-muted: #64748b;
     --border: #e2e8f0;
     --radius: 12px;
+    --danger: #ef4444;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -225,7 +226,7 @@
   .calc-section .section-title { color: white; }
   .calc-section .section-sub { color: rgba(255,255,255,0.7); }
   .calc-container {
-    max-width: 960px;
+    max-width: 1060px;
     margin: 0 auto;
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -336,6 +337,7 @@
   .calc-btn:hover { background: var(--accent-dark); }
   .calc-btn:active { transform: scale(0.98); }
 
+  /* RESULT PANEL — redesigned for clarity */
   .calc-result {
     background: rgba(255,255,255,0.1);
     backdrop-filter: blur(10px);
@@ -352,63 +354,316 @@
     color: rgba(255,255,255,0.6);
     text-transform: uppercase;
     letter-spacing: 1px;
-    margin-bottom: 16px;
+    margin-bottom: 8px;
   }
-  .result-row {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px 0;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
-    font-size: 0.92rem;
+  .result-trigger-name {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: white;
   }
-  .result-row:last-of-type { border-bottom: none; }
-  .result-label { color: rgba(255,255,255,0.7); }
-  .result-value { font-weight: 700; }
-  .result-highlight {
-    background: rgba(16,185,129,0.15);
-    border: 1px solid rgba(16,185,129,0.3);
-    border-radius: 8px;
-    padding: 16px;
-    margin-top: 16px;
+
+  /* Side-by-side outcome cards */
+  .outcome-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .outcome-card {
+    border-radius: 10px;
+    padding: 20px 16px;
     text-align: center;
   }
-  .result-highlight .big-num {
-    font-size: 2rem;
-    font-weight: 800;
-    color: var(--accent);
+  .outcome-card.pay {
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.2);
   }
-  .result-highlight p { font-size: 0.85rem; color: rgba(255,255,255,0.6); margin-top: 4px; }
-  .result-scenarios { margin-top: 16px; }
-  .scenario {
-    background: rgba(255,255,255,0.05);
+  .outcome-card.receive {
+    background: rgba(16,185,129,0.15);
+    border: 1px solid rgba(16,185,129,0.35);
+  }
+  .outcome-label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+    color: rgba(255,255,255,0.65);
+  }
+  .outcome-amount {
+    font-size: 1.8rem;
+    font-weight: 800;
+    line-height: 1.1;
+  }
+  .outcome-card.pay .outcome-amount { color: white; }
+  .outcome-card.receive .outcome-amount { color: var(--accent); }
+  .outcome-note {
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.5);
+    margin-top: 6px;
+  }
+
+  /* Two-scenario boxes */
+  .scenarios-stack { margin-bottom: 16px; }
+  .scenario-box {
     border-radius: 8px;
-    padding: 14px;
+    padding: 14px 16px;
     margin-bottom: 10px;
   }
-  .scenario-title {
+  .scenario-box:last-child { margin-bottom: 0; }
+  .scenario-box.triggered {
+    background: rgba(16,185,129,0.1);
+    border: 1px solid rgba(16,185,129,0.25);
+  }
+  .scenario-box.not-triggered {
+    background: rgba(251,191,36,0.08);
+    border: 1px solid rgba(251,191,36,0.2);
+  }
+  .scenario-box .scenario-heading {
     font-weight: 700;
     font-size: 0.85rem;
     margin-bottom: 4px;
   }
-  .scenario-title.win { color: var(--accent); }
-  .scenario-title.neutral { color: #fbbf24; }
-  .scenario p { font-size: 0.83rem; color: rgba(255,255,255,0.7); line-height: 1.5; }
-  .result-cta {
-    margin-top: 16px;
+  .scenario-box.triggered .scenario-heading { color: var(--accent); }
+  .scenario-box.not-triggered .scenario-heading { color: #fbbf24; }
+  .scenario-box p {
+    font-size: 0.83rem;
+    color: rgba(255,255,255,0.7);
+    line-height: 1.5;
+  }
+
+  /* Bottom line summary */
+  .risk-summary {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin-bottom: 18px;
     text-align: center;
   }
-  .result-cta button {
-    padding: 12px 24px;
+  .risk-summary p {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: rgba(255,255,255,0.85);
+    line-height: 1.5;
+  }
+
+  /* Get Coverage CTA */
+  .get-coverage-btn {
+    width: 100%;
+    padding: 14px;
     background: white;
     color: var(--primary-dark);
     border: none;
     border-radius: 8px;
+    font-size: 1.05rem;
     font-weight: 700;
-    font-size: 0.95rem;
     cursor: pointer;
-    transition: background 0.2s;
+    transition: all 0.2s;
+    margin-bottom: 10px;
   }
-  .result-cta button:hover { background: #f1f5f9; }
+  .get-coverage-btn:hover { background: #f1f5f9; transform: translateY(-1px); }
+
+  .result-disclaimer {
+    font-size: 0.72rem;
+    color: rgba(255,255,255,0.4);
+    text-align: center;
+  }
+
+  /* === CHECKOUT MODAL === */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--card);
+    border-radius: 16px;
+    max-width: 520px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    color: var(--text);
+    position: relative;
+    animation: modalIn 0.25s ease;
+  }
+  @keyframes modalIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+
+  .modal-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: none;
+    border: none;
+    font-size: 1.4rem;
+    cursor: pointer;
+    color: var(--text-muted);
+    line-height: 1;
+  }
+  .modal-close:hover { color: var(--text); }
+
+  .modal-body { padding: 32px; }
+  .modal-title {
+    font-size: 1.3rem;
+    font-weight: 800;
+    margin-bottom: 4px;
+  }
+  .modal-subtitle {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    margin-bottom: 24px;
+  }
+
+  /* Order summary inside modal */
+  .order-summary {
+    background: #f8fafc;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px;
+    margin-bottom: 24px;
+  }
+  .order-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    padding: 4px 0;
+  }
+  .order-row.total {
+    border-top: 1px solid var(--border);
+    margin-top: 8px;
+    padding-top: 10px;
+    font-weight: 700;
+    font-size: 1rem;
+  }
+  .order-row .order-label { color: var(--text-muted); }
+
+  /* Payment method selection */
+  .payment-heading {
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+  .payment-options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px; }
+  .payment-option {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    cursor: pointer;
+    transition: all 0.15s;
+    background: white;
+  }
+  .payment-option:hover { border-color: var(--primary); }
+  .payment-option.selected { border-color: var(--primary); background: var(--primary-light); }
+  .payment-option input[type="radio"] { display: none; }
+  .payment-radio {
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    border: 2px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.15s;
+  }
+  .payment-option.selected .payment-radio {
+    border-color: var(--primary);
+  }
+  .payment-option.selected .payment-radio::after {
+    content: '';
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--primary);
+  }
+  .payment-info { flex: 1; }
+  .payment-name { font-weight: 600; font-size: 0.92rem; }
+  .payment-desc { font-size: 0.78rem; color: var(--text-muted); }
+  .payment-badge {
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 4px;
+    flex-shrink: 0;
+  }
+  .payment-badge.fast { background: #d1fae5; color: var(--accent-dark); }
+  .payment-badge.standard { background: #dbeafe; color: var(--primary); }
+
+  .stripe-note {
+    text-align: center;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+  }
+  .stripe-note strong { color: var(--text); }
+
+  .checkout-submit {
+    width: 100%;
+    padding: 14px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.05rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .checkout-submit:hover { background: var(--primary-dark); }
+
+  .proto-banner {
+    margin-top: 14px;
+    padding: 10px 14px;
+    background: #fef3c7;
+    border: 1px solid #fcd34d;
+    border-radius: 8px;
+    font-size: 0.78rem;
+    color: #92400e;
+    text-align: center;
+  }
+
+  /* Confirmation step */
+  .checkout-confirm { display: none; text-align: center; padding: 40px 32px; }
+  .checkout-confirm.visible { display: block; }
+  .confirm-check {
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    background: #d1fae5;
+    color: var(--accent-dark);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    margin-bottom: 16px;
+  }
+  .confirm-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .confirm-sub {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+  .confirm-detail {
+    background: #f8fafc;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    text-align: left;
+    margin-bottom: 20px;
+  }
+  .confirm-detail .order-row { padding: 3px 0; }
 
   /* USE CASES / VERTICALS */
   .verticals {
@@ -577,6 +832,7 @@
   }
   @media (max-width: 700px) {
     .calc-container { grid-template-columns: 1fr; }
+    .outcome-grid { grid-template-columns: 1fr; }
     .nav-links { display: none; }
     .nav-links.open { display: flex; flex-direction: column; position: absolute; top: 60px; left: 0; right: 0; background: var(--card); border-bottom: 1px solid var(--border); padding: 16px 24px; gap: 12px; }
     .nav-links.open a { margin-left: 0; }
@@ -719,41 +975,144 @@
 
     <div class="calc-result" id="calcResult">
       <div class="result-header">Your Illustrative Quote</div>
-      <div class="result-row">
-        <span class="result-label">Trigger</span>
-        <span class="result-value" id="rTrigger">--</span>
-      </div>
-      <div class="result-row">
-        <span class="result-label">Exposure</span>
-        <span class="result-value" id="rExposure">--</span>
-      </div>
-      <div class="result-row">
-        <span class="result-label">Event Probability</span>
-        <span class="result-value" id="rProb">--</span>
-      </div>
-      <div class="result-row">
-        <span class="result-label">Coverage</span>
-        <span class="result-value">100%</span>
-      </div>
-      <div class="result-highlight">
-        <div class="big-num" id="rPremium">--</div>
-        <p>Estimated one-time premium</p>
-      </div>
-      <div class="result-scenarios">
-        <div class="scenario">
-          <div class="scenario-title win">Event triggers:</div>
-          <p id="rWin">--</p>
+      <div class="result-trigger-name" id="rTriggerName">--</div>
+
+      <!-- Side-by-side: what you pay vs what you get -->
+      <div class="outcome-grid">
+        <div class="outcome-card pay">
+          <div class="outcome-label">You pay today (premium)</div>
+          <div class="outcome-amount" id="rPayAmount">--</div>
+          <div class="outcome-note">One-time payment</div>
         </div>
-        <div class="scenario">
-          <div class="scenario-title neutral">Event does not trigger:</div>
-          <p id="rNoTrigger">--</p>
+        <div class="outcome-card receive">
+          <div class="outcome-label">If it triggers, you receive</div>
+          <div class="outcome-amount" id="rReceiveAmount">--</div>
+          <div class="outcome-note">Covers your full exposure</div>
         </div>
       </div>
-      <div class="result-cta">
-        <button onclick="document.getElementById('cta').scrollIntoView({behavior:'smooth'})">Get This Coverage</button>
+
+      <!-- Two-scenario breakdown -->
+      <div class="scenarios-stack">
+        <div class="scenario-box triggered">
+          <div class="scenario-heading">If the event triggers:</div>
+          <p id="rTriggered">--</p>
+        </div>
+        <div class="scenario-box not-triggered">
+          <div class="scenario-heading">If it does not trigger:</div>
+          <p id="rNotTriggered">--</p>
+        </div>
       </div>
-      <p style="font-size:0.82rem;color:rgba(255,255,255,0.55);margin-top:14px;text-align:center;">Payout: USD (bank/ACH) or USDC stablecoin — your choice, same-day.</p>
-      <p style="font-size:0.72rem;color:rgba(255,255,255,0.4);margin-top:8px;text-align:center;">Illustrative only. Actual premiums depend on real-time market data at time of purchase.</p>
+
+      <!-- One-line risk/return summary -->
+      <div class="risk-summary">
+        <p id="rSummaryLine">--</p>
+      </div>
+
+      <button class="get-coverage-btn" onclick="openCheckout()">Get Coverage &rarr;</button>
+      <div class="result-disclaimer">Illustrative estimate, not a bound quote. Actual premiums depend on real-time market data at time of purchase.</div>
+    </div>
+  </div>
+</div>
+
+<!-- CHECKOUT MODAL -->
+<div class="modal-overlay" id="checkoutModal">
+  <div class="modal">
+    <!-- Step 1: Payment selection -->
+    <div class="modal-body" id="checkoutStep1">
+      <button class="modal-close" onclick="closeCheckout()">&times;</button>
+      <div class="modal-title">Get Coverage</div>
+      <div class="modal-subtitle">Review your coverage and choose a payment method.</div>
+
+      <div class="order-summary">
+        <div class="order-row">
+          <span class="order-label">Event</span>
+          <span id="coTrigger">--</span>
+        </div>
+        <div class="order-row">
+          <span class="order-label">Coverage amount</span>
+          <span id="coCoverage">--</span>
+        </div>
+        <div class="order-row">
+          <span class="order-label">Event probability</span>
+          <span id="coProb">--</span>
+        </div>
+        <div class="order-row total">
+          <span>Premium due today</span>
+          <span id="coPremium">--</span>
+        </div>
+      </div>
+
+      <div class="payment-heading">Payment method</div>
+      <div class="payment-options">
+        <label class="payment-option selected" onclick="selectPayment(this, 'card')">
+          <input type="radio" name="payment" value="card" checked>
+          <div class="payment-radio"></div>
+          <div class="payment-info">
+            <div class="payment-name">Credit or debit card</div>
+            <div class="payment-desc">Visa, Mastercard, Amex</div>
+          </div>
+          <div class="payment-badge standard">Standard</div>
+        </label>
+        <label class="payment-option" onclick="selectPayment(this, 'ach')">
+          <input type="radio" name="payment" value="ach">
+          <div class="payment-radio"></div>
+          <div class="payment-info">
+            <div class="payment-name">ACH bank transfer</div>
+            <div class="payment-desc">Pay directly from your bank account</div>
+          </div>
+          <div class="payment-badge standard">Low fee</div>
+        </label>
+        <label class="payment-option" onclick="selectPayment(this, 'usdc')">
+          <input type="radio" name="payment" value="usdc">
+          <div class="payment-radio"></div>
+          <div class="payment-info">
+            <div class="payment-name">USDC stablecoin</div>
+            <div class="payment-desc">Pay in USDC on Ethereum, Base, or Solana</div>
+          </div>
+          <div class="payment-badge fast">Instant</div>
+        </label>
+      </div>
+
+      <div class="stripe-note">Payments powered by <strong>Stripe</strong></div>
+
+      <button class="checkout-submit" onclick="submitCheckout()">Confirm Coverage</button>
+
+      <div class="proto-banner">
+        This is a prototype checkout. No payment will be charged. Stripe integration is pending.
+      </div>
+    </div>
+
+    <!-- Step 2: Confirmation -->
+    <div class="checkout-confirm" id="checkoutStep2">
+      <button class="modal-close" onclick="closeCheckout()" style="position:absolute;top:16px;right:16px;">&times;</button>
+      <div class="confirm-check">&#10003;</div>
+      <div class="confirm-title">Coverage confirmed</div>
+      <div class="confirm-sub">Your coverage is active. If the event triggers, your payout will be sent automatically via your selected method.</div>
+      <div class="confirm-detail">
+        <div class="order-row">
+          <span class="order-label">Event</span>
+          <span id="cfTrigger">--</span>
+        </div>
+        <div class="order-row">
+          <span class="order-label">Coverage</span>
+          <span id="cfCoverage">--</span>
+        </div>
+        <div class="order-row">
+          <span class="order-label">Premium paid</span>
+          <span id="cfPremium">--</span>
+        </div>
+        <div class="order-row">
+          <span class="order-label">Payment</span>
+          <span id="cfPayment">--</span>
+        </div>
+        <div class="order-row">
+          <span class="order-label">Policy</span>
+          <span id="cfPolicy">--</span>
+        </div>
+      </div>
+      <div class="proto-banner">
+        This is a design prototype. No real policy has been created.
+      </div>
     </div>
   </div>
 </div>
@@ -882,8 +1241,12 @@
 </footer>
 
 <script>
-// === BRAND CONSTANT (single place to change the name) ===
+// === BRAND CONSTANT ===
 const BRAND_NAME = "Hedgerow";
+
+// === STATE ===
+let lastCalc = { trigger: '', exposure: 0, prob: 0, premium: 0 };
+let selectedPayment = 'card';
 
 // === PRESET DATA ===
 const PRESETS = {
@@ -909,8 +1272,7 @@ const PRESETS = {
 };
 
 function onCategoryChange() {
-  const cat = document.getElementById('eventCategory').value;
-  renderChips(cat);
+  renderChips(document.getElementById('eventCategory').value);
 }
 
 function renderChips(cat) {
@@ -927,13 +1289,16 @@ function applyPreset(cat, idx) {
   document.getElementById('exposure').value = p.exposure;
   document.getElementById('probability').value = p.prob;
   updateProbLabel();
-  // highlight chip
   document.querySelectorAll('.preset-chip').forEach((c, i) => c.classList.toggle('active', i === idx));
   calculate();
 }
 
 function updateProbLabel() {
   document.getElementById('probLabel').textContent = document.getElementById('probability').value + '%';
+}
+
+function fmt(n) {
+  return '$' + n.toLocaleString();
 }
 
 function calculate() {
@@ -946,8 +1311,6 @@ function calculate() {
     return;
   }
 
-  // Pricing: premium = expectedValue * (1 + margin)
-  // Margin varies by probability band (lower prob = higher margin %)
   let margin;
   if (prob < 0.2) margin = 0.40;
   else if (prob < 0.4) margin = 0.32;
@@ -955,21 +1318,87 @@ function calculate() {
   else margin = 0.22;
 
   const ev = prob * exposure;
-  const premium = Math.round((ev * (1 + margin)) / 10) * 10; // round to $10
+  const premium = Math.round((ev * (1 + margin)) / 10) * 10;
 
-  document.getElementById('rTrigger').textContent = trigger.length > 35 ? trigger.substring(0, 35) + '...' : trigger;
-  document.getElementById('rExposure').textContent = '$' + exposure.toLocaleString();
-  document.getElementById('rProb').textContent = Math.round(prob * 100) + '%';
-  document.getElementById('rPremium').textContent = '$' + premium.toLocaleString();
+  // Store for checkout
+  lastCalc = { trigger, exposure, prob, premium };
 
-  document.getElementById('rWin').textContent =
-    `We pay you $${exposure.toLocaleString()} same-day via USD (ACH) or USDC — your choice. Your net cost is the $${premium.toLocaleString()} premium. Your customers or operations are fully covered.`;
+  // Populate result panel
+  const triggerDisplay = trigger.length > 40 ? trigger.substring(0, 40) + '...' : trigger;
+  document.getElementById('rTriggerName').textContent = '"' + triggerDisplay + '"';
+  document.getElementById('rPayAmount').textContent = fmt(premium);
+  document.getElementById('rReceiveAmount').textContent = fmt(exposure);
 
-  document.getElementById('rNoTrigger').textContent =
-    `Your only cost is the $${premium.toLocaleString()} premium. If this backed a promotion, you kept all the extra business it drove.`;
+  document.getElementById('rTriggered').textContent =
+    `You receive ${fmt(exposure)} same-day via USD (ACH) or USDC. Your net cost is just the ${fmt(premium)} premium. Your business is fully covered.`;
+
+  document.getElementById('rNotTriggered').textContent =
+    `You keep the foot traffic your promotion drove. Your only cost is the ${fmt(premium)} premium.`;
+
+  document.getElementById('rSummaryLine').textContent =
+    `Max cost = your premium (${fmt(premium)}). Payout if triggered = ${fmt(exposure)}. You are covered either way.`;
 
   document.getElementById('calcResult').classList.add('visible');
 }
+
+// === CHECKOUT ===
+
+function openCheckout() {
+  if (!lastCalc.premium) return;
+
+  const triggerDisplay = lastCalc.trigger.length > 35 ? lastCalc.trigger.substring(0, 35) + '...' : lastCalc.trigger;
+  document.getElementById('coTrigger').textContent = triggerDisplay;
+  document.getElementById('coCoverage').textContent = fmt(lastCalc.exposure);
+  document.getElementById('coProb').textContent = Math.round(lastCalc.prob * 100) + '%';
+  document.getElementById('coPremium').textContent = fmt(lastCalc.premium);
+
+  // Reset to step 1
+  document.getElementById('checkoutStep1').style.display = 'block';
+  document.getElementById('checkoutStep2').className = 'checkout-confirm';
+
+  // Reset payment selection
+  selectedPayment = 'card';
+  document.querySelectorAll('.payment-option').forEach((el, i) => {
+    el.classList.toggle('selected', i === 0);
+  });
+
+  document.getElementById('checkoutModal').classList.add('open');
+}
+
+function closeCheckout() {
+  document.getElementById('checkoutModal').classList.remove('open');
+}
+
+function selectPayment(el, method) {
+  selectedPayment = method;
+  document.querySelectorAll('.payment-option').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+const PAYMENT_LABELS = {
+  card: 'Credit/debit card',
+  ach: 'ACH bank transfer',
+  usdc: 'USDC stablecoin'
+};
+
+function submitCheckout() {
+  // Show confirmation
+  document.getElementById('checkoutStep1').style.display = 'none';
+
+  const triggerDisplay = lastCalc.trigger.length > 35 ? lastCalc.trigger.substring(0, 35) + '...' : lastCalc.trigger;
+  document.getElementById('cfTrigger').textContent = triggerDisplay;
+  document.getElementById('cfCoverage').textContent = fmt(lastCalc.exposure);
+  document.getElementById('cfPremium').textContent = fmt(lastCalc.premium);
+  document.getElementById('cfPayment').textContent = PAYMENT_LABELS[selectedPayment];
+  document.getElementById('cfPolicy').textContent = 'HRW-' + Date.now().toString(36).toUpperCase();
+
+  document.getElementById('checkoutStep2').className = 'checkout-confirm visible';
+}
+
+// Close modal on overlay click
+document.getElementById('checkoutModal').addEventListener('click', function(e) {
+  if (e.target === this) closeCheckout();
+});
 
 function toggleFaq(el) {
   el.parentElement.classList.toggle('open');
