@@ -965,9 +965,10 @@
   <a href="#calculator" class="hero-cta">See What Your Promo Costs</a>
 
   <div class="hero-triggers">
-    <div class="hero-trigger"><strong>Local sports</strong> &mdash; your team wins this weekend</div>
-    <div class="hero-trigger"><strong>Weather</strong> &mdash; rain on your event day, a hot weekend</div>
-    <div class="hero-trigger"><strong>Game day</strong> &mdash; a big crowd, a record-hot weekend</div>
+    <div class="hero-trigger"><strong>Local sports</strong> &mdash; your team wins, wins by 10+, makes the playoffs</div>
+    <div class="hero-trigger"><strong>Weather</strong> &mdash; rain on your event day, a 90&deg;+ weekend</div>
+    <div class="hero-trigger"><strong>Gas price</strong> &mdash; gas tops $4, or drops below $3</div>
+    <div class="hero-trigger"><strong>Season milestone</strong> &mdash; your team wins the division</div>
   </div>
 </div>
 
@@ -1032,6 +1033,8 @@
         <select id="eventCategory" onchange="onCategoryChange()">
           <option value="sports">Local sports</option>
           <option value="weather">Weather</option>
+          <option value="fuel">Fuel / gas price</option>
+          <option value="milestone">Season milestone</option>
           <option value="seasonal">Local &amp; seasonal</option>
           <option value="custom">Something else</option>
         </select>
@@ -1269,7 +1272,14 @@
       <div class="vertical-icon sports">G</div>
       <h3>Local Retail and Pop-Ups</h3>
       <p>Tie a fun discount to your team's big game. Win or lose, you keep the buzz.</p>
-      <div class="vertical-example"><strong>Example:</strong> "Gators win by 10+? 20% off everything." — $900 flat fee, we pay you $5,000 to cover the discounts</div>
+      <div class="vertical-example"><strong>Example:</strong> "Win by 10+? 20% off everything." — $900 flat fee, we pay you $5,000 to cover the discounts</div>
+    </div>
+
+    <div class="vertical-card">
+      <div class="vertical-icon econ">F</div>
+      <h3>Gas Stations, Auto and Fleet</h3>
+      <p>Turn a price swing into a customer-favorite deal. Tie a fuel rebate to the published gas price; if it hits, we pay you the payoff to cover it.</p>
+      <div class="vertical-example"><strong>Example:</strong> "Gas tops $4? 10c/gal fuel rebate weekend." — $1,050 flat fee, we pay you $3,000</div>
     </div>
 
   </div>
@@ -1312,7 +1322,7 @@
     </div>
     <div class="faq-item">
       <div class="faq-q" onclick="toggleFaq(this)">How do you know if it happened?</div>
-      <div class="faq-a">Every promotion settles on an independent, official source — the National Weather Service for weather, official league results for sports. The moment the event is officially decided, your payout is automatic. No disputes, no judgment calls.</div>
+      <div class="faq-a">Every promotion settles on an independent, official source — the official game result and standings for sports, the National Weather Service for weather, and the U.S. Energy Information Administration / AAA published price for gas and fuel. The moment the event is officially decided, your payout is automatic. No disputes, no judgment calls.</div>
     </div>
     <div class="faq-item">
       <div class="faq-q" onclick="toggleFaq(this)">How fast do I get paid?</div>
@@ -1320,7 +1330,7 @@
     </div>
     <div class="faq-item">
       <div class="faq-q" onclick="toggleFaq(this)">What events can I build a promotion around?</div>
-      <div class="faq-a">Fun, local events with a clear, verifiable result: your team winning this weekend or by 10+, your team making the playoffs, rain on your event day, a 90&deg;+ weekend, a storm canceling an outdoor day, a record-hot weekend, or a big game-day crowd. Pick from our curated list, or describe your own.</div>
+      <div class="faq-a">Fun, local events with a clear, verifiable result: your team winning this weekend or by 10+, your team making the playoffs or winning the division, rain on your event day, a 90&deg;+ weekend, a storm canceling an outdoor day, local gas topping or dropping below a set price, a record-hot weekend, or a big game-day crowd. Pick from our curated menu, or describe your own.</div>
     </div>
     <div class="faq-item">
       <div class="faq-q" onclick="toggleFaq(this)">Can I cancel a promotion?</div>
@@ -1372,6 +1382,8 @@ let estProb = 0; // estimated probability (0-1) for the currently selected event
 // automatic judge — never us — decides the result.
 const SOURCE_NWS = "the National Weather Service";
 const SOURCE_GAME = "the official game result";
+const SOURCE_STANDINGS = "the official standings";
+const SOURCE_FUEL = "the U.S. Energy Information Administration / AAA published price";
 const SOURCE_OFFICIAL = "an official, public source";
 
 // Composes the full "Settled by <source>" label from a bare source name.
@@ -1380,24 +1392,39 @@ function settledByLabel(source) {
 }
 
 const PRESETS = {
+  // Local sports — prominent. Great for bars, restaurants, breweries.
   sports: [
-    { label: "Team wins this weekend",  trigger: "The Buccaneers win this weekend",  exposure: 4000,  estProb: 0.45, source: SOURCE_GAME },
-    { label: "Wins by 10+ / blowout",   trigger: "The Heat win by 10+ this weekend", exposure: 3000,  estProb: 0.22, source: SOURCE_GAME },
-    { label: "Makes the playoffs",      trigger: "The Lightning make the playoffs",  exposure: 10000, estProb: 0.30, source: SOURCE_GAME },
-    { label: "Longshot player prop",    trigger: "A longshot player prop hits",      exposure: 2000,  estProb: 0.12, source: SOURCE_GAME },
+    { label: "Your team wins this weekend", trigger: "Your team wins this weekend",      exposure: 4000,  estProb: 0.45, source: SOURCE_GAME },
+    { label: "Win by 10+",                  trigger: "Your team wins by 10+ this weekend", exposure: 3000, estProb: 0.22, source: SOURCE_GAME },
+    { label: "Team makes the playoffs",     trigger: "Your team makes the playoffs",      exposure: 10000, estProb: 0.30, source: SOURCE_GAME },
+    { label: "Longshot player prop",        trigger: "A longshot player prop hits",       exposure: 2000,  estProb: 0.12, source: SOURCE_GAME },
   ],
+  // Weather — existing options preserved.
   weather: [
     { label: "Rain on your event day",     trigger: "It rains on your event day",          exposure: 3000, estProb: 0.30, source: SOURCE_NWS },
     { label: "Hits 90&deg;+ this weekend", trigger: "It hits 90°+ this weekend",           exposure: 1500, estProb: 0.40, source: SOURCE_NWS },
     { label: "Storm cancels outdoor day",  trigger: "A storm cancels your outdoor day",    exposure: 5000, estProb: 0.10, source: SOURCE_NWS },
+  ],
+  // Fuel / gas price — gas stations, auto shops, delivery/fleet operators.
+  fuel: [
+    { label: "Gas tops $4 → fuel rebate",   trigger: "Local gas tops $4.00/gal this month",   exposure: 3000, estProb: 0.35, source: SOURCE_FUEL },
+    { label: "Gas drops below $3 → bonus",  trigger: "Local gas drops below $3.00/gal this month", exposure: 2500, estProb: 0.25, source: SOURCE_FUEL },
+    { label: "Gas tops $5 → big rebate",    trigger: "Local gas tops $5.00/gal this month",   exposure: 5000, estProb: 0.12, source: SOURCE_FUEL },
+  ],
+  // Season milestone — sports retail, hotels. Settles on official standings.
+  milestone: [
+    { label: "Team makes the playoffs",  trigger: "Your team makes the playoffs",     exposure: 10000, estProb: 0.30, source: SOURCE_STANDINGS },
+    { label: "Team wins the division",   trigger: "Your team wins the division",      exposure: 8000,  estProb: 0.20, source: SOURCE_STANDINGS },
+    { label: "Team clinches a top seed", trigger: "Your team clinches a top seed",    exposure: 12000, estProb: 0.15, source: SOURCE_STANDINGS },
   ],
   seasonal: [
     { label: "Record-hot weekend",  trigger: "A record-hot weekend",         exposure: 2000, estProb: 0.15, source: SOURCE_NWS },
     { label: "Big game-day crowd",  trigger: "A big game-day crowd shows up", exposure: 4000, estProb: 0.50, source: SOURCE_OFFICIAL },
   ],
   custom: [
-    { label: "Team wins by 10+",    trigger: "The Gators win by 10+ this weekend", exposure: 3000, estProb: 0.22, source: SOURCE_GAME },
+    { label: "Team wins by 10+",    trigger: "Your team wins by 10+ this weekend", exposure: 3000, estProb: 0.22, source: SOURCE_GAME },
     { label: "It rains Saturday",   trigger: "It rains on Saturday",               exposure: 2500, estProb: 0.30, source: SOURCE_NWS },
+    { label: "Gas tops $4/gal",     trigger: "Local gas tops $4.00/gal this month", exposure: 3000, estProb: 0.35, source: SOURCE_FUEL },
   ]
 };
 
@@ -1412,10 +1439,16 @@ let currentSource = SOURCE_OFFICIAL;
 // language => official game result; otherwise a generic official source.
 function sourceForEvent(text) {
   const t = (text || '').toLowerCase();
+  if (/gas|fuel|gallon|\/gal|diesel|pump|gasoline|oil price/.test(t)) {
+    return SOURCE_FUEL;
+  }
   if (/rain|storm|snow|90|degree|°|heat|hot|weather|temperature|wind|hurricane/.test(t)) {
     return SOURCE_NWS;
   }
-  if (/win|wins|won|game|playoff|score|beat|by 10|team|match/.test(t)) {
+  if (/playoff|division|standings|clinch|top seed|make the post|postseason|season/.test(t)) {
+    return SOURCE_STANDINGS;
+  }
+  if (/win|wins|won|game|score|beat|by 10|team|match/.test(t)) {
     return SOURCE_GAME;
   }
   return SOURCE_OFFICIAL;
@@ -1707,8 +1740,8 @@ setEstProb(DEFAULT_EST_PROB);
     },
     {
       chip: 'What events can I use?',
-      patterns: ['what events', 'which events', 'types of events', 'sports', 'weather', 'examples'],
-      answer: 'Fun, local events with a clear result: your team winning this weekend or by 10+, your team making the playoffs, rain on your event day, a 90-degree weekend, a storm canceling an outdoor day, a record-hot weekend, or a big game-day crowd. Pick from our curated list, or describe your own.'
+      patterns: ['what events', 'which events', 'types of events', 'sports', 'weather', 'gas', 'fuel', 'examples'],
+      answer: 'Fun, local events with a clear result: your team winning this weekend or by 10+, your team making the playoffs or winning the division, rain on your event day, a 90-degree weekend, a storm canceling an outdoor day, local gas topping or dropping below a set price, a record-hot weekend, or a big game-day crowd. Pick from our curated menu, or describe your own.'
     },
     {
       chip: 'Do I take on any risk?',
