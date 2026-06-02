@@ -306,6 +306,42 @@
     margin-top: 6px;
     line-height: 1.4;
   }
+  .live-odds-badge {
+    display: none;
+    vertical-align: middle;
+    margin-left: 10px;
+    background: rgba(16,185,129,0.18);
+    border: 1px solid rgba(16,185,129,0.4);
+    color: var(--accent);
+    font-size: 0.62rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    padding: 3px 9px;
+    border-radius: 20px;
+    position: relative;
+    top: -2px;
+  }
+  .live-odds-badge::before {
+    content: '';
+    display: inline-block;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+  .est-odds.is-live { border-color: rgba(16,185,129,0.4); }
+  .reject-msg {
+    background: rgba(251,191,36,0.1);
+    border: 1px solid rgba(251,191,36,0.3);
+    border-radius: 8px;
+    padding: 14px 16px;
+    font-size: 0.88rem;
+    color: #fde68a;
+    line-height: 1.5;
+  }
+  .calc-btn:disabled { opacity: 0.7; cursor: progress; }
   .field-help {
     font-size: 0.74rem;
     color: rgba(255,255,255,0.55);
@@ -974,9 +1010,13 @@
       <div class="form-group">
         <label>Estimated odds this happens</label>
         <div class="est-odds" id="estOddsBox">
-          <span class="est-odds-value" id="estOddsValue">--</span>
-          <p class="est-odds-caveat">Estimated &mdash; your final price uses live market data when you set up your promo.</p>
+          <span class="est-odds-value" id="estOddsValue">--<span class="live-odds-badge" id="liveOddsBadge">Live odds</span></span>
+          <p class="est-odds-caveat" id="estOddsCaveat">Estimated &mdash; your final price uses live market data when you set up your promo.</p>
         </div>
+      </div>
+
+      <div class="form-group" id="rejectGroup" style="display:none;">
+        <div class="reject-msg" id="rejectMsg"></div>
       </div>
 
       <div class="form-group">
@@ -1318,41 +1358,58 @@ function applyPreset(cat, idx) {
 }
 
 // Assigns and displays the read-only estimated probability for the chosen event.
+// Updates only the leading value text, preserving the Live odds badge node.
+function writeOddsValue(text) {
+  const valueEl = document.getElementById('estOddsValue');
+  const badge = document.getElementById('liveOddsBadge');
+  valueEl.textContent = text;
+  valueEl.appendChild(badge); // re-attach after textContent reset
+}
+
+// Toggles the Live odds badge and the accompanying caveat copy.
+function setOddsMode(isLive, livePct) {
+  const badge = document.getElementById('liveOddsBadge');
+  const caveat = document.getElementById('estOddsCaveat');
+  const box = document.getElementById('estOddsBox');
+  if (isLive) {
+    badge.textContent = 'Live odds ' + livePct + '%';
+    badge.style.display = 'inline-block';
+    box.classList.add('is-live');
+    caveat.textContent = 'Live market odds — your final flat fee uses live market data when you set up your promo.';
+  } else {
+    badge.style.display = 'none';
+    box.classList.remove('is-live');
+    caveat.textContent = 'Estimated — your final price uses live market data when you set up your promo.';
+  }
+}
+
 function setEstProb(p) {
   estProb = (typeof p === 'number' && p > 0) ? p : DEFAULT_EST_PROB;
-  document.getElementById('estOddsValue').textContent = '~' + Math.round(estProb * 100) + '%';
+  writeOddsValue('~' + Math.round(estProb * 100) + '%');
 }
 
 function fmt(n) {
   return '$' + n.toLocaleString();
 }
 
-function calculate() {
-  const exposure = parseFloat(document.getElementById('exposure').value);
-  const trigger = document.getElementById('triggerDesc').value.trim() || 'your event';
+// Margin tiers — likelier events carry a slightly higher margin.
+function marginForProb(prob) {
+  if (prob < 0.2) return 0.40;
+  if (prob < 0.4) return 0.32;
+  if (prob < 0.6) return 0.26;
+  return 0.22;
+}
 
-  // Odds come from the event the user picked, never from the user.
-  const prob = (estProb > 0) ? estProb : DEFAULT_EST_PROB;
-  if (estProb <= 0) setEstProb(DEFAULT_EST_PROB);
-
-  if (!exposure || exposure < 250) {
-    alert('Please enter how much this promo could cost you ($250 minimum).');
-    return;
-  }
-
-  let margin;
-  if (prob < 0.2) margin = 0.40;
-  else if (prob < 0.4) margin = 0.32;
-  else if (prob < 0.6) margin = 0.26;
-  else margin = 0.22;
-
+// Computes the flat fee, stores lastCalc, and renders the result panel.
+// prob is the probability actually used — live (from the resolver) or curated.
+function renderQuote(trigger, exposure, prob) {
+  const margin = marginForProb(prob);
   const ev = prob * exposure;
   const premium = Math.round((ev * (1 + margin)) / 10) * 10;
 
-  // Store for checkout (prob is the estimated probability for the event)
+  // Store for checkout (prob is the probability actually used — live or curated)
   lastCalc = { trigger, exposure, prob, premium };
 
-  // Populate result panel
   const triggerDisplay = trigger.length > 40 ? trigger.substring(0, 40) + '...' : trigger;
   document.getElementById('rTriggerName').textContent = '"' + triggerDisplay + '"';
   document.getElementById('rPayAmount').textContent = fmt(premium);
@@ -1368,6 +1425,68 @@ function calculate() {
     `Your flat fee: ${fmt(premium)}. If it happens, we pay YOU ${fmt(exposure)} the same day (after the event is officially decided) — so your giveaway costs you nothing. If it doesn't happen, you keep the buzz and foot traffic; your only cost is the ${fmt(premium)} fee.`;
 
   document.getElementById('calcResult').classList.add('visible');
+}
+
+function showReject(reason) {
+  const group = document.getElementById('rejectGroup');
+  document.getElementById('rejectMsg').textContent =
+    'Hedgerow focuses on local, tangible events — try your local team or the weather.';
+  group.style.display = 'block';
+  document.getElementById('calcResult').classList.remove('visible');
+}
+
+function clearReject() {
+  document.getElementById('rejectGroup').style.display = 'none';
+}
+
+async function calculate() {
+  const exposure = parseFloat(document.getElementById('exposure').value);
+  const eventLabel = document.getElementById('triggerDesc').value.trim() || 'your event';
+
+  if (!exposure || exposure < 250) {
+    alert('Please enter how much this promo could cost you ($250 minimum).');
+    return;
+  }
+
+  // Curated estimate is always available as a graceful fallback.
+  const curatedProb = (estProb > 0) ? estProb : DEFAULT_EST_PROB;
+  if (estProb <= 0) setEstProb(DEFAULT_EST_PROB);
+
+  clearReject();
+
+  const btn = document.querySelector('.calc-btn');
+  const btnLabel = btn ? btn.textContent : '';
+  if (btn) { btn.disabled = true; btn.textContent = 'Pricing...'; }
+
+  try {
+    const resp = await fetch('/api/resolve?q=' + encodeURIComponent(eventLabel) + '&exposure=' + exposure);
+    const data = await resp.json();
+
+    if (data && data.action === 'reject') {
+      // Macro / irrelevant event — do not quote.
+      showReject(data.reason);
+      return;
+    }
+
+    if (data && data.found === true && typeof data.implied_prob === 'number' && data.implied_prob > 0) {
+      // Live, liquid market matched — use its implied probability.
+      const liveProb = data.implied_prob;
+      setOddsMode(true, Math.round(liveProb * 100));
+      writeOddsValue('~' + Math.round(liveProb * 100) + '%');
+      renderQuote(eventLabel, exposure, liveProb);
+      return;
+    }
+
+    // found:false / manual / unexpected shape — fall back to curated estimate.
+    setOddsMode(false);
+    renderQuote(eventLabel, exposure, curatedProb);
+  } catch (err) {
+    // Any network/parse error — silently fall back to the curated estimate.
+    setOddsMode(false);
+    renderQuote(eventLabel, exposure, curatedProb);
+  } finally {
+    if (btn) { btn.disabled = false; btn.textContent = btnLabel; }
+  }
 }
 
 // === CHECKOUT ===
