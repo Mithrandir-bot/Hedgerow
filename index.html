@@ -1281,7 +1281,7 @@
   <button class="mobile-menu" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu">
     <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
   </button>
-  <div class="nav-links">
+  <div class="nav-links" onclick="if(event.target.closest('a'))this.classList.remove('open')">
     <a href="#how">How It Works</a>
     <a href="#calculator">Pricing</a>
     <a href="#use-cases">Use Cases</a>
