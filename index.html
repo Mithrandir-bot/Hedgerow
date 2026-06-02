@@ -3,14 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hedgerow — Promotional Risk Coverage for Small Businesses</title>
+<title>Hedgerow — Event-Based Risk Coverage for Businesses</title>
+<meta name="description" content="Transfer business risk tied to real-world events — weather, sports, economics — with instant coverage and automated payouts.">
 <style>
   :root {
+    --brand: "Hedgerow";
     --primary: #1a56db;
     --primary-dark: #1e3a8a;
+    --primary-light: #dbeafe;
     --accent: #10b981;
     --accent-dark: #059669;
-    --danger: #ef4444;
     --bg: #f8fafc;
     --card: #ffffff;
     --text: #1e293b;
@@ -26,6 +28,7 @@
     background: var(--bg);
     color: var(--text);
     line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
   }
 
   /* NAV */
@@ -47,10 +50,11 @@
     letter-spacing: -0.5px;
   }
   .logo span { color: var(--accent); }
+  .nav-links { display: flex; align-items: center; gap: 4px; }
   nav a {
     color: var(--text-muted);
     text-decoration: none;
-    margin-left: 24px;
+    margin-left: 20px;
     font-weight: 500;
     font-size: 0.95rem;
   }
@@ -61,8 +65,11 @@
     padding: 8px 20px;
     border-radius: 8px;
     font-weight: 600;
+    margin-left: 20px;
   }
   .nav-cta:hover { background: var(--primary-dark); }
+  .mobile-menu { display: none; background: none; border: none; cursor: pointer; padding: 8px; }
+  .mobile-menu svg { width: 24px; height: 24px; stroke: var(--text); }
 
   /* HERO */
   .hero {
@@ -73,13 +80,13 @@
   }
   .hero-badge {
     display: inline-block;
-    background: #dbeafe;
+    background: var(--primary-light);
     color: var(--primary);
     padding: 6px 16px;
     border-radius: 20px;
     font-size: 0.85rem;
     font-weight: 600;
-    margin-bottom: 20px;
+    margin-bottom: 24px;
   }
   .hero h1 {
     font-size: clamp(2.2rem, 5vw, 3.5rem);
@@ -94,11 +101,18 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
-  .hero p {
+  .hero p.hero-lead {
     font-size: 1.2rem;
     color: var(--text-muted);
-    max-width: 620px;
+    max-width: 660px;
+    margin: 0 auto 16px;
+  }
+  .hero p.hero-sub {
+    font-size: 1rem;
+    color: var(--text-muted);
+    max-width: 580px;
     margin: 0 auto 32px;
+    opacity: 0.85;
   }
   .hero-cta {
     display: inline-block;
@@ -111,10 +125,52 @@
     text-decoration: none;
     transition: all 0.2s;
   }
-  .hero-cta:hover { background: var(--primary-dark); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(26,86,219,0.3); }
+  .hero-cta:hover { background: var(--primary-dark); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(26,86,219,0.3); }
 
-  /* HOW IT WORKS */
-  .section { max-width: 1100px; margin: 0 auto; padding: 60px 24px; }
+  .hero-triggers {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 40px;
+    flex-wrap: wrap;
+  }
+  .hero-trigger {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+  .hero-trigger strong { color: var(--text); }
+
+  /* PROOF BAR */
+  .proof-bar {
+    background: var(--card);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 32px 24px;
+    text-align: center;
+  }
+  .proof-stats {
+    display: flex;
+    justify-content: center;
+    gap: 48px;
+    flex-wrap: wrap;
+  }
+  .proof-stat .num {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--primary);
+  }
+  .proof-stat .label {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+  }
+
+  /* SECTION */
+  .section { max-width: 1100px; margin: 0 auto; padding: 72px 24px; }
   .section-title {
     text-align: center;
     font-size: 2rem;
@@ -130,10 +186,13 @@
     margin-left: auto;
     margin-right: auto;
   }
+
+  /* HOW IT WORKS */
   .steps {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    grid-template-columns: repeat(4, 1fr);
     gap: 24px;
+    position: relative;
   }
   .step {
     background: var(--card);
@@ -141,39 +200,37 @@
     border-radius: var(--radius);
     padding: 28px 24px;
     text-align: center;
+    position: relative;
   }
   .step-num {
     display: inline-flex;
     width: 40px; height: 40px;
     align-items: center; justify-content: center;
-    background: #dbeafe;
+    background: var(--primary-light);
     color: var(--primary);
     border-radius: 50%;
     font-weight: 800;
     font-size: 1.1rem;
     margin-bottom: 16px;
   }
-  .step h3 { font-size: 1.1rem; margin-bottom: 8px; }
-  .step p { font-size: 0.9rem; color: var(--text-muted); }
+  .step h3 { font-size: 1.05rem; margin-bottom: 8px; }
+  .step p { font-size: 0.88rem; color: var(--text-muted); }
 
   /* CALCULATOR */
   .calc-section {
     background: linear-gradient(135deg, var(--primary-dark), #0f3460);
     color: white;
-    padding: 60px 24px;
+    padding: 72px 24px;
   }
   .calc-section .section-title { color: white; }
   .calc-section .section-sub { color: rgba(255,255,255,0.7); }
   .calc-container {
-    max-width: 900px;
+    max-width: 960px;
     margin: 0 auto;
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 32px;
     align-items: start;
-  }
-  @media (max-width: 700px) {
-    .calc-container { grid-template-columns: 1fr; }
   }
   .calc-form {
     background: rgba(255,255,255,0.1);
@@ -198,9 +255,72 @@
     background: rgba(255,255,255,0.08);
     color: white;
     font-size: 1rem;
+    transition: border-color 0.2s;
+  }
+  .form-group input:focus, .form-group select:focus {
+    outline: none;
+    border-color: var(--accent);
   }
   .form-group input::placeholder { color: rgba(255,255,255,0.4); }
   .form-group select option { color: var(--text); background: white; }
+
+  .preset-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
+  }
+  .preset-chip {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 0.78rem;
+    color: rgba(255,255,255,0.8);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .preset-chip:hover, .preset-chip.active {
+    background: rgba(16,185,129,0.2);
+    border-color: var(--accent);
+    color: white;
+  }
+
+  .range-track {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.78rem;
+    color: rgba(255,255,255,0.5);
+    margin-top: 4px;
+  }
+  .range-track .current { color: var(--accent); font-weight: 700; font-size: 0.85rem; }
+
+  input[type="range"] {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 6px;
+    border-radius: 3px;
+    background: rgba(255,255,255,0.2);
+    outline: none;
+    border: none;
+    padding: 0;
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    background: var(--accent);
+    cursor: pointer;
+    border: 2px solid white;
+  }
+  input[type="range"]::-moz-range-thumb {
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    background: var(--accent);
+    cursor: pointer;
+    border: 2px solid white;
+  }
+
   .calc-btn {
     width: 100%;
     padding: 14px;
@@ -214,6 +334,7 @@
     transition: all 0.2s;
   }
   .calc-btn:hover { background: var(--accent-dark); }
+  .calc-btn:active { transform: scale(0.98); }
 
   .calc-result {
     background: rgba(255,255,255,0.1);
@@ -223,7 +344,9 @@
     padding: 28px;
     display: none;
   }
-  .calc-result.visible { display: block; }
+  .calc-result.visible { display: block; animation: fadeIn 0.3s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
   .result-header {
     font-size: 0.85rem;
     color: rgba(255,255,255,0.6);
@@ -234,11 +357,11 @@
   .result-row {
     display: flex;
     justify-content: space-between;
-    padding: 12px 0;
+    padding: 10px 0;
     border-bottom: 1px solid rgba(255,255,255,0.1);
-    font-size: 0.95rem;
+    font-size: 0.92rem;
   }
-  .result-row:last-child { border-bottom: none; }
+  .result-row:last-of-type { border-bottom: none; }
   .result-label { color: rgba(255,255,255,0.7); }
   .result-value { font-weight: 700; }
   .result-highlight {
@@ -255,7 +378,7 @@
     color: var(--accent);
   }
   .result-highlight p { font-size: 0.85rem; color: rgba(255,255,255,0.6); margin-top: 4px; }
-  .result-scenarios { margin-top: 20px; }
+  .result-scenarios { margin-top: 16px; }
   .scenario {
     background: rgba(255,255,255,0.05);
     border-radius: 8px;
@@ -265,16 +388,32 @@
   .scenario-title {
     font-weight: 700;
     font-size: 0.85rem;
-    margin-bottom: 6px;
+    margin-bottom: 4px;
   }
   .scenario-title.win { color: var(--accent); }
-  .scenario-title.lose { color: #fbbf24; }
-  .scenario p { font-size: 0.85rem; color: rgba(255,255,255,0.7); }
+  .scenario-title.neutral { color: #fbbf24; }
+  .scenario p { font-size: 0.83rem; color: rgba(255,255,255,0.7); line-height: 1.5; }
+  .result-cta {
+    margin-top: 16px;
+    text-align: center;
+  }
+  .result-cta button {
+    padding: 12px 24px;
+    background: white;
+    color: var(--primary-dark);
+    border: none;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .result-cta button:hover { background: #f1f5f9; }
 
-  /* VERTICALS */
+  /* USE CASES / VERTICALS */
   .verticals {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
     gap: 20px;
   }
   .vertical-card {
@@ -285,47 +424,97 @@
     transition: all 0.2s;
   }
   .vertical-card:hover { border-color: var(--primary); box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
-  .vertical-icon { font-size: 2rem; margin-bottom: 12px; }
+  .vertical-icon {
+    width: 44px; height: 44px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 14px;
+    font-size: 1.3rem;
+    font-weight: 700;
+  }
+  .vertical-icon.sports { background: #dbeafe; color: var(--primary); }
+  .vertical-icon.weather { background: #d1fae5; color: var(--accent-dark); }
+  .vertical-icon.econ { background: #fef3c7; color: #d97706; }
   .vertical-card h3 { font-size: 1.05rem; margin-bottom: 6px; }
   .vertical-card p { font-size: 0.88rem; color: var(--text-muted); margin-bottom: 12px; }
   .vertical-example {
     background: #f1f5f9;
     border-radius: 6px;
     padding: 10px 12px;
-    font-size: 0.82rem;
+    font-size: 0.8rem;
     color: var(--text);
-    font-style: italic;
   }
+  .vertical-example strong { font-size: 0.82rem; }
 
-  /* SOCIAL PROOF */
-  .proof-bar {
+  /* TRUST */
+  .trust-section {
     background: var(--card);
     border-top: 1px solid var(--border);
     border-bottom: 1px solid var(--border);
-    padding: 32px 24px;
+    padding: 48px 24px;
+  }
+  .trust-grid {
+    max-width: 900px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
     text-align: center;
   }
-  .proof-stats {
-    display: flex;
+  .trust-item .trust-icon {
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
     justify-content: center;
-    gap: 48px;
-    flex-wrap: wrap;
+    margin-bottom: 12px;
+    font-size: 1.3rem;
   }
-  .proof-stat .num {
-    font-size: 2rem;
-    font-weight: 800;
-    color: var(--primary);
+  .trust-item .trust-icon.shield { background: #dbeafe; color: var(--primary); }
+  .trust-item .trust-icon.lock { background: #d1fae5; color: var(--accent-dark); }
+  .trust-item .trust-icon.clock { background: #fef3c7; color: #d97706; }
+  .trust-item h4 { font-size: 0.95rem; margin-bottom: 4px; }
+  .trust-item p { font-size: 0.85rem; color: var(--text-muted); }
+
+  /* FAQ */
+  .faq-list { max-width: 700px; margin: 0 auto; }
+  .faq-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 12px;
+    overflow: hidden;
   }
-  .proof-stat .label {
-    font-size: 0.85rem;
+  .faq-q {
+    padding: 18px 20px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    user-select: none;
+  }
+  .faq-q:hover { background: #f8fafc; }
+  .faq-q::after { content: '+'; font-size: 1.3rem; color: var(--text-muted); transition: transform 0.2s; }
+  .faq-item.open .faq-q::after { transform: rotate(45deg); }
+  .faq-a {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    padding: 0 20px;
     color: var(--text-muted);
+    font-size: 0.92rem;
+    line-height: 1.7;
   }
+  .faq-item.open .faq-a { max-height: 300px; padding: 0 20px 18px; }
 
   /* CTA */
   .cta-section {
     background: linear-gradient(135deg, var(--primary), var(--accent));
     color: white;
-    padding: 60px 24px;
+    padding: 72px 24px;
     text-align: center;
   }
   .cta-section h2 {
@@ -380,46 +569,37 @@
   }
   footer a { color: rgba(255,255,255,0.7); text-decoration: none; }
 
-  /* FAQ */
-  .faq-list { max-width: 700px; margin: 0 auto; }
-  .faq-item {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    margin-bottom: 12px;
-    overflow: hidden;
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    .steps { grid-template-columns: repeat(2, 1fr); }
+    .verticals { grid-template-columns: repeat(2, 1fr); }
+    .trust-grid { grid-template-columns: 1fr; gap: 24px; }
   }
-  .faq-q {
-    padding: 18px 20px;
-    font-weight: 600;
-    cursor: pointer;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  @media (max-width: 700px) {
+    .calc-container { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+    .nav-links.open { display: flex; flex-direction: column; position: absolute; top: 60px; left: 0; right: 0; background: var(--card); border-bottom: 1px solid var(--border); padding: 16px 24px; gap: 12px; }
+    .nav-links.open a { margin-left: 0; }
+    .mobile-menu { display: block; }
+    .hero { padding: 48px 24px 40px; }
+    .steps { grid-template-columns: 1fr; }
+    .verticals { grid-template-columns: 1fr; }
+    .cta-form { flex-direction: column; }
   }
-  .faq-q:hover { background: #f8fafc; }
-  .faq-q::after { content: '+'; font-size: 1.3rem; color: var(--text-muted); transition: transform 0.2s; }
-  .faq-item.open .faq-q::after { transform: rotate(45deg); }
-  .faq-a {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.3s ease;
-    padding: 0 20px;
-    color: var(--text-muted);
-    font-size: 0.92rem;
-  }
-  .faq-item.open .faq-a { max-height: 300px; padding: 0 20px 18px; }
 </style>
 </head>
 <body>
 
 <!-- NAV -->
 <nav>
-  <div class="logo">Shield<span>Bet</span></div>
-  <div>
+  <div class="logo" id="brand-logo">Hedge<span>row</span></div>
+  <button class="mobile-menu" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+  </button>
+  <div class="nav-links">
     <a href="#how">How It Works</a>
     <a href="#calculator">Calculator</a>
-    <a href="#verticals">Who It's For</a>
+    <a href="#use-cases">Use Cases</a>
     <a href="#faq">FAQ</a>
     <a href="#cta" class="nav-cta">Get Early Access</a>
   </div>
@@ -427,10 +607,18 @@
 
 <!-- HERO -->
 <div class="hero">
-  <div class="hero-badge">Licensed &amp; Regulated in Florida</div>
-  <h1>Run bold promotions.<br><em>All upside. No risk.</em></h1>
-  <p>Run conditional promotions — "Free drinks if the Heat win!" — with zero financial risk. We handle the hedge. You keep the customers and all the upside.</p>
-  <a href="#calculator" class="hero-cta">Calculate Your Coverage &rarr;</a>
+  <div class="hero-badge">Event-Based Risk Coverage</div>
+  <h1>Turn real-world events<br>into <em>covered outcomes.</em></h1>
+  <p class="hero-lead">Weather threatens your revenue. A promotion could backfire. Commodity prices spike. Hedgerow lets you define the trigger, set your exposure, and transfer the risk — instantly.</p>
+  <p class="hero-sub">No trading accounts. No brokers. Just simple, transparent coverage priced in seconds.</p>
+  <a href="#calculator" class="hero-cta">Calculate Your Coverage</a>
+
+  <div class="hero-triggers">
+    <div class="hero-trigger"><strong>Sports</strong> &mdash; team wins, player stats</div>
+    <div class="hero-trigger"><strong>Weather</strong> &mdash; rain, heat, storms</div>
+    <div class="hero-trigger"><strong>Economic</strong> &mdash; gas prices, rate moves</div>
+    <div class="hero-trigger"><strong>Custom</strong> &mdash; any verifiable event</div>
+  </div>
 </div>
 
 <!-- SOCIAL PROOF BAR -->
@@ -441,8 +629,8 @@
       <div class="label">Risk to your business</div>
     </div>
     <div class="proof-stat">
-      <div class="num">&lt;60s</div>
-      <div class="label">To get covered</div>
+      <div class="num">&lt; 60s</div>
+      <div class="label">To get a quote</div>
     </div>
     <div class="proof-stat">
       <div class="num">100%</div>
@@ -450,7 +638,7 @@
     </div>
     <div class="proof-stat">
       <div class="num">24hr</div>
-      <div class="label">Payout after event</div>
+      <div class="label">Payout after trigger</div>
     </div>
   </div>
 </div>
@@ -458,27 +646,27 @@
 <!-- HOW IT WORKS -->
 <div class="section" id="how">
   <h2 class="section-title">How It Works</h2>
-  <p class="section-sub">Get covered in 4 steps. No trading accounts. No financial expertise needed.</p>
+  <p class="section-sub">Four steps from risk to coverage. No paperwork, no trading expertise.</p>
   <div class="steps">
     <div class="step">
       <div class="step-num">1</div>
-      <h3>Describe Your Promo</h3>
-      <p>"If the Dolphins win Sunday, all apps are free." Tell us the trigger event and your estimated cost if it hits.</p>
+      <h3>Define Your Trigger</h3>
+      <p>Pick the event that creates risk for your business: a team winning, rain on a key date, gas prices crossing a threshold — anything verifiable.</p>
     </div>
     <div class="step">
       <div class="step-num">2</div>
-      <h3>Get Instant Pricing</h3>
-      <p>Our system checks real-time market data and quotes your coverage premium in seconds. No paperwork.</p>
+      <h3>Set Your Exposure</h3>
+      <p>Tell us how much it would cost you if the event happens. That is the amount we cover.</p>
     </div>
     <div class="step">
       <div class="step-num">3</div>
-      <h3>Run Your Promo</h3>
-      <p>Promote your offer to customers with confidence. Drive foot traffic, boost engagement, build loyalty.</p>
+      <h3>Get Instant Pricing</h3>
+      <p>Our system checks real-time probability data and quotes your premium in seconds. Pay once; you are covered.</p>
     </div>
     <div class="step">
       <div class="step-num">4</div>
-      <h3>We Settle Automatically</h3>
-      <p>If the event triggers, we pay you within 24 hours. If it doesn't, you kept all the extra business the promo drove.</p>
+      <h3>Automatic Settlement</h3>
+      <p>If the event triggers, we pay you within 24 hours via ACH. If it does not trigger, your only cost was the premium.</p>
     </div>
   </div>
 </div>
@@ -486,111 +674,157 @@
 <!-- CALCULATOR -->
 <div class="calc-section" id="calculator">
   <h2 class="section-title">Coverage Calculator</h2>
-  <p class="section-sub">See exactly what your promotional coverage would cost. Real math, no surprises.</p>
+  <p class="section-sub">See what your coverage would cost. Real math, no surprises.</p>
   <div class="calc-container">
     <div class="calc-form">
       <div class="form-group">
-        <label>What type of promotion?</label>
-        <select id="promoType">
-          <option value="sports">Sports outcome (team wins/loses)</option>
-          <option value="weather">Weather event (rain, temperature)</option>
-          <option value="other">Other event</option>
+        <label>Event category</label>
+        <select id="eventCategory" onchange="onCategoryChange()">
+          <option value="sports">Sports outcome</option>
+          <option value="weather">Weather event</option>
+          <option value="economic">Economic indicator</option>
+          <option value="custom">Custom event</option>
         </select>
       </div>
+
       <div class="form-group">
-        <label>Describe your promo trigger</label>
-        <input type="text" id="promoDesc" placeholder='e.g., "Heat win Game 5"'>
+        <label>Quick examples</label>
+        <div class="preset-chips" id="presetChips">
+          <!-- populated by JS -->
+        </div>
       </div>
+
       <div class="form-group">
-        <label>Your max cost if the event happens ($)</label>
-        <input type="number" id="maxExposure" placeholder="e.g., 3000" min="100" step="100">
+        <label>Describe the trigger event</label>
+        <input type="text" id="triggerDesc" placeholder='e.g., "Heat win Game 5"'>
       </div>
+
       <div class="form-group">
-        <label>Estimated probability of the event (%)</label>
-        <input type="range" id="probability" min="5" max="95" value="45" oninput="document.getElementById('probLabel').textContent = this.value + '%'">
-        <div style="display:flex;justify-content:space-between;font-size:0.8rem;color:rgba(255,255,255,0.5);margin-top:4px;">
+        <label>Your exposure if the event happens ($)</label>
+        <input type="number" id="exposure" placeholder="e.g., 5000" min="250" step="100">
+      </div>
+
+      <div class="form-group">
+        <label>Estimated event probability</label>
+        <input type="range" id="probability" min="5" max="95" value="40" oninput="updateProbLabel()">
+        <div class="range-track">
           <span>Unlikely (5%)</span>
-          <span id="probLabel" style="color:var(--accent);font-weight:700;">45%</span>
+          <span class="current" id="probLabel">40%</span>
           <span>Very likely (95%)</span>
         </div>
       </div>
-      <button class="calc-btn" onclick="calculateHedge()">Calculate My Coverage</button>
+
+      <button class="calc-btn" onclick="calculate()">Calculate My Premium</button>
     </div>
+
     <div class="calc-result" id="calcResult">
-      <div class="result-header">Your Coverage Quote</div>
+      <div class="result-header">Your Illustrative Quote</div>
       <div class="result-row">
-        <span class="result-label">Promo Exposure</span>
-        <span class="result-value" id="rExposure">—</span>
+        <span class="result-label">Trigger</span>
+        <span class="result-value" id="rTrigger">--</span>
+      </div>
+      <div class="result-row">
+        <span class="result-label">Exposure</span>
+        <span class="result-value" id="rExposure">--</span>
       </div>
       <div class="result-row">
         <span class="result-label">Event Probability</span>
-        <span class="result-value" id="rProbability">—</span>
+        <span class="result-value" id="rProb">--</span>
       </div>
       <div class="result-row">
-        <span class="result-label">Coverage Level</span>
+        <span class="result-label">Coverage</span>
         <span class="result-value">100%</span>
       </div>
       <div class="result-highlight">
-        <div class="big-num" id="rPremium">—</div>
-        <p>Your premium (one-time payment)</p>
+        <div class="big-num" id="rPremium">--</div>
+        <p>Estimated one-time premium</p>
       </div>
       <div class="result-scenarios">
         <div class="scenario">
-          <div class="scenario-title win">&#10003; If the event triggers:</div>
-          <p id="rWinScenario">—</p>
+          <div class="scenario-title win">Event triggers:</div>
+          <p id="rWin">--</p>
         </div>
         <div class="scenario">
-          <div class="scenario-title lose">&#10003; If the event doesn't trigger:</div>
-          <p id="rLoseScenario">—</p>
+          <div class="scenario-title neutral">Event does not trigger:</div>
+          <p id="rNoTrigger">--</p>
         </div>
       </div>
-      <div style="margin-top:20px;text-align:center;">
-        <button class="calc-btn" onclick="scrollToCTA()" style="background:white;color:var(--primary-dark);">Get This Coverage &rarr;</button>
+      <div class="result-cta">
+        <button onclick="document.getElementById('cta').scrollIntoView({behavior:'smooth'})">Get This Coverage</button>
       </div>
+      <p style="font-size:0.72rem;color:rgba(255,255,255,0.4);margin-top:12px;text-align:center;">Illustrative only. Actual premiums depend on real-time market data at time of purchase.</p>
     </div>
   </div>
 </div>
 
-<!-- VERTICALS -->
-<div class="section" id="verticals">
-  <h2 class="section-title">Built For Your Business</h2>
-  <p class="section-sub">Hedgerow works for any business that runs promotions tied to real-world events.</p>
+<!-- USE CASES -->
+<div class="section" id="use-cases">
+  <h2 class="section-title">Who Uses Hedgerow</h2>
+  <p class="section-sub">Any business exposed to event-driven risk. Promotions are just the start.</p>
   <div class="verticals">
+
     <div class="vertical-card">
-      <div class="vertical-icon">🏈</div>
-      <h3>Sports Bars & Restaurants</h3>
-      <p>Run game-day promos that pack the house without risking your margins.</p>
-      <div class="vertical-example">"Free wings for everyone if the Jags win!" — covered for $640 premium on $4,000 exposure</div>
+      <div class="vertical-icon sports">S</div>
+      <h3>Sports Bars and Restaurants</h3>
+      <p>Run game-day promotions that pack the house. If the team wins and you owe free wings, we pay.</p>
+      <div class="vertical-example"><strong>Example:</strong> "Free wings if the Jags win" — $640 premium covers $4,000 exposure</div>
     </div>
+
     <div class="vertical-card">
-      <div class="vertical-icon">🚗</div>
+      <div class="vertical-icon weather">W</div>
+      <h3>Outdoor Events and Venues</h3>
+      <p>Rain on your festival, wedding, or grand opening? Cover lost revenue automatically.</p>
+      <div class="vertical-example"><strong>Example:</strong> "Rain on the wedding? 50% refund." — $380 covers $2,500</div>
+    </div>
+
+    <div class="vertical-card">
+      <div class="vertical-icon econ">$</div>
+      <h3>Fuel-Dependent Operations</h3>
+      <p>Trucking, delivery, and fleet operators: cap your fuel costs with a price-trigger policy.</p>
+      <div class="vertical-example"><strong>Example:</strong> "Gas above $4.50/gal this month" — $450 covers $3,000 overage</div>
+    </div>
+
+    <div class="vertical-card">
+      <div class="vertical-icon sports">D</div>
       <h3>Car Dealerships</h3>
-      <p>Big-ticket conditional discounts that drive lot traffic. We cover the payout.</p>
-      <div class="vertical-example">"$5,000 off any truck if the Bucs make the Super Bowl!" — covered for $3,200 on $25K exposure</div>
+      <p>Big-ticket conditional promotions that drive lot traffic. We handle the downside.</p>
+      <div class="vertical-example"><strong>Example:</strong> "$5K off any truck if the Bucs make the Super Bowl" — $3,200 covers $25K</div>
     </div>
+
     <div class="vertical-card">
-      <div class="vertical-icon">💒</div>
-      <h3>Wedding & Event Venues</h3>
-      <p>Offer rain guarantees to anxious couples. If it rains on their day, you refund — we reimburse you.</p>
-      <div class="vertical-example">"Rain on your wedding? 50% off." — covered for $380 on $2,500 exposure</div>
+      <div class="vertical-icon weather">T</div>
+      <h3>Tourism and Hospitality</h3>
+      <p>Offer weather guarantees to guests. Three rainy days? Partial refund, covered by Hedgerow.</p>
+      <div class="vertical-example"><strong>Example:</strong> "3+ rainy days? 25% back." — $210 covers $1,200</div>
     </div>
+
     <div class="vertical-card">
-      <div class="vertical-icon">🍦</div>
-      <h3>Outdoor Vendors & Food Trucks</h3>
-      <p>Hedge against bad weather days that kill foot traffic.</p>
-      <div class="vertical-example">"If it rains on Saturday market, our losses are covered" — $120 premium on $800 exposure</div>
+      <div class="vertical-icon econ">R</div>
+      <h3>Retail and E-Commerce</h3>
+      <p>Tie promotions to economic events — rate cuts, stock milestones, holidays — risk-free.</p>
+      <div class="vertical-example"><strong>Example:</strong> "Fed cuts rates? 20% off everything." — $900 covers $5,000 in discounts</div>
     </div>
-    <div class="vertical-card">
-      <div class="vertical-icon">🏨</div>
-      <h3>Hotels & Vacation Rentals</h3>
-      <p>Offer weather guarantees to guests. Bad weather = partial refund, covered by us.</p>
-      <div class="vertical-example">"3+ rainy days during your stay? 25% refund." — covered for $210 on $1,200 exposure</div>
+
+  </div>
+</div>
+
+<!-- TRUST -->
+<div class="trust-section">
+  <div class="trust-grid">
+    <div class="trust-item">
+      <div class="trust-icon shield">&#9745;</div>
+      <h4>Licensed in Florida</h4>
+      <p>Regulated entity operating under Florida state law. Not a betting platform.</p>
     </div>
-    <div class="vertical-card">
-      <div class="vertical-icon">🚚</div>
-      <h3>Delivery & Trucking Fleets</h3>
-      <p>Cap your fuel costs. If gas spikes above your threshold, we pay the difference.</p>
-      <div class="vertical-example">"Gas above $4.50/gal this month? We cover the overage." — $450 on $3,000 exposure</div>
+    <div class="trust-item">
+      <div class="trust-icon lock">&#9878;</div>
+      <h4>Transparent Pricing</h4>
+      <p>Premiums are derived from real-time probability data. No hidden fees, no surprises.</p>
+    </div>
+    <div class="trust-item">
+      <div class="trust-icon clock">&#9200;</div>
+      <h4>24-Hour Payouts</h4>
+      <p>If your trigger event fires, funds hit your bank account within one business day.</p>
     </div>
   </div>
 </div>
@@ -598,95 +832,146 @@
 <!-- FAQ -->
 <div class="section" id="faq">
   <h2 class="section-title">Frequently Asked Questions</h2>
-  <p class="section-sub">Everything you need to know about promotional risk coverage.</p>
+  <p class="section-sub">Everything you need to know about event-based risk coverage.</p>
   <div class="faq-list">
     <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)">Is this gambling?</div>
-      <div class="faq-a">No. Hedgerow is a licensed risk coverage product. You're transferring promotional risk to us, just like buying any other business insurance. We're licensed and regulated in the State of Florida. You never place a bet or open a trading account.</div>
+      <div class="faq-q" onclick="toggleFaq(this)">Is this gambling or insurance?</div>
+      <div class="faq-a">Neither, exactly. Hedgerow is a risk-transfer product. You are paying a premium to offset a specific, verifiable business risk — similar in principle to insurance, but structured differently. You never place a bet or open a trading account. Hedgerow is a licensed entity operating under Florida state regulations.</div>
     </div>
     <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)">How do you determine pricing?</div>
-      <div class="faq-a">Our pricing is based on real-time probability data from regulated prediction markets, combined with your specific promotion parameters. Higher-probability events cost more to cover (just like insurance for higher-risk scenarios). Our calculator gives you an instant, transparent quote.</div>
+      <div class="faq-q" onclick="toggleFaq(this)">How is the premium calculated?</div>
+      <div class="faq-a">Premiums are based on real-time probability data from regulated markets combined with your specific exposure amount. Higher-probability events cost more to cover (the same way higher-risk insurance costs more). Our calculator gives you a transparent, instant estimate.</div>
     </div>
     <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)">How fast do I get paid if the event triggers?</div>
-      <div class="faq-a">Within 24 hours of the event resolving. For sports outcomes, this is typically same-day. For weather events, payout processes the morning after. Funds are sent via ACH to your business bank account.</div>
+      <div class="faq-q" onclick="toggleFaq(this)">How fast do I get paid?</div>
+      <div class="faq-a">Within 24 hours of the event resolving. For sports outcomes, this is typically same-day. For weather events, the next morning. Funds are sent via ACH to your business bank account on file.</div>
     </div>
     <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)">What if I want to cancel my coverage?</div>
-      <div class="faq-a">You can cancel any coverage up to 24 hours before the event for a partial refund (minus a 15% administrative fee). Within 24 hours of the event, coverage is non-refundable.</div>
+      <div class="faq-q" onclick="toggleFaq(this)">What events can I cover?</div>
+      <div class="faq-a">Any event with a clear, verifiable outcome: sports results, weather conditions (rain, temperature, snow), economic indicators (gas prices, interest rate decisions), commodity prices, and more. If we can independently verify the outcome, we can cover it.</div>
     </div>
     <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)">What events can I get coverage for?</div>
-      <div class="faq-a">Any event with a clear, verifiable outcome: sports game results, weather conditions (rain, temperature, snow), economic indicators (gas prices, interest rate decisions), and more. If we can verify it happened, we can cover it. Custom triggers available on Enterprise plans.</div>
+      <div class="faq-q" onclick="toggleFaq(this)">Can I cancel a policy?</div>
+      <div class="faq-a">You can cancel coverage more than 24 hours before the event for a partial refund (minus a 15% administrative fee). Within 24 hours of the event, coverage is non-refundable.</div>
     </div>
     <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)">Is there a minimum or maximum coverage amount?</div>
-      <div class="faq-a">Minimum coverage is $250 exposure. Maximum per-event coverage is currently $25,000 (higher limits available on Enterprise plans). No limit on the number of events you can cover per month.</div>
+      <div class="faq-q" onclick="toggleFaq(this)">What are the coverage limits?</div>
+      <div class="faq-a">Minimum exposure is $250. Standard per-event coverage caps at $25,000. Higher limits are available on Enterprise plans. There is no limit on the number of events you can cover per month.</div>
     </div>
   </div>
 </div>
 
 <!-- CTA -->
 <div class="cta-section" id="cta">
-  <h2>Ready to run promotions without the risk?</h2>
-  <p>Join the waitlist for early access. First 50 businesses get their first promo hedge free.</p>
+  <h2>Ready to cover your next event?</h2>
+  <p>Join the waitlist. First 50 businesses get their first coverage free.</p>
   <div class="cta-form">
     <input type="email" id="ctaEmail" placeholder="your@business.com">
     <button onclick="submitEmail()">Join Waitlist</button>
   </div>
   <p id="ctaConfirm" style="margin-top:16px;font-size:0.9rem;display:none;color:rgba(255,255,255,0.9);">
-    &#10003; You're on the list! We'll reach out within 48 hours.
+    You are on the list. We will reach out within 48 hours.
   </p>
 </div>
 
 <!-- FOOTER -->
 <footer>
-  <p>Hedgerow &copy; 2026. Licensed in the State of Florida. &nbsp;|&nbsp; <a href="#">Terms</a> &nbsp;|&nbsp; <a href="#">Privacy</a></p>
-  <p style="margin-top:8px;">Promotional risk coverage is not traditional insurance. Coverage is provided by Hedgerow, Inc. Not FDIC insured.</p>
+  <p><span id="brand-footer">Hedgerow</span> &copy; 2026. Licensed in the State of Florida. &nbsp;|&nbsp; <a href="#">Terms</a> &nbsp;|&nbsp; <a href="#">Privacy</a></p>
+  <p style="margin-top:8px;">Promotional risk coverage is not traditional insurance. Coverage provided by Hedgerow, Inc. Not FDIC insured.</p>
 </footer>
 
 <script>
-function calculateHedge() {
-  const exposure = parseFloat(document.getElementById('maxExposure').value);
-  const prob = parseFloat(document.getElementById('probability').value) / 100;
+// === BRAND CONSTANT (single place to change the name) ===
+const BRAND_NAME = "Hedgerow";
 
-  if (!exposure || exposure < 100) {
-    alert('Please enter your max exposure ($100 minimum)');
+// === PRESET DATA ===
+const PRESETS = {
+  sports: [
+    { label: "Team wins game",      trigger: "Miami Heat win Game 5",            exposure: 4000, prob: 45 },
+    { label: "Makes playoffs",      trigger: "Dolphins make the playoffs",       exposure: 10000, prob: 30 },
+    { label: "Player hits milestone", trigger: "Player scores 40+ points",       exposure: 2000, prob: 20 },
+  ],
+  weather: [
+    { label: "Rain on a date",      trigger: "Rain on Saturday, June 14",        exposure: 3000, prob: 35 },
+    { label: "Heat wave (100F+)",   trigger: "Temperature exceeds 100F this week", exposure: 5000, prob: 25 },
+    { label: "Hurricane warning",   trigger: "Hurricane warning issued for county", exposure: 15000, prob: 10 },
+  ],
+  economic: [
+    { label: "Gas above $4.50",     trigger: "National avg gas price exceeds $4.50/gal this month", exposure: 3000, prob: 30 },
+    { label: "Fed cuts rates",      trigger: "Federal Reserve cuts interest rates at next meeting",  exposure: 5000, prob: 40 },
+    { label: "S&P drops 5%+",       trigger: "S&P 500 drops more than 5% in a single week",         exposure: 8000, prob: 15 },
+  ],
+  custom: [
+    { label: "Product launch delay", trigger: "Supplier delays shipment past June 30", exposure: 6000, prob: 25 },
+    { label: "Permit not approved",  trigger: "Building permit not approved by July 1", exposure: 10000, prob: 20 },
+  ]
+};
+
+function onCategoryChange() {
+  const cat = document.getElementById('eventCategory').value;
+  renderChips(cat);
+}
+
+function renderChips(cat) {
+  const container = document.getElementById('presetChips');
+  const presets = PRESETS[cat] || [];
+  container.innerHTML = presets.map((p, i) =>
+    `<div class="preset-chip" onclick="applyPreset('${cat}', ${i})">${p.label}</div>`
+  ).join('');
+}
+
+function applyPreset(cat, idx) {
+  const p = PRESETS[cat][idx];
+  document.getElementById('triggerDesc').value = p.trigger;
+  document.getElementById('exposure').value = p.exposure;
+  document.getElementById('probability').value = p.prob;
+  updateProbLabel();
+  // highlight chip
+  document.querySelectorAll('.preset-chip').forEach((c, i) => c.classList.toggle('active', i === idx));
+  calculate();
+}
+
+function updateProbLabel() {
+  document.getElementById('probLabel').textContent = document.getElementById('probability').value + '%';
+}
+
+function calculate() {
+  const exposure = parseFloat(document.getElementById('exposure').value);
+  const prob = parseFloat(document.getElementById('probability').value) / 100;
+  const trigger = document.getElementById('triggerDesc').value.trim() || 'your event';
+
+  if (!exposure || exposure < 250) {
+    alert('Please enter your exposure amount ($250 minimum).');
     return;
   }
 
-  // Pricing model: premium = (probability * exposure) * (1 + margin)
-  // Margin ranges from 20-35% depending on probability band
+  // Pricing: premium = expectedValue * (1 + margin)
+  // Margin varies by probability band (lower prob = higher margin %)
   let margin;
-  if (prob < 0.3) margin = 0.35;       // low-prob events = higher margin %
-  else if (prob < 0.6) margin = 0.28;  // mid-range
-  else margin = 0.22;                   // high-prob events = lower margin % (but higher absolute premium)
+  if (prob < 0.2) margin = 0.40;
+  else if (prob < 0.4) margin = 0.32;
+  else if (prob < 0.6) margin = 0.26;
+  else margin = 0.22;
 
-  const hedgeCost = prob * exposure;
-  const premium = hedgeCost * (1 + margin);
-  const roundedPremium = Math.round(premium / 10) * 10; // round to nearest $10
+  const ev = prob * exposure;
+  const premium = Math.round((ev * (1 + margin)) / 10) * 10; // round to $10
 
-  // Update results
+  document.getElementById('rTrigger').textContent = trigger.length > 35 ? trigger.substring(0, 35) + '...' : trigger;
   document.getElementById('rExposure').textContent = '$' + exposure.toLocaleString();
-  document.getElementById('rProbability').textContent = Math.round(prob * 100) + '%';
-  document.getElementById('rPremium').textContent = '$' + roundedPremium.toLocaleString();
+  document.getElementById('rProb').textContent = Math.round(prob * 100) + '%';
+  document.getElementById('rPremium').textContent = '$' + premium.toLocaleString();
 
-  document.getElementById('rWinScenario').textContent =
-    `Your promo costs you $${exposure.toLocaleString()}. We pay you $${exposure.toLocaleString()} within 24 hours. Net cost to you: just the $${roundedPremium.toLocaleString()} premium. Your customers had an amazing experience.`;
+  document.getElementById('rWin').textContent =
+    `We pay you $${exposure.toLocaleString()} within 24 hours. Your net cost is the $${premium.toLocaleString()} premium. Your customers or operations are fully covered.`;
 
-  document.getElementById('rLoseScenario').textContent =
-    `Your promo doesn't trigger. You spent $${roundedPremium.toLocaleString()} on the premium, but the promotion drove extra foot traffic and engagement. Think of it as a marketing cost — cheaper than most ad campaigns.`;
+  document.getElementById('rNoTrigger').textContent =
+    `Your only cost is the $${premium.toLocaleString()} premium. If this backed a promotion, you kept all the extra business it drove.`;
 
   document.getElementById('calcResult').classList.add('visible');
 }
 
 function toggleFaq(el) {
   el.parentElement.classList.toggle('open');
-}
-
-function scrollToCTA() {
-  document.getElementById('cta').scrollIntoView({ behavior: 'smooth' });
 }
 
 function submitEmail() {
@@ -697,9 +982,11 @@ function submitEmail() {
   }
   document.getElementById('ctaConfirm').style.display = 'block';
   document.getElementById('ctaEmail').value = '';
-  // In production: POST to API endpoint
   console.log('Waitlist signup:', email);
 }
+
+// Init
+renderChips('sports');
 </script>
 
 </body>
