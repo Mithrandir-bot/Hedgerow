@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hedgerow — Run Bold Promotions Your Customers Will Love</title>
-<meta name="description" content="Run a bold promotion tied to a real-world event. You offer the deal; if it happens, we pay YOU the payoff for one flat fee so you can cover it. If it doesn't, you keep the buzz. All upside. No risk.">
+<title>Hedgerow — Win more customers with a promo that pays you back</title>
+<meta name="description" content="Run a marketing promotion tied to a real-world event. You offer the deal; if it happens, we fund the payoff for one flat fee so you can cover it. If it doesn't, you keep the buzz. Not insurance — a marketing tool for your business.">
 <style>
   :root {
     --brand: "Hedgerow";
@@ -1253,6 +1253,148 @@
   }
   footer a { color: rgba(255,255,255,0.7); text-decoration: none; }
 
+  /* ABOVE-THE-FOLD TRUST STRIP */
+  .trust-strip {
+    max-width: 760px;
+    margin: 28px auto 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 10px 22px;
+  }
+  .trust-strip .ts-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-muted);
+  }
+  .trust-strip .ts-item svg {
+    width: 17px; height: 17px;
+    stroke: var(--accent-dark);
+    flex-shrink: 0;
+  }
+  .trust-strip .ts-pricing {
+    flex-basis: 100%;
+    text-align: center;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 4px;
+  }
+
+  /* Secondary (demoted) action styling */
+  .secondary-action {
+    background: transparent !important;
+    color: var(--primary) !important;
+    border: 1px solid var(--border) !important;
+    font-weight: 600 !important;
+  }
+  .secondary-action:hover { background: #f1f5f9 !important; }
+
+  /* Required-field error state */
+  .field-error {
+    border-color: var(--danger) !important;
+    box-shadow: 0 0 0 1px var(--danger);
+  }
+
+  /* Pulse on the odds box while pricing */
+  @keyframes oddsPulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(16,185,129,0); }
+    50% { box-shadow: 0 0 0 4px rgba(16,185,129,0.25); }
+  }
+  .est-odds.pricing { animation: oddsPulse 1s ease-in-out infinite; }
+
+  /* Inline lead-capture (no-market / fuel) inside the dark calculator */
+  .lead-capture {
+    margin-top: 12px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.18);
+    border-radius: 8px;
+    padding: 16px;
+  }
+  .lead-capture p { font-size: 0.86rem; color: rgba(255,255,255,0.8); line-height: 1.5; margin-bottom: 10px; }
+  .lead-capture .lc-row { display: flex; gap: 8px; }
+  .lead-capture input {
+    flex: 1; min-width: 0;
+    padding: 11px 13px;
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 8px;
+    background: rgba(255,255,255,0.1);
+    color: white;
+    font-size: 0.95rem;
+  }
+  .lead-capture input::placeholder { color: rgba(255,255,255,0.45); }
+  .lead-capture button {
+    padding: 11px 16px;
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .lead-capture button:hover { background: var(--accent-dark); }
+  .lead-capture button:disabled { opacity: 0.7; cursor: progress; }
+  .lead-capture .lc-done { color: var(--accent); font-weight: 600; }
+  @media (max-width: 480px) {
+    .lead-capture .lc-row { flex-direction: column; }
+  }
+
+  /* Copy-link button on referral URL */
+  .pc-copy-btn {
+    margin-top: 8px;
+    padding: 8px 14px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .pc-copy-btn:hover { background: var(--primary-dark); }
+
+  /* Stablecoin microcopy in checkout */
+  .stablecoin-note {
+    font-size: 0.74rem;
+    color: var(--text-muted);
+    margin-top: -16px;
+    margin-bottom: 20px;
+    line-height: 1.4;
+  }
+
+  /* STICKY MOBILE BOTTOM CTA BAR */
+  .sticky-cta {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 150;
+    background: var(--primary);
+    padding: 12px 16px;
+    box-shadow: 0 -4px 16px rgba(0,0,0,0.15);
+  }
+  .sticky-cta a {
+    display: block;
+    text-align: center;
+    color: white;
+    text-decoration: none;
+    font-size: 1.05rem;
+    font-weight: 700;
+  }
+  @media (max-width: 700px) {
+    .sticky-cta { display: block; }
+    /* leave room above chat button / sticky bar */
+    .hw-chat-btn { bottom: 76px !important; }
+    body { padding-bottom: 56px; }
+  }
+
   /* RESPONSIVE */
   @media (max-width: 900px) {
     .steps { grid-template-columns: repeat(2, 1fr); }
@@ -1293,11 +1435,27 @@
 
 <!-- HERO -->
 <div class="hero">
-  <div class="hero-badge">All upside. No risk.</div>
-  <h1>Run a bold promotion<br>your customers <em>will love.</em></h1>
-  <p class="hero-lead">You run the promo &mdash; "Free wings if the Bucs win." If it happens, we pay YOU the payoff the same day, so you can cover the giveaway at no cost to you. If it doesn't, you keep the buzz. Pick a fun, local event, set how much the promo could cost you, and pack the house &mdash; all for one flat fee.</p>
-  <p class="hero-sub">No accounts. No paperwork. Just a simple marketing tool priced in seconds.</p>
-  <a href="#calculator" class="hero-cta">See What Your Promo Costs</a>
+  <div class="hero-badge">A marketing tool — not insurance</div>
+  <h1>Win more customers with a promo that <em>pays you back</em> if the event happens.</h1>
+  <p class="hero-lead"><strong>You run the promo &mdash; "Free wings if the Bucs win." If it happens, we pay YOU $4,000 the same day</strong> so you can cover the giveaway at no cost to you. If it doesn't, you keep the buzz. Pick a local event, set how much the promo could cost you, and pack the house &mdash; all for one flat fee.</p>
+  <p class="hero-sub">No accounts. No paperwork. A simple marketing tool, priced in seconds.</p>
+  <a href="#calculator" class="hero-cta">Get my flat fee</a>
+
+  <div class="trust-strip">
+    <span class="ts-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      Secure, encrypted checkout
+    </span>
+    <span class="ts-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+      Settled by official public sources
+    </span>
+    <span class="ts-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+      Same-day payoff
+    </span>
+    <span class="ts-pricing">One flat fee. No percentage of your revenue, no hidden charges.</span>
+  </div>
 
   <div class="hero-triggers">
     <div class="hero-trigger"><strong>Local sports</strong> &mdash; your team wins, wins by 10+, makes the playoffs</div>
@@ -1387,7 +1545,7 @@
       <div class="form-group">
         <label for="eventDate">Event date</label>
         <input type="date" id="eventDate">
-        <p class="field-help">The date your event resolves. Weather/fuel events must be 2 weeks to ~4 months out.</p>
+        <p class="field-help">The date your event resolves. Weather/fuel events must be 15 days to ~4 months out (out-of-range dates are greyed out).</p>
       </div>
 
       <div class="form-group">
@@ -1435,9 +1593,17 @@
 
       <div class="form-group">
         <label>Odds this happens</label>
-        <div class="est-odds" id="estOddsBox">
+        <div class="est-odds" id="estOddsBox" aria-live="polite">
           <span class="est-odds-value" id="estOddsValue">&mdash; enter your matchup &mdash;<span class="live-odds-badge" id="liveOddsBadge">Live odds</span></span>
           <p class="est-odds-caveat" id="estOddsCaveat">Enter the specifics above, then we price your odds from a live source.</p>
+        </div>
+        <!-- No-live-market lead capture: shown when a matchup isn't trading yet. -->
+        <div class="lead-capture" id="noMarketLead" style="display:none;">
+          <p id="noMarketLeadMsg">This matchup isn't trading yet.</p>
+          <div class="lc-row">
+            <input type="email" id="noMarketLeadEmail" placeholder="your@business.com" autocomplete="email">
+            <button type="button" id="noMarketLeadBtn" onclick="submitNoMarketLead()">Notify me when this matchup is live</button>
+          </div>
         </div>
       </div>
 
@@ -1454,7 +1620,7 @@
       </button>
     </div>
 
-    <div class="calc-result" id="calcResult">
+    <div class="calc-result" id="calcResult" aria-live="polite">
       <div class="result-header">Your Promotion</div>
       <div class="result-trigger-name" id="rTriggerName">--</div>
 
@@ -1491,11 +1657,23 @@
 
       <!-- Verified settlement source — the neutral, automatic judge -->
       <div class="settle-source" id="rSettleSource">
-        <span class="settle-source-icon" aria-hidden="true">&#9878;</span>
+        <span class="settle-source-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+        </span>
         <span class="settle-source-text" id="rSettleSourceText">--</span>
       </div>
 
-      <button class="get-coverage-btn" onclick="openCheckout()">Run This Promotion &rarr;</button>
+      <button class="get-coverage-btn" id="rResultCta" onclick="openCheckout()">Run This Promotion &rarr;</button>
+
+      <!-- Fuel lead-capture: fuel can't be bound, so capture a quote request. -->
+      <div class="lead-capture" id="rFuelLead" style="display:none;">
+        <p>Fuel promotions are priced to order. Leave your email and we'll send a firm quote for this promotion.</p>
+        <div class="lc-row">
+          <input type="email" id="rFuelLeadEmail" placeholder="your@business.com" autocomplete="email">
+          <button type="button" id="rFuelLeadBtn" onclick="submitFuelLead()">Request a quote</button>
+        </div>
+      </div>
+
       <div class="result-disclaimer">Illustrative estimate. Your final flat fee is confirmed at checkout.</div>
     </div>
   </div>
@@ -1549,7 +1727,7 @@
         <input type="text" id="dpGoal" placeholder="e.g., Fill the bar on Tuesdays">
       </div>
 
-      <button type="button" class="calc-btn dp-submit" id="dpSubmit" onclick="designPromo()">Design my promo</button>
+      <button type="button" class="calc-btn dp-submit secondary-action" id="dpSubmit" onclick="designPromo()">Design my promo</button>
       <p class="field-help" style="text-align:center;">No accounts, no paperwork. We use your answers to suggest one promotion.</p>
     </div>
 
@@ -1622,7 +1800,9 @@
         </label>
       </div>
 
-      <div class="stripe-note">Payments powered by <strong>Stripe</strong></div>
+      <p class="stablecoin-note">USDC, USDP, and USDG are digital dollars, pegged 1:1 to the U.S. dollar.</p>
+
+      <div class="stripe-note">Secure, encrypted payments powered by <strong>Stripe</strong></div>
 
       <button class="checkout-submit" onclick="submitCheckout()">Confirm &amp; Launch Promo</button>
 
@@ -1634,7 +1814,7 @@
     <!-- Step 2: Confirmation -->
     <div class="checkout-confirm" id="checkoutStep2">
       <button class="modal-close" onclick="closeCheckout()" style="position:absolute;top:16px;right:16px;">&times;</button>
-      <div class="confirm-check">&#10003;</div>
+      <div class="confirm-check"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
       <div class="confirm-title">Your promotion is live</div>
       <div class="confirm-sub">You're all set. If it happens, we pay YOU the payoff the same day the event is officially decided — by your selected method — so you can cover the giveaway at no cost to you.</div>
       <div class="confirm-detail">
@@ -1655,7 +1835,7 @@
           <span id="cfPayment">--</span>
         </div>
         <div class="order-row">
-          <span class="order-label">Promo ID</span>
+          <span class="order-label">Reference</span>
           <span id="cfPolicy">--</span>
         </div>
       </div>
@@ -1729,17 +1909,23 @@
 <div class="trust-section">
   <div class="trust-grid">
     <div class="trust-item">
-      <div class="trust-icon shield">&#9745;</div>
-      <h4>Based in Florida</h4>
-      <p>A simple marketing tool for local businesses. You run the promotion; if it happens, we pay you the payoff.</p>
+      <div class="trust-icon shield">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <h4>Based in the USA</h4>
+      <p>A simple marketing tool for local businesses. You run the promotion; if it happens, we fund the payoff.</p>
     </div>
     <div class="trust-item">
-      <div class="trust-icon lock">&#9878;</div>
+      <div class="trust-icon lock">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      </div>
       <h4>One Flat Fee</h4>
       <p>One upfront fee, shown before you commit. No hidden costs, nothing else to pay later.</p>
     </div>
     <div class="trust-item">
-      <div class="trust-icon clock">&#9200;</div>
+      <div class="trust-icon clock">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+      </div>
       <h4>Same-Day Payoff</h4>
       <p>Once the event is officially decided, we pay you the same day — by bank transfer (ACH) or USDC.</p>
     </div>
@@ -1752,31 +1938,35 @@
   <p class="section-sub">Everything you need to know about running a Hedgerow promotion.</p>
   <div class="faq-list">
     <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)">What exactly is Hedgerow?</div>
+      <div class="faq-q" tabindex="0" role="button" aria-expanded="false" onclick="toggleFaq(this)">Is this insurance?</div>
+      <div class="faq-a">No. Hedgerow is a marketing promotion tool. You run a promo and we fund the payoff for a flat fee. We don't insure business losses, and this isn't an insurance product, a policy, or coverage. Think of it as a marketing spend that lets you offer a bold, event-based deal to your customers.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" tabindex="0" role="button" aria-expanded="false" onclick="toggleFaq(this)">What exactly is Hedgerow?</div>
       <div class="faq-a">Hedgerow is a simple marketing tool for small businesses. You run a fun promotion tied to a local event — your team winning, rain on your event day, a hot weekend. You offer the deal to your customers; if the event happens, Hedgerow pays YOU the payoff the same day so you can cover the giveaway at no cost to you. If it doesn't, you keep the buzz from the promotion. You pay one flat fee upfront, and that's it. (We pay your business, not your customers directly.)</div>
     </div>
     <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)">How is the flat fee calculated?</div>
+      <div class="faq-q" tabindex="0" role="button" aria-expanded="false" onclick="toggleFaq(this)">How is the flat fee calculated?</div>
       <div class="faq-a">Your flat fee depends on how much the promo could cost you (your exposure) and the estimated odds of the event. You don't set the odds — those come from the event you pick, estimated from real-world data. More likely events cost a bit more, since the payoff is more likely to happen. The calculator on this page gives you an instant, transparent estimate, and your final flat fee uses live market data when you set up your promo. There's nothing else to pay.</div>
     </div>
     <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)">How do you know if it happened?</div>
+      <div class="faq-q" tabindex="0" role="button" aria-expanded="false" onclick="toggleFaq(this)">How do you know if it happened?</div>
       <div class="faq-a">Every promotion settles on an independent, official source — the official game result and standings for sports, the National Weather Service for weather, and the U.S. Energy Information Administration / AAA published price for gas and fuel. The moment the event is officially decided, your payout is automatic. No disputes, no judgment calls.</div>
     </div>
     <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)">How fast do I get paid?</div>
+      <div class="faq-q" tabindex="0" role="button" aria-expanded="false" onclick="toggleFaq(this)">How fast do I get paid?</div>
       <div class="faq-a">Once the event is officially decided, we pay YOU — your business — the same day, by bank transfer (ACH) or USDC. No paper checks, no multi-day waits. You use that to cover the giveaway you offered your customers. You pick your preferred method when you set up your promotion.</div>
     </div>
     <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)">What events can I build a promotion around?</div>
+      <div class="faq-q" tabindex="0" role="button" aria-expanded="false" onclick="toggleFaq(this)">What events can I build a promotion around?</div>
       <div class="faq-a">Fun, local events with a clear, verifiable result: your team winning this weekend or by 10+, your team making the playoffs or winning the division, rain on your event day, a 90&deg;+ weekend, a storm canceling an outdoor day, local gas topping or dropping below a set price, a record-hot weekend, or a big game-day crowd. Pick from our curated menu, or describe your own.</div>
     </div>
     <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)">Can I cancel a promotion?</div>
+      <div class="faq-q" tabindex="0" role="button" aria-expanded="false" onclick="toggleFaq(this)">Can I cancel a promotion?</div>
       <div class="faq-a">You can cancel more than 24 hours before the event for a partial refund of your flat fee (minus a 15% administrative fee). Within 24 hours of the event, your promotion is non-refundable.</div>
     </div>
     <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)">What are the payoff limits?</div>
+      <div class="faq-q" tabindex="0" role="button" aria-expanded="false" onclick="toggleFaq(this)">What are the payoff limits?</div>
       <div class="faq-a">The minimum payoff is $250. Standard promotions fund payoffs up to $25,000. Higher limits are available on Enterprise plans. There's no limit on how many promotions you can run per month.</div>
     </div>
   </div>
@@ -1811,7 +2001,7 @@
           <option value="referrer">Referrer / creator</option>
         </select>
       </div>
-      <button type="button" class="partners-submit" id="afSubmit" onclick="submitAffiliate()">Get my referral link</button>
+      <button type="button" class="partners-submit secondary-action" id="afSubmit" onclick="submitAffiliate()">Become a partner</button>
       <div class="partners-result" id="afResult"></div>
     </div>
   </div>
@@ -1850,6 +2040,11 @@
   <p><span id="brand-footer">Hedgerow</span> &copy; 2026. Based in the USA. &nbsp;|&nbsp; <a href="#partners">Become a partner</a> &nbsp;|&nbsp; <a href="#">Terms</a> &nbsp;|&nbsp; <a href="#">Privacy</a></p>
   <p style="margin-top:8px;">Hedgerow is a marketing tool for businesses. If the event happens, Hedgerow, Inc. pays the business the payoff — not the customers directly.</p>
 </footer>
+
+<!-- STICKY MOBILE CTA BAR — label morphs by scroll position -->
+<div class="sticky-cta" id="stickyCta">
+  <a href="#calculator" id="stickyCtaLink">Get my flat fee</a>
+</div>
 
 <script>
 // === BRAND CONSTANT ===
@@ -2079,6 +2274,8 @@ function resetOdds(cat) {
   valueEl.classList.add('is-prompt');
   writeOddsValue(oddsPromptFor(cat || document.getElementById('eventCategory').value));
   caveat.textContent = 'Enter the specifics above, then we price your odds from a live source.';
+  // Hide any prior inline lead-capture when odds reset.
+  const nm = document.getElementById('noMarketLead'); if (nm) nm.style.display = 'none';
 }
 
 // Displays a resolved probability. mode: 'live' | 'estimate'.
@@ -2263,6 +2460,45 @@ async function resolveOdds(params) {
   return { status: 'unpriceable', note: (data && data.note) ? String(data.note) : '' };
 }
 
+// Marks a required input with a red border; clears on next input.
+function flagField(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.classList.add('field-error');
+  const clear = function() { el.classList.remove('field-error'); el.removeEventListener('input', clear); };
+  el.addEventListener('input', clear);
+}
+function clearFieldFlag(id) {
+  const el = document.getElementById(id);
+  if (el) el.classList.remove('field-error');
+}
+
+// Toggles the odds-box pricing pulse.
+function setOddsPricing(on) {
+  const box = document.getElementById('estOddsBox');
+  if (box) box.classList.toggle('pricing', !!on);
+}
+
+// Hides both inline lead-capture blocks in the calculator.
+function hideCalcLeadCaptures() {
+  const a = document.getElementById('noMarketLead'); if (a) a.style.display = 'none';
+  const b = document.getElementById('rFuelLead'); if (b) b.style.display = 'none';
+}
+
+// Shows the right result CTA: fuel can't be bound, so show a quote-request
+// lead capture instead of the "Run This Promotion" checkout button.
+function configureResultCta(category) {
+  const cta = document.getElementById('rResultCta');
+  const fuelLead = document.getElementById('rFuelLead');
+  if (category === 'fuel') {
+    if (cta) cta.style.display = 'none';
+    if (fuelLead) fuelLead.style.display = 'block';
+  } else {
+    if (cta) cta.style.display = 'block';
+    if (fuelLead) fuelLead.style.display = 'none';
+  }
+}
+
 async function calculate() {
   const exposure = parseFloat(document.getElementById('exposure').value);
   const category = document.getElementById('eventCategory').value;
@@ -2270,37 +2506,46 @@ async function calculate() {
   const typedLabel = document.getElementById('triggerDesc').value.trim();
   lastCalc.category = category;
 
+  // Reset any prior inline lead-capture state.
+  hideCalcLeadCaptures();
+
   if (!exposure || exposure < 250) {
-    alert('Please enter how much this promo could cost you ($250 minimum).');
+    flagField('exposure');
+    showNoOdds('Enter how much this promo could cost you — minimum $250.');
     return;
   }
+  clearFieldFlag('exposure');
 
   const btn = document.querySelector('.calc-btn');
   const btnLabel = btn ? btn.textContent : '';
   if (btn) { btn.disabled = true; btn.textContent = 'Pricing...'; }
+  setOddsPricing(true);
 
   try {
     if (mode === 'matchup') {
       const matchup = (document.getElementById('matchupInput').value || '').trim();
       if (!matchup) {
-        alert('Please enter the specific matchup or event so we can price real odds.');
-        resetOdds(category);
+        flagField('matchupInput');
+        showNoOdds('Enter the specific matchup or event so we can price real odds.');
         return;
       }
+      clearFieldFlag('matchupInput');
       const eventLabel = typedLabel || matchup;
       currentSource = sourceForEvent(eventLabel + ' ' + matchup);
       const eventDate = document.getElementById('eventDate').value;
       const resolved = await resolveMatchup(matchup, exposure);
       if (resolved) {
         showResolvedOdds(resolved.prob, resolved.sourceName, 'live');
+        configureResultCta(category);
         renderQuote(eventLabel, exposure, resolved.prob);
         trackDemand(category, eventLabel, exposure, resolved.prob, lastCalc.premium, resolved.oddsSource);
       } else {
-        // THE MIAMI HEAT CASE — no live market. Always show a clear, visible
-        // message, no number, no fee. Track it as unresolved.
-        let msg = "We can't price this yet — there's no live market for that matchup. The team may not have a scheduled game in range (or it's too far out). Try a matchup with an upcoming game.";
-        if (eventDate) msg += ' for ' + eventDate;
+        // No live market for that matchup. Show a clear, visible message, no
+        // number, no fee — and a lead capture so it isn't a dead end.
+        let msg = "This matchup isn't trading yet — there's no live market for it. The team may not have a scheduled game in range (or it's too far out).";
+        if (eventDate) msg += ' (Date: ' + eventDate + '.)';
         showNoOdds(msg);
+        showNoMarketLead(msg);
         trackDemand(category, eventLabel, exposure, null, null, 'unresolved');
       }
       return;
@@ -2329,6 +2574,7 @@ async function calculate() {
       const resolved = await resolveOdds(params);
       if (resolved.status === 'priced') {
         showResolvedOdds(resolved.prob, resolved.sourceName, resolved.estimate ? 'estimate' : 'live');
+        configureResultCta(category);
         renderQuote(eventLabel, exposure, resolved.prob);
         trackDemand(category, eventLabel, exposure, resolved.prob, lastCalc.premium, resolved.estimate ? 'estimate' : 'live');
       } else if (resolved.status === 'window') {
@@ -2364,6 +2610,7 @@ async function calculate() {
     const resolvedFuel = await resolveOdds(params);
     if (resolvedFuel.status === 'priced') {
       showResolvedOdds(resolvedFuel.prob, resolvedFuel.sourceName, resolvedFuel.estimate ? 'estimate' : 'live');
+      configureResultCta(category);
       renderQuote(fuelLabel, exposure, resolvedFuel.prob);
       trackDemand(category, fuelLabel, exposure, resolvedFuel.prob, lastCalc.premium, resolvedFuel.estimate ? 'estimate' : 'live');
     } else if (resolvedFuel.status === 'window') {
@@ -2378,7 +2625,86 @@ async function calculate() {
     showNoOdds("We couldn't reach our live odds source just now — please try again in a moment, and we'll confirm your exact odds when you set up your promo.");
   } finally {
     if (btn) { btn.disabled = false; btn.textContent = btnLabel; }
+    setOddsPricing(false);
   }
+}
+
+// === INLINE LEAD CAPTURE (no live market / fuel quote) ===
+
+// Reveals the no-market lead-capture, keeping the message text as the lead-in.
+function showNoMarketLead(message) {
+  const wrap = document.getElementById('noMarketLead');
+  const msg = document.getElementById('noMarketLeadMsg');
+  if (msg) msg.textContent = (message ? message + ' ' : '') + "Leave your email and we'll notify you the moment it's live.";
+  if (wrap) wrap.style.display = 'block';
+}
+
+// Posts a lead with the captured context; renders an inline confirmation.
+async function postCalcLead(email, btn, wrap, intent) {
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return { ok: false, reason: 'email' };
+  }
+  if (btn) { btn.disabled = true; }
+  const category = document.getElementById('eventCategory').value;
+  const matchupEl = document.getElementById('matchupInput');
+  const eventInterest = (document.getElementById('triggerDesc').value || '').trim() ||
+    (matchupEl ? (matchupEl.value || '').trim() : '') || null;
+  const exposureVal = parseFloat(document.getElementById('exposure').value);
+  const cityEl = document.getElementById('ctaCity');
+  const payload = {
+    email: email,
+    business_type: null,
+    city: (cityEl && cityEl.value ? cityEl.value.trim() : null) || null,
+    event_interest: eventInterest,
+    category: category,
+    exposure: (isFinite(exposureVal) && exposureVal > 0) ? exposureVal : null,
+    fee_shown: null,
+    source: intent,
+    ref: getStoredRef()
+  };
+  try {
+    const resp = await fetch('/api/lead', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    if (!resp.ok) throw new Error('Bad response');
+    return { ok: true };
+  } catch (err) {
+    return { ok: false, reason: 'network' };
+  } finally {
+    if (btn) { btn.disabled = false; }
+  }
+}
+
+async function submitNoMarketLead() {
+  const emailEl = document.getElementById('noMarketLeadEmail');
+  const btn = document.getElementById('noMarketLeadBtn');
+  const wrap = document.getElementById('noMarketLead');
+  const email = (emailEl.value || '').trim();
+  const res = await postCalcLead(email, btn, wrap, 'no_market_lead');
+  if (!res.ok) {
+    if (res.reason === 'email') { flagField('noMarketLeadEmail'); }
+    else { document.getElementById('noMarketLeadMsg').textContent = 'Something went wrong — please try again in a moment.'; }
+    return;
+  }
+  clearFieldFlag('noMarketLeadEmail');
+  wrap.innerHTML = '<p class="lc-done">Thanks — we\'ll email you the moment this matchup is live.</p>';
+}
+
+async function submitFuelLead() {
+  const emailEl = document.getElementById('rFuelLeadEmail');
+  const btn = document.getElementById('rFuelLeadBtn');
+  const wrap = document.getElementById('rFuelLead');
+  const email = (emailEl.value || '').trim();
+  const res = await postCalcLead(email, btn, wrap, 'fuel_quote_request');
+  if (!res.ok) {
+    if (res.reason === 'email') { flagField('rFuelLeadEmail'); }
+    else { wrap.querySelector('p').textContent = 'Something went wrong — please try again in a moment.'; }
+    return;
+  }
+  clearFieldFlag('rFuelLeadEmail');
+  wrap.innerHTML = '<p class="lc-done">Thanks — we\'ll send a firm quote for this fuel promotion to your email.</p>';
 }
 
 // === CHECKOUT ===
@@ -2406,10 +2732,12 @@ function openCheckout() {
   });
 
   document.getElementById('checkoutModal').classList.add('open');
+  if (window.updateStickyCta) window.updateStickyCta();
 }
 
 function closeCheckout() {
   document.getElementById('checkoutModal').classList.remove('open');
+  if (window.updateStickyCta) window.updateStickyCta();
 }
 
 function selectPayment(el, method) {
@@ -2444,7 +2772,27 @@ document.getElementById('checkoutModal').addEventListener('click', function(e) {
 });
 
 function toggleFaq(el) {
-  el.parentElement.classList.toggle('open');
+  const item = el.parentElement;
+  const isOpen = item.classList.toggle('open');
+  el.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+}
+
+// Keyboard support (Enter/Space) on FAQ questions.
+document.querySelectorAll('.faq-q').forEach(function(q) {
+  q.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') {
+      e.preventDefault();
+      toggleFaq(q);
+    }
+  });
+});
+
+function setCtaMessage(text, ok) {
+  const el = document.getElementById('ctaConfirm');
+  if (!el) return;
+  el.textContent = text;
+  el.style.color = ok ? 'rgba(255,255,255,0.9)' : '#fde68a';
+  el.style.display = 'block';
 }
 
 async function submitEmail() {
@@ -2452,9 +2800,11 @@ async function submitEmail() {
   const email = (emailEl.value || '').trim();
   // Lightweight email validation.
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    alert('Please enter a valid email address.');
+    flagField('ctaEmail');
+    setCtaMessage('Please enter a valid email address.', false);
     return;
   }
+  clearFieldFlag('ctaEmail');
 
   const businessType = (document.getElementById('ctaBusinessType').value || '') || null;
   const city = (document.getElementById('ctaCity').value || '').trim() || null;
@@ -2473,6 +2823,9 @@ async function submitEmail() {
     ref: getStoredRef()
   };
 
+  const btn = document.querySelector('.cta-lead-form button');
+  const btnLabel = btn ? btn.textContent : '';
+  if (btn) { btn.disabled = true; btn.textContent = 'Joining...'; }
   try {
     const resp = await fetch('/api/lead', {
       method: 'POST',
@@ -2480,10 +2833,12 @@ async function submitEmail() {
       body: JSON.stringify(payload)
     });
     if (!resp.ok) throw new Error('Bad response');
-    document.getElementById('ctaConfirm').style.display = 'block';
+    setCtaMessage('You are on the list. We will reach out within 48 hours.', true);
     emailEl.value = '';
   } catch (err) {
-    alert('Something went wrong. Please try again.');
+    setCtaMessage('Something went wrong. Please try again.', false);
+  } finally {
+    if (btn) { btn.disabled = false; btn.textContent = btnLabel; }
   }
 }
 
@@ -2531,7 +2886,8 @@ async function submitAffiliate() {
     html += '<div class="pc-title">You\'re in. Welcome aboard.</div>';
     if (refLink) {
       html += '<div class="pc-row"><div class="pc-label">Your referral link</div>' +
-        '<a class="pc-reflink" href="' + dpEscape(refLink) + '" target="_blank" rel="noopener">' + dpEscape(refLink) + '</a></div>';
+        '<a class="pc-reflink" id="pcRefLink" href="' + dpEscape(refLink) + '" target="_blank" rel="noopener">' + dpEscape(refLink) + '</a>' +
+        '<button type="button" class="pc-copy-btn" id="pcCopyBtn" onclick="copyRefLink(\'' + dpEscape(refLink).replace(/'/g, "\\'") + '\')">Copy link</button></div>';
     }
     html += '<div class="pc-row"><div class="pc-label">Your commission</div>' +
       '<span class="pc-model">' + dpEscape(modelText) + '</span></div>';
@@ -2542,6 +2898,20 @@ async function submitAffiliate() {
     out.innerHTML = '<div class="partners-error">We could not sign you up just now. Please try again in a moment.</div>';
   } finally {
     if (btn) { btn.disabled = false; }
+  }
+}
+
+// Copies the referral link to the clipboard with graceful fallback.
+function copyRefLink(link) {
+  const btn = document.getElementById('pcCopyBtn');
+  const done = function() { if (btn) { const t = btn.textContent; btn.textContent = 'Copied'; setTimeout(function(){ btn.textContent = t; }, 1800); } };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(link).then(done).catch(function() {
+      const a = document.getElementById('pcRefLink'); if (a) { const r = document.createRange(); r.selectNode(a); const s = window.getSelection(); s.removeAllRanges(); s.addRange(r); }
+    });
+  } else {
+    const a = document.getElementById('pcRefLink'); if (a) { const r = document.createRange(); r.selectNode(a); const s = window.getSelection(); s.removeAllRanges(); s.addRange(r); }
+    done();
   }
 }
 
@@ -2583,7 +2953,8 @@ async function designPromo() {
   }
 
   out.innerHTML = '<div class="dp-loading"><div class="dp-spinner"></div>Designing a promotion for your business...</div>';
-  if (btn) { btn.disabled = true; }
+  const btnLabel = btn ? btn.textContent : '';
+  if (btn) { btn.disabled = true; btn.textContent = 'Designing...'; }
 
   try {
     const resp = await fetch('/api/design-promo', {
@@ -2599,7 +2970,7 @@ async function designPromo() {
   } catch (err) {
     out.innerHTML = '<div class="dp-error">We could not design a promo just now. Please try again in a moment, or use the pricing tool above to build one yourself.</div>';
   } finally {
-    if (btn) { btn.disabled = false; }
+    if (btn) { btn.disabled = false; btn.textContent = btnLabel; }
   }
 }
 
@@ -2697,10 +3068,14 @@ function useDesignedPromo() {
 (function initEventDate() {
   const el = document.getElementById('eventDate');
   if (!el) return;
-  const tomorrow = new Date();
-  tomorrow.setDate(tomorrow.getDate() + 1);
-  const iso = tomorrow.toISOString().slice(0, 10);
-  el.setAttribute('min', iso);
+  // Weather/fuel pricing window: 15 to 120 days out. Constrain the picker so
+  // out-of-window dates grey out before the user clicks.
+  const minD = new Date();
+  minD.setDate(minD.getDate() + 15);
+  const maxD = new Date();
+  maxD.setDate(maxD.getDate() + 120);
+  el.setAttribute('min', minD.toISOString().slice(0, 10));
+  el.setAttribute('max', maxD.toISOString().slice(0, 10));
   const mirror = function() {
     const v = el.value;
     const wd = document.getElementById('weatherDate'); if (wd) wd.value = v;
@@ -2737,6 +3112,61 @@ resetOdds('sports');
     line.style.display = 'block';
   } catch (err) {
     // Silently ignore — never break the page on a failed live signal.
+  }
+})();
+
+// === STICKY MOBILE CTA — label morphs by scroll/section ===
+(function initStickyCta() {
+  const link = document.getElementById('stickyCtaLink');
+  if (!link) return;
+  const sections = [
+    { id: 'calculator', label: 'Reserve my rate', href: '#calculator' },
+    { id: 'cta',        label: 'Join the waitlist', href: '#cta' }
+  ];
+  function update() {
+    // Default near hero.
+    let chosen = { label: 'Get my flat fee', href: '#calculator' };
+    // If the checkout modal is open, dominate with the pay action.
+    const modal = document.getElementById('checkoutModal');
+    if (modal && modal.classList.contains('open')) {
+      link.textContent = 'Confirm & pay';
+      link.setAttribute('href', '#calculator');
+      return;
+    }
+    const mid = window.scrollY + window.innerHeight / 2;
+    sections.forEach(function(s) {
+      const el = document.getElementById(s.id);
+      if (el && el.offsetTop <= mid) chosen = s;
+    });
+    link.textContent = chosen.label;
+    link.setAttribute('href', chosen.href);
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  window.updateStickyCta = update;
+  update();
+})();
+
+// === WAITLIST COUNTER — REAL count from /api/health only ===
+// No fabricated numbers. With a low real count we use honest founding-phase
+// framing instead of a fake "join N businesses" or queue position.
+(async function loadWaitlistCount() {
+  try {
+    const resp = await fetch('/api/health');
+    if (!resp.ok) return;
+    const data = await resp.json();
+    const n = (data && typeof data.waitlist === 'number') ? data.waitlist : null;
+    if (n === null) return;
+    const cta = document.querySelector('.cta-section p');
+    if (n >= 25) {
+      // Genuine social proof once the list is meaningfully large.
+      if (cta) cta.textContent = 'Join ' + n.toLocaleString() + '+ businesses on the waitlist. First 50 get their first promotion free.';
+    } else {
+      // Founding-phase framing — honest, no fake numbers.
+      if (cta) cta.textContent = 'Be a founding business. Join the waitlist for early-access pricing — first 50 get their first promotion free.';
+    }
+  } catch (err) {
+    // Never break the page on a failed counter fetch.
   }
 })();
 
