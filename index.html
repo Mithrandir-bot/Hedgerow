@@ -1584,6 +1584,17 @@
     .cta-form { flex-direction: column; }
   }
 </style>
+<!-- Conversion tracking. Paste your Meta Pixel ID and GA4 Measurement ID below to activate; no-ops until set. -->
+<script>
+  window.HEDGEROW_FB_PIXEL_ID = '';
+  window.HEDGEROW_GA_ID = '';
+  (function () {
+    var fb = window.HEDGEROW_FB_PIXEL_ID, ga = window.HEDGEROW_GA_ID;
+    if (fb) { !function (f, b, e, v, n, t, s) { if (f.fbq) return; n = f.fbq = function () { n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments) }; if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0'; n.queue = []; t = b.createElement(e); t.async = !0; t.src = v; s = b.getElementsByTagName(e)[0]; s.parentNode.insertBefore(t, s) }(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js'); fbq('init', fb); fbq('track', 'PageView'); }
+    if (ga) { var g = document.createElement('script'); g.async = 1; g.src = 'https://www.googletagmanager.com/gtag/js?id=' + ga; document.head.appendChild(g); window.dataLayer = window.dataLayer || []; window.gtag = function () { dataLayer.push(arguments) }; gtag('js', new Date()); gtag('config', ga); }
+  })();
+  window.fireLead = function () { try { if (window.HEDGEROW_FB_PIXEL_ID && window.fbq) fbq('track', 'Lead'); if (window.HEDGEROW_GA_ID && window.gtag) gtag('event', 'generate_lead'); } catch (e) {} };
+</script>
 </head>
 <body>
 
@@ -2403,6 +2414,12 @@ captureRef();
 // lastCalc.exposure is what the promo could cost the business if it happens.
 // lastCalc.fee is the flat fee. lastCalc.trigger is the event label.
 let lastCalc = { trigger: '', exposure: 0, prob: 0, fee: 0 };
+// On the public GitHub Pages landing, capture endpoints live on the tunnel-served backend (cross-origin, CORS-allowed). Same-origin (VPS) uses relative.
+const HEDGEROW_API = (location.hostname.indexOf('github.io') !== -1) ? 'https://hedgerow.mithrandirbot.tech' : '';
+// Attribution: use the ad campaign (or source) as the lead source so signups are traceable to a channel.
+function getCampaignSource() {
+  try { var p = new URLSearchParams(location.search); return (p.get('utm_campaign') || p.get('utm_source') || 'landing').slice(0, 40); } catch (e) { return 'landing'; }
+}
 let selectedPayment = 'card';
 
 // === PRESET DATA ===
@@ -2698,7 +2715,7 @@ function trackDemand(category, event, exposure, prob, fee, oddsSource) {
   try {
     const cityEl = document.getElementById('ctaCity');
     const city = (cityEl && cityEl.value ? cityEl.value.trim() : '') || '';
-    fetch('/api/track', {
+    fetch(HEDGEROW_API + '/api/track', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -3060,7 +3077,7 @@ async function postCalcLead(email, btn, wrap, intent) {
     ref: getStoredRef()
   };
   try {
-    const resp = await fetch('/api/lead', {
+    const resp = await fetch(HEDGEROW_API + '/api/lead', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
@@ -3219,7 +3236,7 @@ async function submitEmail() {
     category: used ? (lastCalc.category || document.getElementById('eventCategory').value) : null,
     exposure: used ? lastCalc.exposure : null,
     fee_shown: used ? lastCalc.fee : null,
-    source: 'landing',
+    source: getCampaignSource(),
     ref: getStoredRef()
   };
 
@@ -3227,13 +3244,14 @@ async function submitEmail() {
   const btnLabel = btn ? btn.textContent : '';
   if (btn) { btn.disabled = true; btn.textContent = 'Joining...'; }
   try {
-    const resp = await fetch('/api/lead', {
+    const resp = await fetch(HEDGEROW_API + '/api/lead', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
     });
     if (!resp.ok) throw new Error('Bad response');
     setCtaMessage('You are on the list. We will reach out within 48 hours.', true);
+    if (window.fireLead) window.fireLead();
     emailEl.value = '';
   } catch (err) {
     setCtaMessage('Something went wrong. Please try again.', false);
