@@ -1541,7 +1541,7 @@
   </div>
 
   <div class="hero-triggers">
-    <div class="hero-trigger"><strong>Local sports:</strong> your team wins, wins by 10+, makes the playoffs</div>
+    <div class="hero-trigger"><strong>Local sports:</strong> your team wins, makes the playoffs, or wins the division</div>
     <div class="hero-trigger"><strong>Weather:</strong> rain on your event day, a 90&deg;+ weekend</div>
     <div class="hero-trigger"><strong>Gas price:</strong> gas tops $4, or drops below $3</div>
     <div class="hero-trigger"><strong>Season milestone:</strong> your team wins the division</div>
@@ -1943,7 +1943,7 @@
       <div class="vertical-icon sports">S</div>
       <h3>Bars and Restaurants</h3>
       <p>Run game-day or event-day promotions that fill seats. If the event happens and the deal you offered comes due, we pay your business the payoff to cover it.</p>
-      <div class="vertical-example"><strong>Example:</strong> "Free wings if the home team wins by 14 or more this weekend" earns a $650 flat fee, and we pay you the $4,000 payoff if it happens. That is about a 1 in 8 chance, which is why the fee stays low.</div>
+      <div class="vertical-example"><strong>Example:</strong> "Free wings if the underdog home team wins this weekend" earns a $650 flat fee, and we pay you the $2,000 payoff if it happens. That is about a 1 in 4 chance, settled on the final score, a clean win or not.</div>
     </div>
 
     <div class="vertical-card">
@@ -1982,7 +1982,7 @@
       </div>
       <h3>Local Retail and Pop-Ups</h3>
       <p>Tie a fun discount to a big public event. However it turns out, you keep the customers it brought in.</p>
-      <div class="vertical-example"><strong>Example:</strong> "Home team wins by 10+? 20% off everything." earns a $910 flat fee, and we pay you $5,000 to cover the discounts if it happens. That is about a 1 in 7 chance.</div>
+      <div class="vertical-example"><strong>Example:</strong> "Home team wins the division? 20% off everything." earns a $1,300 flat fee, and we pay you $5,000 to cover the discounts if it happens. That is about a 1 in 5 chance, settled on the official standings.</div>
     </div>
 
     <div class="vertical-card">
@@ -2052,7 +2052,7 @@
     </div>
     <div class="faq-item">
       <div class="faq-q" tabindex="0" role="button" aria-expanded="false" onclick="toggleFaq(this)">What events can I build a promotion around?</div>
-      <div class="faq-a">Fun, local events with a clear, verifiable result: your team winning this weekend or by 10+, your team making the playoffs or winning the division, rain on your event day, a 90&deg;+ weekend, a storm canceling an outdoor day, local gas topping or dropping below a set price, a record-hot weekend, or a big game-day crowd. Pick from our curated menu, or describe your own.</div>
+      <div class="faq-a">Fun, local events with a clear, verifiable result: your team winning this weekend, making the playoffs, or winning the division, rain on your event day, a 90&deg;+ weekend, local gas topping or dropping below a set price, a record-hot weekend, or a big game-day crowd. Pick from our curated menu, or describe your own.</div>
     </div>
     <div class="faq-item">
       <div class="faq-q" tabindex="0" role="button" aria-expanded="false" onclick="toggleFaq(this)">Can I cancel a promotion?</div>
@@ -2244,15 +2244,15 @@ const PRESETS = {
   // Local sports — prominent. Great for bars, restaurants, breweries.
   sports: [
     { label: "Your team wins this weekend", trigger: "Your team wins this weekend",      exposure: 4000,  source: SOURCE_GAME },
-    { label: "Win by 10+",                  trigger: "Your team wins by 10+ this weekend", exposure: 3000, source: SOURCE_GAME },
+    { label: "Team wins the division", trigger: "Your team wins the division this season", exposure: 3000, source: SOURCE_STANDINGS },
     { label: "Team makes the playoffs",     trigger: "Your team makes the playoffs",      exposure: 10000, source: SOURCE_GAME },
-    { label: "Longshot player prop",        trigger: "A longshot player prop hits",       exposure: 2000,  source: SOURCE_GAME },
+    { label: "Team wins the championship", trigger: "Your team wins the championship this season", exposure: 2000, source: SOURCE_STANDINGS },
   ],
   // Weather — prefill exposure + a peril hint via the trigger text.
   weather: [
     { label: "Rain on your event day",     trigger: "It rains on your event day",          exposure: 3000, source: SOURCE_NWS, peril: 'rain' },
     { label: "Hits 90&deg;+ this weekend", trigger: "It hits 90°+ this weekend",           exposure: 1500, source: SOURCE_NWS, peril: 'heat' },
-    { label: "Storm cancels outdoor day",  trigger: "A storm cancels your outdoor day",    exposure: 5000, source: SOURCE_NWS, peril: 'rain' },
+    { label: "Heavy rain on event day", trigger: "Heavy rain on your event day", exposure: 5000, source: SOURCE_NWS, peril: 'rain' },
   ],
   // Fuel / gas price — gas stations, auto shops, delivery/fleet operators.
   fuel: [
@@ -2271,7 +2271,7 @@ const PRESETS = {
     { label: "Big game-day crowd",  trigger: "A big game-day crowd shows up", exposure: 4000, source: SOURCE_OFFICIAL },
   ],
   custom: [
-    { label: "Team wins by 10+",    trigger: "Your team wins by 10+ this weekend", exposure: 3000, source: SOURCE_GAME },
+    { label: "Team makes the playoffs", trigger: "Your team makes the playoffs", exposure: 3000, source: SOURCE_STANDINGS },
     { label: "It rains Saturday",   trigger: "It rains on Saturday",               exposure: 2500, source: SOURCE_NWS, peril: 'rain' },
     { label: "Gas tops $4/gal",     trigger: "Local gas tops $4.00/gal this month", exposure: 3000, source: SOURCE_FUEL, threshold: 4.00 },
   ]
@@ -3462,7 +3462,7 @@ resetOdds('sports');
     {
       chip: 'What events can I use?',
       patterns: ['what events', 'which events', 'types of events', 'sports', 'weather', 'gas', 'fuel', 'examples'],
-      answer: 'Fun, local events with a clear result: your team winning this weekend or by 10+, your team making the playoffs or winning the division, rain on your event day, a 90-degree weekend, a storm canceling an outdoor day, local gas topping or dropping below a set price, a record-hot weekend, or a big game-day crowd. Pick from our curated menu, or describe your own.'
+      answer: 'Fun, local events with a clear result: your team winning this weekend, making the playoffs, or winning the division, rain on your event day, a 90-degree weekend, local gas topping or dropping below a set price, a record-hot weekend, or a big game-day crowd. Pick from our curated menu, or describe your own.'
     },
     {
       chip: 'Do I take on any risk?',
