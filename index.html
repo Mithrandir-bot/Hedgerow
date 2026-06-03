@@ -539,7 +539,7 @@
     line-height: 1.4;
   }
 
-  /* Get Coverage CTA */
+  /* Run Promotion CTA */
   .run-promo-btn {
     width: 100%;
     padding: 14px;
@@ -1123,6 +1123,82 @@
   .trust-item h4 { font-size: 0.95rem; margin-bottom: 4px; }
   .trust-item p { font-size: 0.85rem; color: var(--text-muted); }
 
+  /* SUPPORT / CONTACT */
+  .support-section {
+    background: var(--card);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 64px 24px;
+  }
+  .support-wrap {
+    max-width: 1000px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: center;
+  }
+  .support-title {
+    font-size: 1.9rem;
+    font-weight: 800;
+    margin-bottom: 12px;
+    letter-spacing: -0.5px;
+  }
+  .support-lead {
+    font-size: 1.02rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin-bottom: 18px;
+  }
+  .support-email {
+    display: inline-block;
+    background: var(--primary-light);
+    color: var(--primary-dark);
+    font-weight: 700;
+    font-size: 1.05rem;
+    padding: 10px 18px;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: all 0.15s;
+  }
+  .support-email:hover { background: #bfdbfe; }
+  .support-note {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    margin-top: 14px;
+  }
+  .support-points {
+    list-style: none;
+    background: #f8fafc;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+  }
+  .support-points li {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 16px;
+    font-size: 0.95rem;
+    color: var(--text);
+    line-height: 1.5;
+  }
+  .support-points li:last-child { margin-bottom: 0; }
+  .support-points .sp-icon {
+    flex-shrink: 0;
+    width: 38px; height: 38px;
+    border-radius: 10px;
+    background: #d1fae5;
+    color: var(--accent-dark);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  @media (max-width: 700px) {
+    .support-wrap { grid-template-columns: 1fr; gap: 28px; }
+    .support-section { padding: 48px 24px; }
+  }
+
   /* FAQ */
   .faq-list { max-width: 700px; margin: 0 auto; }
   .faq-item {
@@ -1435,6 +1511,7 @@
     <a href="#use-cases">Use Cases</a>
     <a href="#partners">Become a partner</a>
     <a href="#faq">FAQ</a>
+    <a href="#support">Support</a>
     <a href="#cta" class="nav-cta">Get Early Access</a>
   </div>
 </nav>
@@ -1682,7 +1759,7 @@
         </div>
       </div>
 
-      <div class="result-disclaimer">Illustrative estimate. Your final flat fee is confirmed at checkout.</div>
+      <div class="result-disclaimer">No card needed for a quote. One flat fee, no percentage of your revenue, no hidden charges. Illustrative estimate. Your final flat fee is confirmed at checkout.</div>
     </div>
   </div>
 </div>
@@ -1810,7 +1887,7 @@
 
       <p class="stablecoin-note">USDC, USDP, and USDG are digital dollars, pegged 1:1 to the U.S. dollar.</p>
 
-      <div class="stripe-note">Secure, encrypted payments powered by <strong>Stripe</strong></div>
+      <div class="stripe-note">Secure, encrypted payments powered by <strong>Stripe</strong>. One flat fee, no percentage of your revenue, no hidden charges.</div>
 
       <button class="checkout-submit" onclick="submitCheckout()">Confirm &amp; Launch Promo</button>
 
@@ -1952,8 +2029,8 @@
   <p class="section-sub">Everything you need to know about running a Hedgerow promotion.</p>
   <div class="faq-list">
     <div class="faq-item">
-      <div class="faq-q" tabindex="0" role="button" aria-expanded="false" onclick="toggleFaq(this)">Is this insurance?</div>
-      <div class="faq-a">No. Hedgerow is a marketing promotion tool. You run a promo and we fund the payoff for a flat fee. We don't insure business losses, and this isn't an insurance product, a policy, or coverage. Think of it as a marketing spend that lets you offer a bold, event-based deal to your customers.</div>
+      <div class="faq-q" tabindex="0" role="button" aria-expanded="false" onclick="toggleFaq(this)">What kind of product is this?</div>
+      <div class="faq-a">It's a marketing promotion tool. You run a promo tied to a real public event, and we fund the payoff for one flat fee. It is not a financial product you buy to protect your business. Think of it as a marketing spend that lets you offer a bold, event-based deal to your customers, with no risk to you beyond the flat fee.</div>
     </div>
     <div class="faq-item">
       <div class="faq-q" tabindex="0" role="button" aria-expanded="false" onclick="toggleFaq(this)">What exactly is Hedgerow?</div>
@@ -1983,6 +2060,38 @@
       <div class="faq-q" tabindex="0" role="button" aria-expanded="false" onclick="toggleFaq(this)">What are the payoff limits?</div>
       <div class="faq-a">The minimum payoff is $250. Standard promotions fund payoffs up to $25,000. Higher limits are available on Enterprise plans. There's no limit on how many promotions you can run per month.</div>
     </div>
+  </div>
+</div>
+
+<!-- SUPPORT / CONTACT -->
+<div class="support-section" id="support">
+  <div class="support-wrap">
+    <div class="support-head">
+      <h2 class="support-title">Questions? Talk to a real person.</h2>
+      <p class="support-lead">No bots-only runaround. Email us and a real person reads every message and replies within one business day.</p>
+      <a class="support-email" href="mailto:help@hedgerow.com">help@hedgerow.com</a>
+      <p class="support-note">No question is too small. We would rather you ask.</p>
+    </div>
+    <ul class="support-points">
+      <li>
+        <span class="sp-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </span>
+        <span class="sp-text">Payments are securely processed by Stripe. We never see or store your card number.</span>
+      </li>
+      <li>
+        <span class="sp-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1v22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        </span>
+        <span class="sp-text">One flat fee. No percentage of your revenue, no hidden charges.</span>
+      </li>
+      <li>
+        <span class="sp-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+        </span>
+        <span class="sp-text">Once the result is official, the payoff is sent automatically within 24 hours, with no forms to fill out.</span>
+      </li>
+    </ul>
   </div>
 </div>
 
@@ -2051,7 +2160,7 @@
 
 <!-- FOOTER -->
 <footer>
-  <p><span id="brand-footer">Hedgerow</span> &copy; 2026. Based in the USA. &nbsp;|&nbsp; <a href="#partners">Become a partner</a> &nbsp;|&nbsp; <a href="#">Terms</a> &nbsp;|&nbsp; <a href="#">Privacy</a></p>
+  <p><span id="brand-footer">Hedgerow</span> &copy; 2026. Based in the USA. &nbsp;|&nbsp; <a href="mailto:help@hedgerow.com">help@hedgerow.com</a> &nbsp;|&nbsp; <a href="#partners">Become a partner</a> &nbsp;|&nbsp; <a href="#">Terms</a> &nbsp;|&nbsp; <a href="#">Privacy</a></p>
   <p style="margin-top:8px;">Hedgerow is a marketing tool for businesses. If the event happens, Hedgerow, Inc. pays the business the payoff, not the customers directly.</p>
 </footer>
 
@@ -3365,22 +3474,10 @@ resetOdds('sports');
     }
   ];
 
-  // --- Answer lookup (swap this function for a real agent later) ---
-  function getAnswer(userText) {
-    const lower = userText.toLowerCase().trim();
-    for (const qa of QA_PAIRS) {
-      for (const p of qa.patterns) {
-        if (lower.includes(p)) return qa.answer;
-      }
-    }
-    // TODO: Replace this fallback with a fetch call to a backend agent:
-    // return fetch('/chat', {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify({ message: userText })
-    // }).then(r => r.json()).then(d => d.answer);
-    return null;
-  }
+  // The chip labels are kept as quick-reply prompts. Every question, typed or
+  // tapped, is routed to the ringfenced AI via window.hedgerowChat (POST /api/chat).
+  // The backend handles ringfencing and escalation, so we don't duplicate that here.
+  const FALLBACK_MSG = "I'm having trouble answering that right now. For anything about your account or a payment, email help@hedgerow.com and a real person will reply within one business day.";
 
   // --- Inject styles ---
   const style = document.createElement('style');
@@ -3406,16 +3503,23 @@ resetOdds('sports');
     .hw-panel.open { display: flex; }
 
     .hw-panel-header {
-      padding: 16px 18px; background: var(--primary); color: #fff;
+      padding: 12px 12px 12px 18px; background: var(--primary); color: #fff;
       font-weight: 700; font-size: 1rem; display: flex; align-items: center; justify-content: space-between;
+      flex-shrink: 0;
     }
+    /* Close button: large, clearly tappable target pinned at the top of the panel. */
     .hw-panel-header button {
-      background: none; border: none; color: #fff; cursor: pointer;
-      font-size: 1.2rem; line-height: 1; padding: 0;
+      background: rgba(255,255,255,0.15); border: none; color: #fff; cursor: pointer;
+      font-size: 1.5rem; line-height: 1; border-radius: 10px;
+      min-width: 44px; min-height: 44px;
+      display: inline-flex; align-items: center; justify-content: center;
+      flex-shrink: 0; transition: background .15s;
     }
+    .hw-panel-header button:hover { background: rgba(255,255,255,0.28); }
 
     .hw-messages {
       flex: 1; overflow-y: auto; padding: 14px 16px; display: flex; flex-direction: column; gap: 10px;
+      min-height: 0;
     }
     .hw-msg {
       max-width: 88%; padding: 10px 14px; border-radius: 12px;
@@ -3424,8 +3528,19 @@ resetOdds('sports');
     .hw-msg.bot { background: #f1f5f9; color: var(--text); align-self: flex-start; }
     .hw-msg.user { background: var(--primary); color: #fff; align-self: flex-end; }
 
+    /* Typing indicator while awaiting the reply */
+    .hw-typing { display: flex; gap: 4px; align-items: center; }
+    .hw-typing span {
+      width: 7px; height: 7px; border-radius: 50%; background: var(--text-muted);
+      opacity: 0.5; animation: hwBlink 1.2s infinite ease-in-out;
+    }
+    .hw-typing span:nth-child(2) { animation-delay: 0.2s; }
+    .hw-typing span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes hwBlink { 0%, 80%, 100% { opacity: 0.3; } 40% { opacity: 1; } }
+
     .hw-chips {
       display: flex; flex-wrap: wrap; gap: 6px; padding: 0 16px 10px;
+      flex-shrink: 0;
     }
     .hw-chip {
       background: var(--primary-light); color: var(--primary-dark); border: none;
@@ -3433,9 +3548,11 @@ resetOdds('sports');
       cursor: pointer; transition: background .15s;
     }
     .hw-chip:hover { background: #bfdbfe; }
+    .hw-chip:disabled { opacity: 0.5; cursor: progress; }
 
     .hw-input-row {
       display: flex; border-top: 1px solid var(--border); padding: 10px 12px; gap: 8px;
+      flex-shrink: 0;
     }
     .hw-input-row input {
       flex: 1; border: 1px solid var(--border); border-radius: 8px;
@@ -3447,11 +3564,21 @@ resetOdds('sports');
       border-radius: 8px; padding: 8px 14px; cursor: pointer; font-weight: 600; font-size: 0.9rem;
     }
     .hw-input-row button:hover { background: var(--primary-dark); }
+    .hw-input-row button:disabled { opacity: 0.6; cursor: progress; }
+
+    /* Persistent human-handoff footer line, always visible in the panel. */
+    .hw-foot {
+      flex-shrink: 0; padding: 8px 14px; border-top: 1px solid var(--border);
+      background: #f8fafc; font-size: 0.78rem; color: var(--text-muted); text-align: center;
+    }
+    .hw-foot a { color: var(--primary); font-weight: 600; text-decoration: none; }
+    .hw-foot a:hover { text-decoration: underline; }
 
     @media (max-width: 480px) {
-      /* Keep clear of the sticky CTA bar; positions match the main stylesheet's
+      /* Smaller, comfortable footprint that never covers the whole screen, and
+         stays clear of the sticky CTA bar. Positions match the main stylesheet's
          !important rules. Panel sits above the chat button, button above the bar. */
-      .hw-panel { width: calc(100vw - 24px); right: 12px; bottom: 152px !important; max-height: 62vh; }
+      .hw-panel { width: calc(100vw - 24px); right: 12px; bottom: 152px !important; max-height: 60vh; }
       .hw-chat-btn { bottom: 84px !important; right: 16px !important; }
     }
   `;
@@ -3478,6 +3605,7 @@ resetOdds('sports');
         <input type="text" id="hwInput" placeholder="Type a question..." />
         <button id="hwSend">Send</button>
       </div>
+      <div class="hw-foot">Need a human? Email <a href="mailto:help@hedgerow.com">help@hedgerow.com</a>.</div>
     </div>
   `;
   document.body.appendChild(wrapper);
@@ -3486,6 +3614,9 @@ resetOdds('sports');
   const msgs = document.getElementById('hwMessages');
   const chips = document.getElementById('hwChips');
   const input = document.getElementById('hwInput');
+
+  const sendBtn = document.getElementById('hwSend');
+  let busy = false;
 
   function renderChipsUI() {
     chips.innerHTML = '';
@@ -3506,22 +3637,47 @@ resetOdds('sports');
     msgs.scrollTop = msgs.scrollHeight;
   }
 
-  function handleQuestion(text) {
-    if (!text.trim()) return;
+  // Shows an animated typing indicator while awaiting the AI reply.
+  function addTyping() {
+    const div = document.createElement('div');
+    div.className = 'hw-msg bot';
+    div.innerHTML = '<span class="hw-typing"><span></span><span></span><span></span></span>';
+    msgs.appendChild(div);
+    msgs.scrollTop = msgs.scrollHeight;
+    return div;
+  }
+
+  function setBusy(on) {
+    busy = on;
+    sendBtn.disabled = on;
+    input.disabled = on;
+    chips.querySelectorAll('.hw-chip').forEach(c => { c.disabled = on; });
+  }
+
+  // Routes every question (typed or chip) to the ringfenced AI endpoint.
+  async function handleQuestion(text) {
+    if (busy || !text || !text.trim()) return;
     addMsg(text, 'user');
-    const answer = getAnswer(text);
-    if (answer) {
-      addMsg(answer, 'bot');
-    } else {
-      addMsg("I don't have a specific answer for that yet. Try one of the suggested questions below, or join the waitlist and our team will follow up.", 'bot');
-      renderChipsUI();
+    setBusy(true);
+    const typingEl = addTyping();
+    let reply = '';
+    try {
+      if (typeof window.hedgerowChat === 'function') {
+        reply = await window.hedgerowChat(text);
+      }
+    } catch (err) {
+      reply = '';
     }
+    typingEl.remove();
+    addMsg(reply && reply.trim() ? reply : FALLBACK_MSG, 'bot');
+    setBusy(false);
+    input.focus();
   }
 
   document.getElementById('hwToggle').addEventListener('click', () => panel.classList.toggle('open'));
   document.getElementById('hwClose').addEventListener('click', () => panel.classList.remove('open'));
-  document.getElementById('hwSend').addEventListener('click', () => { handleQuestion(input.value); input.value = ''; });
-  input.addEventListener('keydown', e => { if (e.key === 'Enter') { handleQuestion(input.value); input.value = ''; } });
+  sendBtn.addEventListener('click', () => { const v = input.value; input.value = ''; handleQuestion(v); });
+  input.addEventListener('keydown', e => { if (e.key === 'Enter') { const v = input.value; input.value = ''; handleQuestion(v); } });
 
   renderChipsUI();
 })();
