@@ -1443,7 +1443,7 @@
 <div class="hero">
   <div class="hero-badge">A marketing tool for your business</div>
   <h1>Win more customers with a promo that <em>pays you back</em> if the event happens.</h1>
-  <p class="hero-lead"><strong>You run the promo tied to an event you choose &mdash; a big game, a rainy weekend, a gas-price swing. If it happens, we pay your business the payoff the same day</strong> so you can cover the giveaway at no cost to you. If it doesn't, you keep the upside. Pick the event, set how much the promo could cost you, and bring in customers &mdash; all for one flat fee.</p>
+  <p class="hero-lead"><strong>You run the promo tied to an event you choose &mdash; a big game, a rainy weekend, a gas-price swing. If it happens, we pay your business the payoff within 24 hours</strong> so you can cover the giveaway at no cost to you. If it doesn't, you keep the upside. Pick the event, set how much the promo could cost you, and bring in customers &mdash; all for one flat fee.</p>
   <p class="hero-sub">No accounts. No paperwork. A simple marketing tool, priced in seconds.</p>
   <a href="#calculator" class="hero-cta">Get my flat fee</a>
 
@@ -1516,7 +1516,7 @@
     <div class="step">
       <div class="step-num">4</div>
       <h3>We Pay You the Payoff</h3>
-      <p>Once the event is officially decided, we pay YOU the same day — by bank transfer (ACH) or USDC — so you can cover the giveaway. No checks in the mail; your money moves when the result is in.</p>
+      <p>Once the event is officially decided, we pay YOU within 24 hours — by bank transfer (ACH) or USDC — so you can cover the giveaway. No checks in the mail; your money moves when the result is in.</p>
     </div>
   </div>
 </div>
@@ -1642,7 +1642,7 @@
         <div class="outcome-card receive">
           <div class="outcome-label">If it happens, we pay you</div>
           <div class="outcome-amount" id="rReceiveAmount">--</div>
-          <div class="outcome-note">Paid to your business, same day</div>
+          <div class="outcome-note">Paid to your business, within 24 hours</div>
         </div>
       </div>
 
@@ -1824,7 +1824,7 @@
       <button class="modal-close" onclick="closeCheckout()" style="position:absolute;top:16px;right:16px;">&times;</button>
       <div class="confirm-check"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
       <div class="confirm-title">Your promotion is live</div>
-      <div class="confirm-sub">You're all set. If it happens, we pay YOU the payoff the same day the event is officially decided — by your selected method — so you can cover the giveaway at no cost to you.</div>
+      <div class="confirm-sub">You're all set. If it happens, we pay YOU the payoff within 24 hours of the result being official — by your selected method — so you can cover the giveaway at no cost to you.</div>
       <div class="confirm-detail">
         <div class="order-row">
           <span class="order-label">Event</span>
@@ -1941,7 +1941,7 @@
         <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
       </div>
       <h4>Same-Day Payoff</h4>
-      <p>Once the event is officially decided, we pay you the same day — by bank transfer (ACH) or USDC.</p>
+      <p>Once the event is officially decided, we pay you within 24 hours — by bank transfer (ACH) or USDC.</p>
     </div>
   </div>
 </div>
@@ -1957,7 +1957,7 @@
     </div>
     <div class="faq-item">
       <div class="faq-q" tabindex="0" role="button" aria-expanded="false" onclick="toggleFaq(this)">What exactly is Hedgerow?</div>
-      <div class="faq-a">Hedgerow is a simple marketing tool for businesses of every kind. You run a fun promotion tied to a real public event — a team winning, rain on your event day, a hot weekend, a gas-price swing. You offer the deal to your customers; if the event happens, Hedgerow pays YOUR business the payoff the same day so you can cover the giveaway at no cost to you. If it doesn't, you keep the upside from the promotion. You pay one flat fee upfront, and that's it. (We pay your business, not your customers directly.)</div>
+      <div class="faq-a">Hedgerow is a simple marketing tool for businesses of every kind. You run a fun promotion tied to a real public event — a team winning, rain on your event day, a hot weekend, a gas-price swing. You offer the deal to your customers; if the event happens, Hedgerow pays YOUR business the payoff within 24 hours so you can cover the giveaway at no cost to you. If it doesn't, you keep the upside from the promotion. You pay one flat fee upfront, and that's it. (We pay your business, not your customers directly.)</div>
     </div>
     <div class="faq-item">
       <div class="faq-q" tabindex="0" role="button" aria-expanded="false" onclick="toggleFaq(this)">How is the flat fee calculated?</div>
@@ -1969,7 +1969,7 @@
     </div>
     <div class="faq-item">
       <div class="faq-q" tabindex="0" role="button" aria-expanded="false" onclick="toggleFaq(this)">How fast do I get paid?</div>
-      <div class="faq-a">Once the event is officially decided, we pay YOU — your business — the same day, by bank transfer (ACH) or USDC. No paper checks, no multi-day waits. You use that to cover the giveaway you offered your customers. You pick your preferred method when you set up your promotion.</div>
+      <div class="faq-a">Once the event is officially decided, we pay YOU — your business — within 24 hours, by bank transfer (ACH) or USDC. No paper checks, no multi-day waits. You use that to cover the giveaway you offered your customers. You pick your preferred method when you set up your promotion.</div>
     </div>
     <div class="faq-item">
       <div class="faq-q" tabindex="0" role="button" aria-expanded="false" onclick="toggleFaq(this)">What events can I build a promotion around?</div>
@@ -2379,13 +2379,13 @@ function renderQuote(trigger, exposure, prob) {
   document.getElementById('rReceiveAmount').textContent = fmt(exposure);
 
   document.getElementById('rTriggered').textContent =
-    `If it happens, we pay YOU ${fmt(exposure)} the same day the event is officially decided — so you can cover the giveaway you offered your customers at no cost to you. Your only cost is the ${fmt(fee)} flat fee.`;
+    `If it happens, we pay YOU ${fmt(exposure)} within 24 hours of the result being official — so you can cover the giveaway you offered your customers at no cost to you. Your only cost is the ${fmt(fee)} flat fee.`;
 
   document.getElementById('rNotTriggered').textContent =
     `You keep the upside and the customers your promotion brought in. Your only cost is the ${fmt(fee)} flat fee.`;
 
   document.getElementById('rSummaryLine').textContent =
-    `Your flat fee: ${fmt(fee)}. If it happens, we pay YOU ${fmt(exposure)} the same day (after the event is officially decided) — so your giveaway costs you nothing. If it doesn't happen, you keep the upside and the customers it brought in; your only cost is the ${fmt(fee)} fee.`;
+    `Your flat fee: ${fmt(fee)}. If it happens, we pay YOU ${fmt(exposure)} within 24 hours (after the event is officially decided) — so your giveaway costs you nothing. If it doesn't happen, you keep the upside and the customers it brought in; your only cost is the ${fmt(fee)} fee.`;
 
   // Surface the verified settlement source — the neutral, automatic judge.
   document.getElementById('rSettleSourceText').textContent = settledByLabel(currentSource);
@@ -3328,12 +3328,12 @@ resetOdds('sports');
     {
       chip: 'What is ' + BRAND + '?',
       patterns: ['what is', 'what do you', 'what does hedgerow', 'tell me about'],
-      answer: BRAND + ' is a simple marketing tool for businesses of every kind. You run a fun promotion tied to a real public event — a team winning this weekend, rain on your event day, a hot weekend, a gas-price swing. You offer the deal to your customers; if the event happens, we pay YOUR business the payoff the same day so you can cover the giveaway at no cost to you. If it doesn\'t, you keep the upside. You pay one flat fee upfront, and that\'s it. (We pay your business, not your customers directly.)'
+      answer: BRAND + ' is a simple marketing tool for businesses of every kind. You run a fun promotion tied to a real public event — a team winning this weekend, rain on your event day, a hot weekend, a gas-price swing. You offer the deal to your customers; if the event happens, we pay YOUR business the payoff within 24 hours so you can cover the giveaway at no cost to you. If it doesn\'t, you keep the upside. You pay one flat fee upfront, and that\'s it. (We pay your business, not your customers directly.)'
     },
     {
       chip: 'How does a promotion work?',
       patterns: ['how does it work', 'how it works', 'how do promotions', 'how does a promo', 'explain'],
-      answer: 'You run a promo tied to an event you pick — for example, "Free dessert if the home team wins" or "Rainy event day? 50% back." Tell us how much the promo could cost you if it happens, and we show you one flat fee. Run the promotion to bring in customers. If the event happens, we pay YOUR business the payoff the same day so you can cover the giveaway at no cost to you. If it doesn\'t, you simply keep the upside. All upside, no risk. (We pay your business, not your customers directly.)'
+      answer: 'You run a promo tied to an event you pick — for example, "Free dessert if the home team wins" or "Rainy event day? 50% back." Tell us how much the promo could cost you if it happens, and we show you one flat fee. Run the promotion to bring in customers. If the event happens, we pay YOUR business the payoff within 24 hours so you can cover the giveaway at no cost to you. If it doesn\'t, you simply keep the upside. All upside, no risk. (We pay your business, not your customers directly.)'
     },
     {
       chip: 'What does it cost?',
@@ -3343,7 +3343,7 @@ resetOdds('sports');
     {
       chip: 'How do I get paid?',
       patterns: ['get paid', 'payoff', 'payout', 'payment', 'ach', 'usdc', 'settle', 'when do i get'],
-      answer: 'Once the event is officially decided, we pay YOU — your business — the same day, by bank transfer (ACH) or USDC. No paper checks, no multi-day waits. You use that to cover the giveaway you offered your customers. You pick your preferred method when you set up your promotion.'
+      answer: 'Once the event is officially decided, we pay YOU — your business — within 24 hours, by bank transfer (ACH) or USDC. No paper checks, no multi-day waits. You use that to cover the giveaway you offered your customers. You pick your preferred method when you set up your promotion.'
     },
     {
       chip: 'What events can I use?',
