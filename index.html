@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hedgerow — Win more customers with a promo that pays you back</title>
+<title>Hedgerow: Win more customers with a promo that pays you back</title>
 <meta name="description" content="Run a marketing promotion tied to a real-world event. You offer the deal; if it happens, we fund the payoff for one flat fee so you can cover it. If it doesn't, you keep the upside. A marketing tool for your business.">
 <style>
   :root {
@@ -1443,7 +1443,7 @@
 <div class="hero">
   <div class="hero-badge">A marketing tool for your business</div>
   <h1>Win more customers with a promo that <em>pays you back</em> if the event happens.</h1>
-  <p class="hero-lead"><strong>You run the promo tied to an event you choose &mdash; a big game, a rainy weekend, a gas-price swing. If it happens, we pay your business the payoff within 24 hours</strong> so you can cover the giveaway at no cost to you. If it doesn't, you keep the upside. Pick the event, set how much the promo could cost you, and bring in customers &mdash; all for one flat fee.</p>
+  <p class="hero-lead"><strong>You run the promo tied to an event you choose: a big game, a rainy weekend, a gas-price swing. If it happens, we pay your business the payoff within 24 hours</strong> so you can cover the deal you offered at no cost to you. If it doesn't, you keep the upside. Pick the event, set how much the promo could cost you, and bring in customers, all for one flat fee.</p>
   <p class="hero-sub">No accounts. No paperwork. A simple marketing tool, priced in seconds.</p>
   <a href="#calculator" class="hero-cta">Get my flat fee</a>
 
@@ -1464,10 +1464,10 @@
   </div>
 
   <div class="hero-triggers">
-    <div class="hero-trigger"><strong>Local sports</strong> &mdash; your team wins, wins by 10+, makes the playoffs</div>
-    <div class="hero-trigger"><strong>Weather</strong> &mdash; rain on your event day, a 90&deg;+ weekend</div>
-    <div class="hero-trigger"><strong>Gas price</strong> &mdash; gas tops $4, or drops below $3</div>
-    <div class="hero-trigger"><strong>Season milestone</strong> &mdash; your team wins the division</div>
+    <div class="hero-trigger"><strong>Local sports:</strong> your team wins, wins by 10+, makes the playoffs</div>
+    <div class="hero-trigger"><strong>Weather:</strong> rain on your event day, a 90&deg;+ weekend</div>
+    <div class="hero-trigger"><strong>Gas price:</strong> gas tops $4, or drops below $3</div>
+    <div class="hero-trigger"><strong>Season milestone:</strong> your team wins the division</div>
   </div>
 </div>
 
@@ -1506,7 +1506,7 @@
     <div class="step">
       <div class="step-num">2</div>
       <h3>Set Your Exposure</h3>
-      <p>Tell us how much the promo could cost you if it happens — the free item, the refund, the discount. That is the payoff we pay you so you can cover it.</p>
+      <p>Tell us how much the promo could cost you if it happens, whether that is a free item, a refund, or a discount. That is the payoff we pay you so you can cover it.</p>
     </div>
     <div class="step">
       <div class="step-num">3</div>
@@ -1516,7 +1516,7 @@
     <div class="step">
       <div class="step-num">4</div>
       <h3>We Pay You the Payoff</h3>
-      <p>Once the event is officially decided, we pay YOU within 24 hours — by bank transfer (ACH) or USDC — so you can cover the giveaway. No checks in the mail; your money moves when the result is in.</p>
+      <p>Once the event is officially decided, we pay YOU within 24 hours, by bank transfer (ACH) or USDC, so you can cover what you promised your customers. No checks in the mail; your money moves when the result is in.</p>
     </div>
   </div>
 </div>
@@ -1555,7 +1555,7 @@
       </div>
 
       <div class="form-group">
-        <label>Your event (optional — edit or write your own)</label>
+        <label>Your event (optional, edit or write your own)</label>
         <input type="text" id="triggerDesc" placeholder='e.g., "The home team wins this weekend" or "Rain on our event day"'>
       </div>
 
@@ -1580,14 +1580,14 @@
           <option value="heat">Heat</option>
         </select>
         <p class="field-help">We pull real weather history for your city and the event date above to price the odds.</p>
-        <p class="field-help" style="margin-top:8px;">Note: Coastal Gulf &amp; Florida weather isn't available Aug&ndash;Oct (hurricane season).</p>
+        <p class="field-help" style="margin-top:8px;">Note: Coastal Gulf &amp; Florida weather isn't available Aug to Oct (hurricane season).</p>
       </div>
 
       <!-- Weather threshold — prefilled from a sensible suggestion, editable. -->
       <div class="form-group" id="weatherThresholdGroup" style="display:none;">
         <label id="weatherThresholdLabel">Threshold</label>
         <input type="number" id="weatherThreshold" step="0.1" placeholder="e.g., 5">
-        <p class="field-help" id="weatherThresholdHelp">The level that triggers your promo (prefilled from typical conditions — edit if you like).</p>
+        <p class="field-help" id="weatherThresholdHelp">The level that triggers your promo (prefilled from typical conditions; edit if you like).</p>
       </div>
 
       <!-- Fuel specifics — price threshold, optional city/region + date. -->
@@ -1602,7 +1602,7 @@
       <div class="form-group">
         <label>Odds this happens</label>
         <div class="est-odds" id="estOddsBox" aria-live="polite">
-          <span class="est-odds-value" id="estOddsValue">&mdash; enter your matchup &mdash;<span class="live-odds-badge" id="liveOddsBadge">Live odds</span></span>
+          <span class="est-odds-value" id="estOddsValue">Enter your matchup to see odds<span class="live-odds-badge" id="liveOddsBadge">Live odds</span></span>
           <p class="est-odds-caveat" id="estOddsCaveat">Enter the specifics above, then we price your odds from a live source.</p>
         </div>
         <!-- No-live-market lead capture: shown when a matchup isn't trading yet. -->
@@ -1618,7 +1618,7 @@
       <div class="form-group">
         <label>How much could this promo cost you if it happens? ($)</label>
         <input type="number" id="exposure" placeholder="e.g., 5000 (minimum $250)" min="250" step="100">
-        <p class="field-help">The value of the giveaway &times; how many redemptions you expect. Minimum $250.</p>
+        <p class="field-help">The value of the deal you offered &times; how many redemptions you expect. Minimum $250.</p>
       </div>
 
       <button class="calc-btn" onclick="calculate()">See My Flat Fee</button>
@@ -1690,7 +1690,7 @@
 <!-- AI PROMO DESIGNER -->
 <div class="section" id="designPromo">
   <h2 class="section-title">Not sure what promo to run?</h2>
-  <p class="section-sub">Tell us a little about your business &mdash; any kind, from a venue to a dealership to a gas station &mdash; and our AI will design a promotion built for it.</p>
+  <p class="section-sub">Tell us a little about your business (any kind, from a venue to a dealership to a gas station) and our AI will design a promotion built for it.</p>
 
   <div class="dp-wrap">
     <div class="dp-form" id="dpForm">
@@ -1824,7 +1824,7 @@
       <button class="modal-close" onclick="closeCheckout()" style="position:absolute;top:16px;right:16px;">&times;</button>
       <div class="confirm-check"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
       <div class="confirm-title">Your promotion is live</div>
-      <div class="confirm-sub">You're all set. If it happens, we pay YOU the payoff within 24 hours of the result being official — by your selected method — so you can cover the giveaway at no cost to you.</div>
+      <div class="confirm-sub">You're all set. If it happens, we pay YOU the payoff within 24 hours of the result being official, by your selected method, so you can cover the deal you offered at no cost to you.</div>
       <div class="confirm-detail">
         <div class="order-row">
           <span class="order-label">Event</span>
@@ -1863,15 +1863,15 @@
     <div class="vertical-card">
       <div class="vertical-icon sports">S</div>
       <h3>Bars and Restaurants</h3>
-      <p>Run game-day or event-day promotions that fill seats. If the event happens and your giveaway comes due, we pay your business the payoff to cover it.</p>
-      <div class="vertical-example"><strong>Example:</strong> "Free wings if the home team wins" — $640 flat fee, we pay you the $4,000 payoff</div>
+      <p>Run game-day or event-day promotions that fill seats. If the event happens and the deal you offered comes due, we pay your business the payoff to cover it.</p>
+      <div class="vertical-example"><strong>Example:</strong> "Free wings if the home team wins" earns a $640 flat fee, and we pay you the $4,000 payoff</div>
     </div>
 
     <div class="vertical-card">
       <div class="vertical-icon weather">W</div>
       <h3>Outdoor Events and Venues</h3>
       <p>Promise guests a rain-day refund for your festival, market, or grand opening. If it rains, we pay you to cover it.</p>
-      <div class="vertical-example"><strong>Example:</strong> "Rain on event day? 50% back." — $380 flat fee, we pay you $2,500</div>
+      <div class="vertical-example"><strong>Example:</strong> "Rain on event day? 50% back." earns a $380 flat fee, and we pay you $2,500</div>
     </div>
 
     <div class="vertical-card">
@@ -1880,21 +1880,21 @@
       </div>
       <h3>Car Dealerships</h3>
       <p>Big, bold conditional promotions that bring buyers to the lot. We pay your business the payoff if the event happens.</p>
-      <div class="vertical-example"><strong>Example:</strong> "$5K off any truck if the home team makes the playoffs" — $3,200 flat fee, we pay you $25K</div>
+      <div class="vertical-example"><strong>Example:</strong> "$5K off any truck if the home team makes the playoffs" earns a $3,200 flat fee, and we pay you $25K</div>
     </div>
 
     <div class="vertical-card">
       <div class="vertical-icon weather">T</div>
       <h3>Tourism and Hospitality</h3>
-      <p>Offer guests a weather promise. A rained-out weekend? Partial refund — Hedgerow pays you to cover it.</p>
-      <div class="vertical-example"><strong>Example:</strong> "3+ rainy days? 25% back." — $210 flat fee, we pay you $1,200</div>
+      <p>Offer guests a weather promise. A rained-out weekend? Partial refund, and Hedgerow pays you to cover it.</p>
+      <div class="vertical-example"><strong>Example:</strong> "3+ rainy days? 25% back." earns a $210 flat fee, and we pay you $1,200</div>
     </div>
 
     <div class="vertical-card">
       <div class="vertical-icon weather">H</div>
       <h3>Ice Cream and Seasonal Shops</h3>
-      <p>Turn a record-hot weekend into a customer-favorite deal. If it hits, we pay you to cover the giveaway.</p>
-      <div class="vertical-example"><strong>Example:</strong> "Free scoop if it hits 90&deg;+ this weekend" — $180 flat fee, we pay you $1,500</div>
+      <p>Turn a record-hot weekend into a customer-favorite deal. If it hits, we pay you to cover what you offered.</p>
+      <div class="vertical-example"><strong>Example:</strong> "Free scoop if it hits 90&deg;+ this weekend" earns a $180 flat fee, and we pay you $1,500</div>
     </div>
 
     <div class="vertical-card">
@@ -1903,7 +1903,7 @@
       </div>
       <h3>Local Retail and Pop-Ups</h3>
       <p>Tie a fun discount to a big public event. However it turns out, you keep the customers it brought in.</p>
-      <div class="vertical-example"><strong>Example:</strong> "Home team wins by 10+? 20% off everything." — $900 flat fee, we pay you $5,000 to cover the discounts</div>
+      <div class="vertical-example"><strong>Example:</strong> "Home team wins by 10+? 20% off everything." earns a $900 flat fee, and we pay you $5,000 to cover the discounts</div>
     </div>
 
     <div class="vertical-card">
@@ -1912,7 +1912,7 @@
       </div>
       <h3>Gas Stations, Auto and Fleet</h3>
       <p>Turn a price swing into a customer-favorite deal. Tie a fuel rebate to the published gas price; if it hits, we pay you the payoff to cover it.</p>
-      <div class="vertical-example"><strong>Example:</strong> "Gas tops $4? 10c/gal fuel rebate weekend." — $1,050 flat fee, we pay you $3,000</div>
+      <div class="vertical-example"><strong>Example:</strong> "Gas tops $4? 10c/gal fuel rebate weekend." earns a $1,050 flat fee, and we pay you $3,000</div>
     </div>
 
   </div>
@@ -1941,7 +1941,7 @@
         <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
       </div>
       <h4>24-Hour Payoff</h4>
-      <p>Once the event is officially decided, we pay you within 24 hours — by bank transfer (ACH) or USDC.</p>
+      <p>Once the event is officially decided, we pay you within 24 hours, by bank transfer (ACH) or USDC.</p>
     </div>
   </div>
 </div>
@@ -1957,19 +1957,19 @@
     </div>
     <div class="faq-item">
       <div class="faq-q" tabindex="0" role="button" aria-expanded="false" onclick="toggleFaq(this)">What exactly is Hedgerow?</div>
-      <div class="faq-a">Hedgerow is a simple marketing tool for businesses of every kind. You run a fun promotion tied to a real public event — a team winning, rain on your event day, a hot weekend, a gas-price swing. You offer the deal to your customers; if the event happens, Hedgerow pays YOUR business the payoff within 24 hours so you can cover the giveaway at no cost to you. If it doesn't, you keep the upside from the promotion. You pay one flat fee upfront, and that's it. (We pay your business, not your customers directly.)</div>
+      <div class="faq-a">Hedgerow is a simple marketing tool for businesses of every kind. You run a fun promotion tied to a real public event, such as a team winning, rain on your event day, a hot weekend, or a gas-price swing. You offer the deal to your customers; if the event happens, Hedgerow pays YOUR business the payoff within 24 hours so you can cover what you offered at no cost to you. If it doesn't, you keep the upside from the promotion. You pay one flat fee upfront, and that's it. (We pay your business, not your customers directly.)</div>
     </div>
     <div class="faq-item">
       <div class="faq-q" tabindex="0" role="button" aria-expanded="false" onclick="toggleFaq(this)">How is the flat fee calculated?</div>
-      <div class="faq-a">Your flat fee depends on how much the promo could cost you (your exposure) and the estimated odds of the event. You don't set the odds — those come from the event you pick, estimated from real-world data. More likely events cost a bit more, since the payoff is more likely to happen. The calculator on this page gives you an instant, transparent estimate, and your final flat fee uses live market data when you set up your promo. There's nothing else to pay.</div>
+      <div class="faq-a">Your flat fee depends on how much the promo could cost you (your exposure) and the estimated odds of the event. You don't set the odds; those come from the event you pick, estimated from real-world data. More likely events cost a bit more, since the payoff is more likely to happen. The calculator on this page gives you an instant, transparent estimate, and your final flat fee uses live market data when you set up your promo. There's nothing else to pay.</div>
     </div>
     <div class="faq-item">
       <div class="faq-q" tabindex="0" role="button" aria-expanded="false" onclick="toggleFaq(this)">How do you know if it happened?</div>
-      <div class="faq-a">Every promotion settles on an independent, official source — the official game result and standings for sports, the National Weather Service for weather, and the U.S. Energy Information Administration / AAA published price for gas and fuel. The moment the event is officially decided, your payout is automatic. No disputes, no judgment calls.</div>
+      <div class="faq-a">Every promotion settles on an independent, official source: the official game result and standings for sports, the National Weather Service for weather, and the U.S. Energy Information Administration / AAA published price for gas and fuel. The moment the event is officially decided, your payout is automatic. No disputes, no judgment calls.</div>
     </div>
     <div class="faq-item">
       <div class="faq-q" tabindex="0" role="button" aria-expanded="false" onclick="toggleFaq(this)">How fast do I get paid?</div>
-      <div class="faq-a">Once the event is officially decided, we pay YOU — your business — within 24 hours, by bank transfer (ACH) or USDC. No paper checks, no multi-day waits. You use that to cover the giveaway you offered your customers. You pick your preferred method when you set up your promotion.</div>
+      <div class="faq-a">Once the event is officially decided, we pay YOU, your business, within 24 hours, by bank transfer (ACH) or USDC. No paper checks, no multi-day waits. You use that to cover the deal you offered your customers. You pick your preferred method when you set up your promotion.</div>
     </div>
     <div class="faq-item">
       <div class="faq-q" tabindex="0" role="button" aria-expanded="false" onclick="toggleFaq(this)">What events can I build a promotion around?</div>
@@ -1991,7 +1991,7 @@
   <div class="partners-wrap">
     <div class="partners-pitch">
       <h2>Become a partner</h2>
-      <p class="partners-lead">Partners earn by sending small businesses to Hedgerow. Refer a shop, a bar, or a dealership &mdash; when they start running promotions, you get paid.</p>
+      <p class="partners-lead">Partners earn by sending small businesses to Hedgerow. Refer a shop, a bar, or a dealership, and when they start running promotions, you get paid.</p>
       <ul class="partners-points">
         <li>Share your unique referral link with the businesses you know.</li>
         <li>Marketing agencies and resellers earn recurring commission on fees.</li>
@@ -2052,7 +2052,7 @@
 <!-- FOOTER -->
 <footer>
   <p><span id="brand-footer">Hedgerow</span> &copy; 2026. Based in the USA. &nbsp;|&nbsp; <a href="#partners">Become a partner</a> &nbsp;|&nbsp; <a href="#">Terms</a> &nbsp;|&nbsp; <a href="#">Privacy</a></p>
-  <p style="margin-top:8px;">Hedgerow is a marketing tool for businesses. If the event happens, Hedgerow, Inc. pays the business the payoff — not the customers directly.</p>
+  <p style="margin-top:8px;">Hedgerow is a marketing tool for businesses. If the event happens, Hedgerow, Inc. pays the business the payoff, not the customers directly.</p>
 </footer>
 
 <!-- STICKY MOBILE CTA BAR — label morphs by scroll position -->
@@ -2189,9 +2189,9 @@ function categoryMode(cat) {
 // Prompt shown in the odds box before specifics resolve, per category.
 function oddsPromptFor(cat) {
   const mode = categoryMode(cat);
-  if (mode === 'weather') return '— enter your city & date —';
-  if (mode === 'fuel') return '— enter your price threshold —';
-  return '— enter your matchup —';
+  if (mode === 'weather') return 'Enter your city and date to see odds';
+  if (mode === 'fuel') return 'Enter your price threshold to see odds';
+  return 'Enter your matchup to see odds';
 }
 
 // Infers a settlement source from free-text when no preset is chosen.
@@ -2328,11 +2328,11 @@ function showResolvedOdds(prob, sourceName, mode) {
     badge.textContent = 'Live odds ' + pct + '%';
     badge.style.display = 'inline-block';
     box.classList.add('is-live');
-    caveat.textContent = 'Live odds ' + pct + '%' + (sourceName ? ' · ' + sourceName : '') + '. Confirmed at setup.';
+    caveat.textContent = '';
   } else {
     badge.style.display = 'none';
     box.classList.remove('is-live');
-    caveat.textContent = 'Estimate ' + pct + '%' + (sourceName ? ' · ' + sourceName : '') + ' · confirmed at setup.';
+    caveat.textContent = 'Estimate, confirmed at setup.';
   }
 }
 
@@ -2345,7 +2345,7 @@ function showNoOdds(message) {
   badge.style.display = 'none';
   box.classList.remove('is-live');
   valueEl.classList.add('is-prompt');
-  writeOddsValue('—');
+  writeOddsValue('--');
   caveat.textContent = message;
   // No real odds => no fee. Keep the result panel hidden.
   document.getElementById('calcResult').classList.remove('visible');
@@ -2379,13 +2379,13 @@ function renderQuote(trigger, exposure, prob) {
   document.getElementById('rReceiveAmount').textContent = fmt(exposure);
 
   document.getElementById('rTriggered').textContent =
-    `If it happens, we pay YOU ${fmt(exposure)} within 24 hours of the result being official — so you can cover the giveaway you offered your customers at no cost to you. Your only cost is the ${fmt(fee)} flat fee.`;
+    `If it happens, we pay YOU ${fmt(exposure)} within 24 hours of the result being official, so you can cover the deal you offered your customers at no cost to you. Your only cost is the ${fmt(fee)} flat fee.`;
 
   document.getElementById('rNotTriggered').textContent =
     `You keep the upside and the customers your promotion brought in. Your only cost is the ${fmt(fee)} flat fee.`;
 
   document.getElementById('rSummaryLine').textContent =
-    `Your flat fee: ${fmt(fee)}. If it happens, we pay YOU ${fmt(exposure)} within 24 hours (after the event is officially decided) — so your giveaway costs you nothing. If it doesn't happen, you keep the upside and the customers it brought in; your only cost is the ${fmt(fee)} fee.`;
+    `Your flat fee: ${fmt(fee)}. If it happens, we pay YOU ${fmt(exposure)} within 24 hours (after the event is officially decided), so the deal you offered costs you nothing. If it doesn't happen, you keep the upside and the customers it brought in; your only cost is the ${fmt(fee)} fee.`;
 
   // Surface the verified settlement source — the neutral, automatic judge.
   document.getElementById('rSettleSourceText').textContent = settledByLabel(currentSource);
@@ -2560,7 +2560,7 @@ async function calculate() {
 
   if (!exposure || exposure < 250) {
     flagField('exposure');
-    showNoOdds('Enter how much this promo could cost you — minimum $250.');
+    showNoOdds('Enter how much this promo could cost you (minimum $250).');
     scrollToOdds();
     return;
   }
@@ -2594,7 +2594,7 @@ async function calculate() {
       } else {
         // No live market for that matchup. Show a clear, visible message, no
         // number, no fee — and a lead capture so it isn't a dead end.
-        let msg = "This event isn't trading yet — there's no live market for it. It may not be scheduled in range yet (or it's too far out).";
+        let msg = "This event isn't trading yet; there's no live market for it. It may not be scheduled in range yet (or it's too far out).";
         if (eventDate) msg += ' (Date: ' + eventDate + '.)';
         showNoOdds(msg);
         showNoMarketLead(msg);
@@ -2701,7 +2701,7 @@ async function calculate() {
     }
   } catch (err) {
     // Any network/parse error — never fabricate. Show the neutral prompt.
-    showNoOdds("We couldn't reach our live odds source just now — please try again in a moment, and we'll confirm your exact odds when you set up your promo.");
+    showNoOdds("We couldn't reach our live odds source just now. Please try again in a moment, and we'll confirm your exact odds when you set up your promo.");
     scrollToOdds();
   } finally {
     if (btn) { btn.disabled = false; btn.textContent = btnLabel; }
@@ -2784,13 +2784,13 @@ async function submitNoMarketLead() {
   const res = await postCalcLead(email, btn, wrap, calcLeadIntent);
   if (!res.ok) {
     if (res.reason === 'email') { flagField('noMarketLeadEmail'); }
-    else { document.getElementById('noMarketLeadMsg').textContent = 'Something went wrong — please try again in a moment.'; }
+    else { document.getElementById('noMarketLeadMsg').textContent = 'Something went wrong. Please try again in a moment.'; }
     return;
   }
   clearFieldFlag('noMarketLeadEmail');
   const doneMsg = (calcLeadIntent === 'too_soon_lead')
-    ? 'Thanks — we\'ll email you the moment this event is priceable.'
-    : 'Thanks — we\'ll email you the moment this event is live.';
+    ? 'Thanks. We\'ll email you the moment this event is priceable.'
+    : 'Thanks. We\'ll email you the moment this event is live.';
   wrap.innerHTML = '<p class="lc-done">' + doneMsg + '</p>';
 }
 
@@ -2802,11 +2802,11 @@ async function submitFuelLead() {
   const res = await postCalcLead(email, btn, wrap, 'fuel_quote_request');
   if (!res.ok) {
     if (res.reason === 'email') { flagField('rFuelLeadEmail'); }
-    else { wrap.querySelector('p').textContent = 'Something went wrong — please try again in a moment.'; }
+    else { wrap.querySelector('p').textContent = 'Something went wrong. Please try again in a moment.'; }
     return;
   }
   clearFieldFlag('rFuelLeadEmail');
-  wrap.innerHTML = '<p class="lc-done">Thanks — we\'ll send a firm quote for this fuel promotion to your email.</p>';
+  wrap.innerHTML = '<p class="lc-done">Thanks. We\'ll send a firm quote for this fuel promotion to your email.</p>';
 }
 
 // === CHECKOUT ===
@@ -2819,7 +2819,7 @@ function openCheckout() {
   document.getElementById('coPayoff').textContent = fmt(lastCalc.exposure);
   // .prob is only ever set from a resolved real source; show it plainly.
   document.getElementById('coProb').textContent =
-    (lastCalc.prob > 0) ? (Math.round(lastCalc.prob * 100) + '%') : '—';
+    (lastCalc.prob > 0) ? (Math.round(lastCalc.prob * 100) + '%') : '--';
   document.getElementById('coSource').textContent = lastCalc.source || SOURCE_OFFICIAL;
   document.getElementById('coFee').textContent = fmt(lastCalc.fee);
 
@@ -3161,6 +3161,9 @@ function useDesignedPromo() {
     if (isFinite(cleaned) && cleaned > 0) exposureNum = cleaned;
   }
   if (exposureNum && exposureNum >= 250) {
+    // Cap the auto-populated exposure from the designer at a modest value so the
+    // field never auto-fills high (the user can still raise it manually).
+    if (exposureNum > 2500) exposureNum = 2500;
     document.getElementById('exposure').value = exposureNum;
   }
 
@@ -3280,7 +3283,7 @@ resetOdds('sports');
     if (typeof temp !== 'number' || !isFinite(temp)) return;
     const line = document.getElementById('liveWeatherLine');
     if (!line) return;
-    line.textContent = 'Live from the National Weather Service — Tampa is currently ' + Math.round(temp) + '°F.';
+    line.textContent = 'Live from the National Weather Service: Tampa is currently ' + Math.round(temp) + '°F.';
     line.style.display = 'block';
   } catch (err) {
     // Silently ignore — never break the page on a failed live signal.
@@ -3328,22 +3331,22 @@ resetOdds('sports');
     {
       chip: 'What is ' + BRAND + '?',
       patterns: ['what is', 'what do you', 'what does hedgerow', 'tell me about'],
-      answer: BRAND + ' is a simple marketing tool for businesses of every kind. You run a fun promotion tied to a real public event — a team winning this weekend, rain on your event day, a hot weekend, a gas-price swing. You offer the deal to your customers; if the event happens, we pay YOUR business the payoff within 24 hours so you can cover the giveaway at no cost to you. If it doesn\'t, you keep the upside. You pay one flat fee upfront, and that\'s it. (We pay your business, not your customers directly.)'
+      answer: BRAND + ' is a simple marketing tool for businesses of every kind. You run a fun promotion tied to a real public event, such as a team winning this weekend, rain on your event day, a hot weekend, or a gas-price swing. You offer the deal to your customers; if the event happens, we pay YOUR business the payoff within 24 hours so you can cover what you offered at no cost to you. If it doesn\'t, you keep the upside. You pay one flat fee upfront, and that\'s it. (We pay your business, not your customers directly.)'
     },
     {
       chip: 'How does a promotion work?',
       patterns: ['how does it work', 'how it works', 'how do promotions', 'how does a promo', 'explain'],
-      answer: 'You run a promo tied to an event you pick — for example, "Free dessert if the home team wins" or "Rainy event day? 50% back." Tell us how much the promo could cost you if it happens, and we show you one flat fee. Run the promotion to bring in customers. If the event happens, we pay YOUR business the payoff within 24 hours so you can cover the giveaway at no cost to you. If it doesn\'t, you simply keep the upside. All upside, no risk. (We pay your business, not your customers directly.)'
+      answer: 'You run a promo tied to an event you pick, for example "Free dessert if the home team wins" or "Rainy event day? 50% back." Tell us how much the promo could cost you if it happens, and we show you one flat fee. Run the promotion to bring in customers. If the event happens, we pay YOUR business the payoff within 24 hours so you can cover what you offered at no cost to you. If it doesn\'t, you simply keep the upside. All upside, no risk. (We pay your business, not your customers directly.)'
     },
     {
       chip: 'What does it cost?',
       patterns: ['cost', 'price', 'fee', 'how much', 'pricing', 'flat fee'],
-      answer: 'You pay one flat fee upfront — nothing else. The fee depends on how much the promo could cost you (your exposure) and the estimated odds of the event. You don\'t set the odds — those come from the event you pick. Use the pricing tool on this page to get an instant, transparent estimate; your final flat fee uses live market data when you set up your promo.'
+      answer: 'You pay one flat fee upfront, nothing else. The fee depends on how much the promo could cost you (your exposure) and the estimated odds of the event. You don\'t set the odds; those come from the event you pick. Use the pricing tool on this page to get an instant, transparent estimate; your final flat fee uses live market data when you set up your promo.'
     },
     {
       chip: 'How do I get paid?',
       patterns: ['get paid', 'payoff', 'payout', 'payment', 'ach', 'usdc', 'settle', 'when do i get'],
-      answer: 'Once the event is officially decided, we pay YOU — your business — within 24 hours, by bank transfer (ACH) or USDC. No paper checks, no multi-day waits. You use that to cover the giveaway you offered your customers. You pick your preferred method when you set up your promotion.'
+      answer: 'Once the event is officially decided, we pay YOU, your business, within 24 hours, by bank transfer (ACH) or USDC. No paper checks, no multi-day waits. You use that to cover the deal you offered your customers. You pick your preferred method when you set up your promotion.'
     },
     {
       chip: 'What events can I use?',
@@ -3353,7 +3356,7 @@ resetOdds('sports');
     {
       chip: 'Do I take on any risk?',
       patterns: ['risk', 'what if it happens', 'do i owe', 'on the hook', 'downside'],
-      answer: 'No. If the event happens, we pay YOUR business the full payoff so you can cover the deal you offered your customers — you never owe more than the one flat fee you paid upfront. If it doesn\'t happen, you simply keep the upside from the promotion. All upside. No risk. (We pay your business, not your customers directly.)'
+      answer: 'No. If the event happens, we pay YOUR business the full payoff so you can cover the deal you offered your customers, and you never owe more than the one flat fee you paid upfront. If it doesn\'t happen, you simply keep the upside from the promotion. All upside. No risk. (We pay your business, not your customers directly.)'
     },
     {
       chip: 'How do I sign up?',
@@ -3468,7 +3471,7 @@ resetOdds('sports');
         <button id="hwClose" aria-label="Close">&times;</button>
       </div>
       <div class="hw-messages" id="hwMessages">
-        <div class="hw-msg bot">Hi — I can answer common questions about ${BRAND}. Pick a topic below or type your own.</div>
+        <div class="hw-msg bot">Hi. I can answer common questions about ${BRAND}. Pick a topic below or type your own.</div>
       </div>
       <div class="hw-chips" id="hwChips"></div>
       <div class="hw-input-row">
@@ -3526,7 +3529,7 @@ resetOdds('sports');
 
 <script>
 (function(){
-  window.submitCheckout=async function(){try{var amt=(typeof lastCalc!=='undefined'&&lastCalc&&lastCalc.fee)?Math.round(lastCalc.fee*100):0;if(!amt){alert('Please get your fee first.');return;}var label='Hedgerow promo'+((typeof lastCalc!=='undefined'&&lastCalc&&lastCalc.trigger)?(' — '+lastCalc.trigger):'');var btn=document.querySelector('.checkout-submit');if(btn){btn.disabled=true;btn.textContent='Redirecting to Stripe…';}var pm=(typeof selectedPayment!=='undefined'&&selectedPayment)?selectedPayment:'card';var r=await fetch('/api/checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({amount_cents:amt,label:label,method:pm})});var d=await r.json();if(d.ok&&d.url){window.location=d.url;return;}alert('Checkout error: '+(d.error||'unknown'));if(btn){btn.disabled=false;btn.textContent='Confirm';}}catch(e){alert('Network error.');}};
+  window.submitCheckout=async function(){try{var amt=(typeof lastCalc!=='undefined'&&lastCalc&&lastCalc.fee)?Math.round(lastCalc.fee*100):0;if(!amt){alert('Please get your fee first.');return;}var label='Hedgerow promo'+((typeof lastCalc!=='undefined'&&lastCalc&&lastCalc.trigger)?(': '+lastCalc.trigger):'');var btn=document.querySelector('.checkout-submit');if(btn){btn.disabled=true;btn.textContent='Redirecting to Stripe…';}var pm=(typeof selectedPayment!=='undefined'&&selectedPayment)?selectedPayment:'card';var r=await fetch('/api/checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({amount_cents:amt,label:label,method:pm})});var d=await r.json();if(d.ok&&d.url){window.location=d.url;return;}alert('Checkout error: '+(d.error||'unknown'));if(btn){btn.disabled=false;btn.textContent='Confirm';}}catch(e){alert('Network error.');}};
   window.hedgerowChat=async function(m){try{var r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:m})});var d=await r.json();return d.reply||'';}catch(e){return '';}};
   try{var q=new URLSearchParams(location.search);if(q.get('paid')==='1')setTimeout(function(){alert('Payment received (test mode). Your promotion is set.');},300);}catch(e){}
 })();
