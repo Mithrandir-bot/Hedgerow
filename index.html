@@ -1082,6 +1082,13 @@
     font-weight: 600;
     color: var(--text-muted);
   }
+  .vertical-settled a {
+    color: var(--text-muted);
+    text-decoration: none;
+    border-bottom: 1px dotted var(--text-muted);
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .vertical-settled a:hover { color: var(--primary); border-bottom-color: var(--primary); }
 
   .live-weather-line {
     max-width: 1100px;
@@ -1238,6 +1245,79 @@
     line-height: 1.7;
   }
   .faq-item.open .faq-a { max-height: 300px; padding: 0 20px 18px; }
+
+  /* SOURCES / TRANSPARENCY */
+  .sources-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    max-width: 900px;
+    margin: 0 auto 28px;
+  }
+  .source-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    transition: all 0.2s;
+  }
+  .source-card:hover { border-color: var(--primary); box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
+  .source-card .source-name {
+    font-size: 1.05rem;
+    font-weight: 800;
+    margin-bottom: 6px;
+    color: var(--text);
+  }
+  .source-card .source-decides {
+    display: inline-block;
+    background: var(--primary-light);
+    color: var(--primary-dark);
+    font-size: 0.74rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    margin-bottom: 12px;
+  }
+  .source-card .source-detail {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    line-height: 1.55;
+    margin-bottom: 14px;
+  }
+  .source-card .source-links { display: flex; flex-wrap: wrap; gap: 8px; }
+  .source-card .source-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(16,185,129,0.1);
+    border: 1px solid rgba(16,185,129,0.25);
+    color: var(--accent-dark);
+    border-radius: 8px;
+    padding: 7px 12px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.15s;
+  }
+  .source-card .source-link:hover { background: rgba(16,185,129,0.18); border-color: var(--accent); }
+  .source-card .source-link svg { width: 14px; height: 14px; }
+  .sources-disclaimer {
+    max-width: 900px;
+    margin: 0 auto;
+    background: #f8fafc;
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--accent);
+    border-radius: var(--radius);
+    padding: 18px 22px;
+    font-size: 0.92rem;
+    color: var(--text);
+    line-height: 1.6;
+  }
+  @media (max-width: 700px) {
+    .sources-grid { grid-template-columns: 1fr; }
+  }
 
   /* CTA */
   .cta-section {
@@ -1519,6 +1599,7 @@
     <a href="#use-cases">Use Cases</a>
     <a href="#partners">Become a partner</a>
     <a href="#faq">FAQ</a>
+    <a href="#sources">Sources</a>
     <a href="#support">Support</a>
     <a href="#cta" class="nav-cta">Get Early Access</a>
   </div>
@@ -1963,7 +2044,7 @@
       <h3>Bars and Restaurants</h3>
       <p>Run game-day or event-day promotions that fill seats. If the event happens and the deal you offered comes due, we pay your business the payoff to cover it.</p>
       <div class="vertical-example"><strong>Example:</strong> "Free wings if the underdog home team wins this weekend" earns a $650 flat fee, and we pay you the $2,000 payoff if it happens. That is about a 1 in 4 chance, settled on the final score, a clean win or not.</div>
-      <p class="vertical-settled">Settled by the official game result</p>
+      <p class="vertical-settled"><a href="#sources">Settled by the official game result</a></p>
     </div>
 
     <div class="vertical-card">
@@ -1973,7 +2054,7 @@
       <h3>Weddings and Outdoor Events</h3>
       <p>Rain can wreck an outdoor wedding or celebration. Offer guests a rain-day credit, and if it rains, we fund it so it costs you nothing.</p>
       <div class="vertical-example"><strong>Example:</strong> "Rain on the wedding day? Guests get a credit." earns a $1,300 flat fee, and we pay you $5,000 if it rains, measured by the National Weather Service. That is about a 1 in 5 chance for a typical date.</div>
-      <p class="vertical-settled">Settled by the National Weather Service</p>
+      <p class="vertical-settled"><a href="#sources">Settled by the National Weather Service</a></p>
     </div>
 
     <div class="vertical-card">
@@ -1983,7 +2064,7 @@
       <h3>Car Dealerships</h3>
       <p>Rain keeps buyers off the lot. Tie a rainy-day rebate to the forecast, and if it rains on your sale day, we fund it.</p>
       <div class="vertical-example"><strong>Example:</strong> "Rain on your big sale day? An extra $500 off." earns a $1,040 flat fee, and we pay you $4,000 if it rains, measured by the National Weather Service. That is about a 1 in 5 chance.</div>
-      <p class="vertical-settled">Settled by the National Weather Service</p>
+      <p class="vertical-settled"><a href="#sources">Settled by the National Weather Service</a></p>
     </div>
 
     <div class="vertical-card">
@@ -1991,7 +2072,7 @@
       <h3>Tourism and Hospitality</h3>
       <p>Offer guests a weather promise. A rained-out weekend? Partial refund, and Hedgerow pays you to cover it.</p>
       <div class="vertical-example"><strong>Example:</strong> "3 or more rainy days during your stay? 25% back." earns a $205 flat fee, and we pay you $1,200 if it happens. That is about a 1 in 8 chance.</div>
-      <p class="vertical-settled">Settled by the National Weather Service</p>
+      <p class="vertical-settled"><a href="#sources">Settled by the National Weather Service</a></p>
     </div>
 
     <div class="vertical-card">
@@ -1999,7 +2080,7 @@
       <h3>Ice Cream and Seasonal Shops</h3>
       <p>Turn a record-hot weekend into a customer-favorite deal. If it hits, we pay you to cover what you offered.</p>
       <div class="vertical-example"><strong>Example:</strong> "Free scoop if it hits 95 degrees this weekend" earns a $195 flat fee, and we pay you $1,500 if it happens. That is about a 1 in 10 chance for your city, and the calculator sets the exact temperature from your local history.</div>
-      <p class="vertical-settled">Settled by the National Weather Service</p>
+      <p class="vertical-settled"><a href="#sources">Settled by the National Weather Service</a></p>
     </div>
 
     <div class="vertical-card">
@@ -2009,7 +2090,7 @@
       <h3>Photographers and Outdoor Shoots</h3>
       <p>A rained-out shoot means a costly reschedule. Promise clients their money back if rain forces a rebook, and we fund it.</p>
       <div class="vertical-example"><strong>Example:</strong> "Rained-out shoot day? Money back to rebook." earns a $210 flat fee, and we pay you $800 if it rains, measured by the National Weather Service. That is about a 1 in 5 chance.</div>
-      <p class="vertical-settled">Settled by the National Weather Service</p>
+      <p class="vertical-settled"><a href="#sources">Settled by the National Weather Service</a></p>
     </div>
 
     <div class="vertical-card">
@@ -2019,7 +2100,7 @@
       <h3>Car Washes</h3>
       <p>Weekend rain wipes out most of a car wash's week. Tie a make-good to the forecast, and if it rains, we fund it.</p>
       <div class="vertical-example"><strong>Example:</strong> "Rain this Saturday? Free wash next week." earns a $390 flat fee, and we pay you $1,500 if it rains, measured by the National Weather Service. That is about a 1 in 5 chance.</div>
-      <p class="vertical-settled">Settled by the National Weather Service</p>
+      <p class="vertical-settled"><a href="#sources">Settled by the National Weather Service</a></p>
     </div>
 
     <div class="vertical-card">
@@ -2029,7 +2110,7 @@
       <h3>Golf Courses and Country Clubs</h3>
       <p>Rain empties the tee sheet and the grill. Offer a rain-day perk, and if it rains on the weekend, we fund it.</p>
       <div class="vertical-example"><strong>Example:</strong> "Rain on the weekend? Your next round is on us." earns a $780 flat fee, and we pay you $3,000 if it rains, measured by the National Weather Service. That is about a 1 in 5 chance.</div>
-      <p class="vertical-settled">Settled by the National Weather Service</p>
+      <p class="vertical-settled"><a href="#sources">Settled by the National Weather Service</a></p>
     </div>
 
     <div class="vertical-card">
@@ -2039,7 +2120,7 @@
       <h3>Gas Stations, Auto and Fleet</h3>
       <p>Turn a price swing into a customer-favorite deal. Tie a fuel rebate to the published gas price; if it hits, we pay you the payoff to cover it.</p>
       <div class="vertical-example"><strong>Example:</strong> "Gas tops $4? 10c/gal fuel rebate weekend." earns a $1,050 flat fee, and we pay you $3,000 if it happens. That is about a 1 in 4 chance, based on the current gas price.</div>
-      <p class="vertical-settled">Settled by the EIA and AAA published price</p>
+      <p class="vertical-settled"><a href="#sources">Settled by the EIA and AAA published price</a></p>
     </div>
 
   </div>
@@ -2111,6 +2192,62 @@
       <div class="faq-a">The minimum payoff is $250. Standard promotions fund payoffs up to $25,000. Higher limits are available on Enterprise plans. There's no limit on how many promotions you can run per month.</div>
     </div>
   </div>
+</div>
+
+<!-- HOW OUTCOMES ARE SETTLED / SOURCES -->
+<div class="section" id="sources">
+  <h2 class="section-title">How outcomes are settled</h2>
+  <p class="section-sub">Neutral, official sources decide every outcome, automatically and within 24 hours, never us. You can check them yourself.</p>
+  <div class="sources-grid">
+
+    <div class="source-card">
+      <div class="source-name">National Weather Service (part of NOAA)</div>
+      <span class="source-decides">Decides: rain, snow, and heat</span>
+      <p class="source-detail">The official daily high, precipitation, or snowfall recorded at your city's NWS station.</p>
+      <div class="source-links">
+        <a class="source-link" href="https://www.weather.gov" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg>
+          weather.gov
+        </a>
+      </div>
+    </div>
+
+    <div class="source-card">
+      <div class="source-name">U.S. Energy Information Administration and AAA</div>
+      <span class="source-decides">Decides: fuel and gas prices</span>
+      <p class="source-detail">The published average price for your area.</p>
+      <div class="source-links">
+        <a class="source-link" href="https://www.eia.gov" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg>
+          eia.gov
+        </a>
+        <a class="source-link" href="https://gasprices.aaa.com" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg>
+          gasprices.aaa.com
+        </a>
+      </div>
+    </div>
+
+    <div class="source-card">
+      <div class="source-name">Official league results and standings</div>
+      <span class="source-decides">Decides: sports outcomes</span>
+      <p class="source-detail">The official final score and standings, the same record everyone sees.</p>
+    </div>
+
+    <div class="source-card">
+      <div class="source-name">Open-Meteo historical climate archive</div>
+      <span class="source-decides">Sets: your odds</span>
+      <p class="source-detail">Twenty years of public climate history set your city's realistic odds. Your odds are estimated from public climate history and live market data.</p>
+      <div class="source-links">
+        <a class="source-link" href="https://open-meteo.com" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg>
+          open-meteo.com
+        </a>
+      </div>
+    </div>
+
+  </div>
+  <p class="sources-disclaimer">These are independent public sources. They are not affiliated with Hedgerow and do not endorse it. We read their published results to settle your promotion.</p>
 </div>
 
 <!-- SUPPORT / CONTACT -->
@@ -2210,7 +2347,7 @@
 
 <!-- FOOTER -->
 <footer>
-  <p><span id="brand-footer">Hedgerow</span> &copy; 2026. Based in the USA. &nbsp;|&nbsp; <a href="mailto:help@hedgerow.com">help@hedgerow.com</a> &nbsp;|&nbsp; <a href="#partners">Become a partner</a> &nbsp;|&nbsp; <a href="#">Terms</a> &nbsp;|&nbsp; <a href="#">Privacy</a></p>
+  <p><span id="brand-footer">Hedgerow</span> &copy; 2026. Based in the USA. &nbsp;|&nbsp; <a href="mailto:help@hedgerow.com">help@hedgerow.com</a> &nbsp;|&nbsp; <a href="#partners">Become a partner</a> &nbsp;|&nbsp; <a href="#sources">Sources</a> &nbsp;|&nbsp; <a href="#">Terms</a> &nbsp;|&nbsp; <a href="#">Privacy</a></p>
   <p style="margin-top:8px;">Hedgerow is a marketing tool for businesses. If the event happens, Hedgerow, Inc. pays the business the payoff, not the customers directly.</p>
 </footer>
 
